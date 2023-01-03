@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="card trans-white-bg is-flex-down">
+    <input type="text" placeholder="Your name" class="big-font"/>
+    <input type="number" placeholder="Lobby Code" class="big-font"/>
+    <button class="btn-green big-font">JOIN</button>
+    <button class="btn-green big-font">CREATE NEW LOBBY</button>
+</div>
+
+<script>
+    createLobby(){
+        @Url.Action("Lobby","Home");
+    }
+</script>

@@ -13,7 +13,15 @@ namespace RTOG.App.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Login()
+        {
+            return View();
+        }
+        public IActionResult Lobby()
+        {
+            return View();
+        }
+        public IActionResult Game()
         {
             return View();
         }
@@ -22,6 +30,7 @@ namespace RTOG.App.Controllers
         {
             return View();
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

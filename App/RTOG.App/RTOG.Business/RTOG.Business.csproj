@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RTOG.Data\RTOG.Data.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -15,4 +15,12 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.12" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\res\general\SiteBackground.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RTOG.Business\RTOG.Business.csproj" />
+  </ItemGroup>
+
 </Project>
