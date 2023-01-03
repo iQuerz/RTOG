@@ -1,8 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RTOG.Data.Models;
 
 namespace RTOG.Data.Persistence
 {
-    internal class AppDbContext : DbContext
+    public class AppDbContext : DbContext
     {
+        public AppDbContext(DbContextOptions options)
+            :base(options) { }
+
+        public DbSet<Account> Accounts { get; set; }
     }
 }

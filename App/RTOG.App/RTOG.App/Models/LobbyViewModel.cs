@@ -1,6 +1,6 @@
 ﻿namespace RTOG.App.Models
 {
-    public class Lobby
+    public class LobbyViewModel
     {
         public string Host { get; set; }
         public List<string> Players { get; set; }

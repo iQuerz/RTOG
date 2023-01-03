@@ -1,24 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-RTOG.App-aab3bba1-a994-4646-a6bc-90ce5e2ddd03</UserSecretsId>
   </PropertyGroup>
 
+  <!--Resources-->
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.12" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.12" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.12" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.12" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.12" />
+    <EmbeddedResource Include="wwwroot\res\background\SiteBackground.png" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="wwwroot\res\general\SiteBackground.png" />
-  </ItemGroup>
-
+  <!--Layers-->
   <ItemGroup>
     <ProjectReference Include="..\RTOG.Business\RTOG.Business.csproj" />
   </ItemGroup>

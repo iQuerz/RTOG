@@ -3,14 +3,16 @@
 }
 
 <div class="card trans-white-bg is-flex-down">
-    <input type="text" placeholder="Your name" class="big-font"/>
+    <input type="text" placeholder="Your name" class="big-font" />
+    <p style="opacity:0.5; text-align:center; margin:0.1em;">------</p>
     <input type="number" placeholder="Lobby Code" class="big-font"/>
     <button class="btn-green big-font">JOIN</button>
-    <button class="btn-green big-font">CREATE NEW LOBBY</button>
+    <p style="opacity:0.5; text-align:center; margin:0.1em;">--OR--</p>
+    <a class="btn-green big-font" href="@Url.Action("Lobby", "Home")">CREATE NEW LOBBY</a>
 </div>
 
 <script>
-    createLobby(){
+    function createLobby(){
         @Url.Action("Lobby","Home");
     }
 </script>
