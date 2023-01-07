@@ -1,0 +1,18 @@
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="card trans-white-bg is-flex-down">
+    <input id="usernameInput" type="text" placeholder="Your name" class="big-font" />
+    <button class="btn-green big-font" onclick="tryLogin()">GUEST LOGIN</button>
+</div>
+
+<input id="LoginGuestUrl" hidden value="@Url.Action("LoginGuest","Login")"/>
+
+<script>
+    function tryLogin(){
+        let username = $('#usernameInput').val()
+        window.location.href = $('#LoginGuestUrl').val() +"/"+ username
+    }
+</script>

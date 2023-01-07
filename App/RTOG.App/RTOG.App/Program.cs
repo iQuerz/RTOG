@@ -9,10 +9,11 @@ RTOG.Business.Extensions.StartupExtensions.ConfigureServices(builder.Services);
 
 var app = builder.Build();
 
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    //app.UseMigrationsEndPoint();
+
 }
 else
 {
@@ -25,6 +26,12 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Login}/{action=Login}");
+});
 
 app.UseAuthentication();
 app.UseAuthorization();

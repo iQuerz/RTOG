@@ -1,11 +1,12 @@
 ﻿using RTOG.Business.Infrastructure;
 using RTOG.Business.Infrastructure.Messages;
+using RTOG.Business.Interfaces;
 using RTOG.Data.Models;
 using RTOG.Data.Persistence;
 
 namespace RTOG.Business.Services
 {
-    public class AccountService
+    public class AccountService : IAccountService
     {
         private readonly AppDbContext _dbContext;
         public AccountService(AppDbContext context)
@@ -13,20 +14,16 @@ namespace RTOG.Business.Services
             _dbContext = context;
         }
 
-        public async Task Create(Account newAccount)
+        public async Task<Account> Create(Account newAccount)
         {
-            if (newAccount.IsGuest == false)
-            {
-                var accSameUsername = _dbContext.Accounts.Where(a => a.Username == newAccount.Username).FirstOrDefault();
-                if (accSameUsername is not null)
-                    throw new Exception(Messages.UsernameExists);
-            }
-
+            newAccount.IsGuest = false;
             newAccount.LastActive = DateTime.Now;
             newAccount.SessionID = Helpers.GetRandomString();
 
             _dbContext.Accounts.Add(newAccount);
             await _dbContext.SaveChangesAsync();
+
+            return newAccount;
         }
 
         public async Task<Account> CreateGuest(string username)

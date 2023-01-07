@@ -1,0 +1,11 @@
+﻿@model HomeViewModel
+@{
+    ViewData["title"] = "Home";
+}
+
+<div class="card trans-white-bg is-flex-down">
+    <input type="number" placeholder="Lobby Code" class="big-font" />
+    <button class="btn-green big-font">JOIN</button>
+    <p style="opacity:0.5; text-align:center; margin:0.1em;">--OR--</p>
+    <button class="btn-green big-font" href="@Url.Action("Lobby", "Home")">CREATE NEW LOBBY</button>
+</div>

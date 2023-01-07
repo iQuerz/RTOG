@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using RTOG.Business.Interfaces;
+using RTOG.Business.Services;
 
 namespace RTOG.Business.Extensions
 {
@@ -9,7 +11,9 @@ namespace RTOG.Business.Extensions
             Data.Extensions.StartupExtensions.ConfigureServices(services);
 
             //business services
-            //services.AddScoped<IService, Service>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<ILobbyService, LobbyService>();
+
         }
     }
 }
