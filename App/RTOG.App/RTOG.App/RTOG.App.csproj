@@ -15,5 +15,10 @@
   <ItemGroup>
     <ProjectReference Include="..\RTOG.Business\RTOG.Business.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Login\" />
+    <Folder Include="Views\Lobby\" />
+    <Folder Include="Views\Game\" />
+  </ItemGroup>
 
 </Project>

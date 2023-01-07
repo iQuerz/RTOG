@@ -1,8 +1,9 @@
-﻿namespace RTOG.App.Models
+﻿using RTOG.Data.Models;
+
+namespace RTOG.App.Models
 {
-    public class LobbyViewModel
+    public class LobbyViewModel : BaseViewModel
     {
-        public string Host { get; set; }
-        public List<string> Players { get; set; }
+        public Lobby Lobby { get; set; }
     }
 }

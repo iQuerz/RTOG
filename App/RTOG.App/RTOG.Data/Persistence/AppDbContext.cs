@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using RTOG.Data.Models;
 
 namespace RTOG.Data.Persistence
@@ -9,5 +10,7 @@ namespace RTOG.Data.Persistence
             :base(options) { }
 
         public DbSet<Account> Accounts { get; set; }
+        public DbSet<Lobby> Lobbies { get; set; }
+
     }
 }

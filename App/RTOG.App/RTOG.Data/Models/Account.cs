@@ -11,7 +11,7 @@ namespace RTOG.Data.Models
         public bool IsGuest { get; set; }
 
         [Required]
-        public DateTime CreationDate { get; set; }
+        public DateTime LastActive { get; set; }
 
         [Required]
         public string SessionID { get; set; }

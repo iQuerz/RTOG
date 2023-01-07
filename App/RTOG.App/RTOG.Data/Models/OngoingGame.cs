@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RTOG.Business.Interfaces
+namespace RTOG.Data.Models
 {
-    public class IAccountService
+    public class OngoingGame : BaseEntity
     {
-        
+        public List<Account> Players { get; set; }
     }
 }

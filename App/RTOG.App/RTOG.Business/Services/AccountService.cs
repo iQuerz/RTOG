@@ -5,7 +5,7 @@ using RTOG.Data.Persistence;
 
 namespace RTOG.Business.Services
 {
-    internal class AccountService
+    public class AccountService
     {
         private readonly AppDbContext _dbContext;
         public AccountService(AppDbContext context)
@@ -22,11 +22,27 @@ namespace RTOG.Business.Services
                     throw new Exception(Messages.UsernameExists);
             }
 
-            newAccount.CreationDate = DateTime.Now;
+            newAccount.LastActive = DateTime.Now;
             newAccount.SessionID = Helpers.GetRandomString();
 
             _dbContext.Accounts.Add(newAccount);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<Account> CreateGuest(string username)
+        {
+            var newGuest = new Account()
+            {
+                Username = username,
+                IsGuest = true,
+                LastActive = DateTime.Now,
+                SessionID = Helpers.GetRandomString()
+            };
+
+            _dbContext.Accounts.Add(newGuest);
+            await _dbContext.SaveChangesAsync();
+
+            return newGuest;
         }
     }
 }
