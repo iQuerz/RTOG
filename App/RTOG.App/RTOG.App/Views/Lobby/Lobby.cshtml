@@ -3,7 +3,27 @@
     ViewData["Title"] = Model.Lobby.Host.Username + "'s Lobby";
 }
 
-<button class="btn-green biggest-font" onclick="StartGame()">START</button>
+
+<div style="display:flex; align-items:center; justify-content:space-between;
+            align-self:start;margin-bottom:1em;">
+    <h2>Lobby code: @Model.Lobby.Code</h2>
+    @if(Model.Lobby.Host.ID == Model.MyAccount.ID){
+        <button style="width:5em" class="btn-green biggest-font padding" onclick="StartGame()">START</button>
+    }
+</div>
+
+<div style="display:flex;flex-direction:column;align-items:center;">
+    <div class="lobby-card white-bg btn" style="width:40em;">
+        <strong>@Model.Lobby.Host.Username (Host)</strong>
+    </div>
+
+    @foreach (var player in Model.Lobby.Players)
+    {
+        <div class="lobby-card trans-white-bg btn" style="margin-left:2em; width:38em">
+            <b>@player.Username</b>
+        </div>
+    }
+</div>
 
 <input id="AccountID" hidden value="@Model.MyAccount.ID" />
 <input id="LobbyID" hidden value="@Model.Lobby.ID" />

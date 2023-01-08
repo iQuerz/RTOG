@@ -25,12 +25,9 @@ a{
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
-
+/*#region Cards*/
 .card{
     align-content:center;
     border-radius:1em;
@@ -41,6 +38,15 @@ a{
         margin-top: 0.1em;
         margin-bottom: 0.1em;
     }
+
+.lobby-card {
+    border-radius:1em;
+    padding: 2em;
+    box-shadow: #0005 2px 2px;
+    margin-bottom: 0.5em;
+    max-width: 50em;
+}
+/*#endregion*/
 
 .white-bg{
     background-color: var(--white);
@@ -55,6 +61,7 @@ a{
     justify-content: space-between;
 }
 
+/*#region Buttons*/
 .btn-green {
     text-align: center;
     cursor:pointer;
@@ -68,6 +75,15 @@ a{
         transform: translateY(1px);
     }
 
+.btn{
+    cursor:pointer;
+}
+    .btn:active{
+        transform: translateY(1px);
+    }
+/*#endregion*/
+
+/*#region Fonts*/
 .big-font{
     font-size: 1.2em;
 }
@@ -77,6 +93,7 @@ a{
 .biggest-font{
     font-size: 1.8em;
 }
+/*#endregion*/
 
 .padding{
     padding: 0.5em;

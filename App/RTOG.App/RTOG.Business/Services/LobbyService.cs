@@ -28,7 +28,10 @@ namespace RTOG.Business.Services
         }
         public Lobby GetByCode(string code)
         {
-            var lobby = _dbContext.Lobbies.Where(l => l.Code == code).FirstOrDefault();
+            var lobby = _dbContext.Lobbies.Where(l => l.Code == code)
+                                          .Include(l => l.Host)
+                                          .Include(l=> l.Players)
+                                          .FirstOrDefault();
 
             if (lobby is null)
                 throw new Exception("Lobby not found."); //todo:static string u sred koda = no no

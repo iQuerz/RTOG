@@ -3,9 +3,12 @@
     ViewData["Title"] = "Login";
 }
 
-<div class="card trans-white-bg is-flex-down">
-    <input id="usernameInput" type="text" placeholder="Your name" class="big-font" />
-    <button class="btn-green big-font" onclick="tryLogin()">GUEST LOGIN</button>
+<div style="display:flex;flex-direction:column;height:inherit;
+            justify-content:center;align-items:center">
+    <div class="card trans-white-bg is-flex-down" style="width:20%; max-width:20em;">
+        <input id="usernameInput" type="text" placeholder="Your name" class="big-font" />
+        <button class="btn-green big-font" onclick="tryLogin()">GUEST LOGIN</button>
+    </div>
 </div>
 
 <input id="CreateGuestUrl" hidden value="@Url.Action("CreateGuest","Login")"/>
