@@ -9,17 +9,13 @@ namespace RTOG.App.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ILobbyService _lobbyService;
+        private readonly IAccountService _accountService;
 
         public HomeController(ILogger<HomeController> logger,
-                              ILobbyService lobbyService)
+                                      IAccountService accountService)
         {
             _logger = logger;
-            _lobbyService = lobbyService;
-        }
-        public IActionResult Home()
-        {
-            return View();
+            _accountService = accountService;
         }
 
         public IActionResult Privacy()
@@ -27,32 +23,30 @@ namespace RTOG.App.Controllers
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> JoinLobby(Account account, string code)
+        [Route("{api}/Guest/{guestUsername}")]
+        public async Task<IActionResult> Guest(string guestUsername)
         {
-            var lobby = await _lobbyService.AddPlayerToLobby(account, code);
-            var lobbyModel = new LobbyViewModel()
-            {
-                MyAccount = account,
-                Lobby = lobby,
-            };
+            var guestAccount = await _accountService.CreateGuest(guestUsername);
 
-            return View("Lobby", lobbyModel);
+            var homeModel = new HomeViewModel()
+            {
+                MyAccount = guestAccount,
+            };
+            return View("Home", homeModel);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateLobby(Account host)
+        [Route("{api}/Home/{accountID}")]
+        public async Task<IActionResult> Home(int accountID)
         {
-            var lobby = await _lobbyService.CreateLobby(host);
-            var lobbyModel = new LobbyViewModel()
+            var account = await _accountService.Get(accountID);
+
+            var homeModel = new HomeViewModel()
             {
-                MyAccount = host,
-                Lobby = lobby
+                MyAccount = account
             };
 
-            return View("Lobby", lobbyModel);
+            return View(homeModel);
         }
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

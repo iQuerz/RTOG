@@ -11,5 +11,6 @@ namespace RTOG.Business.Interfaces
     {
         public Task<Account> Create(Account newAccount);
         public Task<Account> CreateGuest(string username);
+        public Task<Account> Get(int accountID);
     }
 }

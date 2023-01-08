@@ -19,16 +19,12 @@ namespace RTOG.App.Controllers
             return View();
         }
 
-        [Route("{api}/LoginGuest/{guestUsername}")]
-        public async Task<IActionResult> LoginGuest(string guestUsername)
+        [HttpPost]
+        [Route("{api}/CreateGuest")]
+        public async Task<IActionResult> CreateGuest(string guestUsername)
         {
             var guestAccount = await _accountService.CreateGuest(guestUsername);
-
-            var homeModel = new HomeViewModel()
-            {
-                MyAccount = guestAccount,
-            };
-            return View("~/Views/Home/Home.cshtml", homeModel);
+            return Ok(guestAccount);
         }
     }
 }

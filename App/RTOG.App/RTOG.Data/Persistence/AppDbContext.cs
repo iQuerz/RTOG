@@ -11,6 +11,7 @@ namespace RTOG.Data.Persistence
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Lobby> Lobbies { get; set; }
+        public DbSet<OngoingGame> Games { get; set; }
 
     }
 }

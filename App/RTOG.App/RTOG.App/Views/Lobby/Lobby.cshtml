@@ -1,4 +1,26 @@
 ﻿@model LobbyViewModel
 @{
-    ViewData["Title"] = "Lobby";
+    ViewData["Title"] = Model.Lobby.Host.Username + "'s Lobby";
 }
+
+<button class="btn-green biggest-font" onclick="StartGame()">START</button>
+
+<input id="AccountID" hidden value="@Model.MyAccount.ID" />
+<input id="LobbyID" hidden value="@Model.Lobby.ID" />
+<input id="DisbandLobbyUrl" hidden value="@Url.Action("DisbandLobby","Lobby", null, Context.Request.Scheme)" />
+<input id="CreateGameUrl" hidden value="@Url.Action("CreateGame","Game", null, Context.Request.Scheme)" />
+<input id="GameUrl" hidden value="@Url.Action("Game", "Game", null, Context.Request.Scheme)" />
+
+<script>
+    function StartGame(){
+        let accountId = $('#AccountID').val()
+        let lobbyId = $('#LobbyID').val()
+        $.ajax({
+            type: 'POST',
+            url: $('#CreateGameUrl').val() + "/" + accountId + "/" + lobbyId,
+            success: function (response) {
+                window.location.href = $('#GameUrl').val() + "/" + accountId + "/" + response.id
+            }
+        });
+    }
+</script>

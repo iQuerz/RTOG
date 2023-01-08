@@ -8,11 +8,22 @@
     <button class="btn-green big-font" onclick="tryLogin()">GUEST LOGIN</button>
 </div>
 
-<input id="LoginGuestUrl" hidden value="@Url.Action("LoginGuest","Login")"/>
+<input id="CreateGuestUrl" hidden value="@Url.Action("CreateGuest","Login")"/>
+<input id="HomeUrl" hidden value="@Url.Action("Home","Home")"/>
 
 <script>
     function tryLogin(){
         let username = $('#usernameInput').val()
-        window.location.href = $('#LoginGuestUrl').val() +"/"+ username
+        let requestData = {
+            guestUsername: username
+        };
+        $.ajax({
+            url: $('#CreateGuestUrl').val(),
+            type: 'POST',
+            data: requestData,
+            success: function(response){
+                window.location.href = $('#HomeUrl').val() +"/"+ response.id;
+            }
+        })
     }
 </script>

@@ -4,8 +4,38 @@
 }
 
 <div class="card trans-white-bg is-flex-down">
-    <input type="number" placeholder="Lobby Code" class="big-font" />
-    <button class="btn-green big-font">JOIN</button>
+    <input id="codeInput" type="number" placeholder="Lobby Code" class="big-font" />
+    <button class="btn-green big-font" onclick="joinLobby()">JOIN</button>
     <p style="opacity:0.5; text-align:center; margin:0.1em;">--OR--</p>
-    <button class="btn-green big-font" href="@Url.Action("Lobby", "Home")">CREATE NEW LOBBY</button>
+    <button class="btn-green big-font" onclick="createLobby()">CREATE NEW LOBBY</button>
 </div>
+
+<input id="AccountID" hidden value="@Model.MyAccount.ID" />
+<input id="LobbyUrl" hidden value="@Url.Action("Lobby","Lobby", null, Context.Request.Scheme)" />
+<input id="JoinLobbyUrl" hidden value="@Url.Action("JoinLobby","Lobby", null, Context.Request.Scheme)" />
+<input id="CreateLobbyUrl" hidden value="@Url.Action("CreateLobby","Lobby", null, Context.Request.Scheme)" />
+
+<script>
+    function joinLobby() {
+        let code = $('#codeInput').val()
+        let id = $('#AccountID').val()
+        $.ajax({
+            type: 'PUT',
+            url: $('#JoinLobbyUrl').val() + "/" + id + "/" + code,
+            success: function(response){
+                console.log(response.result)
+                //window.location.href = $('#LobbyUrl').val() + "/" + id + "/" + response.id
+            }
+        });
+    }
+    function createLobby(){
+        let accountId = $('#AccountID').val()
+        $.ajax({
+            type: 'POST',
+            url: $('#CreateLobbyUrl').val() + "/" + accountId,
+            success: function(response){
+                window.location.href = $('#LobbyUrl').val() + "/" + accountId + "/" + response.id
+            }
+        });
+    }
+</script>

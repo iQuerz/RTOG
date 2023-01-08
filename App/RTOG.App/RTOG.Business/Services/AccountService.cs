@@ -41,5 +41,13 @@ namespace RTOG.Business.Services
 
             return newGuest;
         }
+
+        public async Task<Account> Get(int accountID)
+        {
+            var account = await _dbContext.Accounts.FindAsync(accountID);
+            if (account is null)
+                throw new Exception("Account not found");//todo:bljak static string
+            return account;
+        }
     }
 }

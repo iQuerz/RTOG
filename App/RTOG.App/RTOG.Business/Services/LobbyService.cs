@@ -14,7 +14,18 @@ namespace RTOG.Business.Services
         {
             _dbContext = context;
         }
+        public async Task<Lobby> Get(int lobbyID)
+        {
+            var lobby = _dbContext.Lobbies.Where(l => l.ID == lobbyID)
+                                          .Include(l => l.Host)
+                                          .Include(l => l.Players)
+                                          .FirstOrDefault();
 
+            if (lobby is null)
+                throw new Exception("Lobby not found.");
+
+            return lobby;
+        }
         public Lobby GetByCode(string code)
         {
             var lobby = _dbContext.Lobbies.Where(l => l.Code == code).FirstOrDefault();
@@ -43,7 +54,7 @@ namespace RTOG.Business.Services
             {
                 Host = host,
                 Players = new(),
-                Code = Helpers.GetRandomString() //todo:neka code bude unique
+                Code = Helpers.GetRandomString(6) //todo:neka code bude unique
             };
 
             _dbContext.Lobbies.Add(lobby);
@@ -52,5 +63,9 @@ namespace RTOG.Business.Services
             return lobby;
         }
 
+        public Task<bool> isPlayerInLobby(Account account, Lobby lobby)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

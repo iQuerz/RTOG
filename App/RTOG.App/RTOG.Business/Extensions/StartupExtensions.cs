@@ -13,6 +13,7 @@ namespace RTOG.Business.Extensions
             //business services
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ILobbyService, LobbyService>();
+            services.AddScoped<IGameService, GameService>();
 
         }
     }
