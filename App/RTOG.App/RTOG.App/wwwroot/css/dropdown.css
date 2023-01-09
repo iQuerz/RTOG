@@ -1,0 +1,34 @@
+﻿.dropdown {
+    font-size: 1.2em;
+    border-radius: 0.2em;
+    padding: 0.3em;
+    background-color: white;
+    box-shadow: #0005 2px 2px;
+}
+
+.dropdown-menu {
+    list-style-type: none;
+}
+
+.dropdown-menu > li {
+    padding: 0.2em 0.8em;
+    cursor:pointer;
+}
+    .dropdown-menu > li:hover {
+        background-color: #0001;
+    }
+    .dropdown-menu > li:active{
+        transform: translateY(1px);
+    }
+
+.dropdown-menu > li > a {
+    color:black;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.actionName {
+    font-family: Tahoma;
+    color: black;
+}
