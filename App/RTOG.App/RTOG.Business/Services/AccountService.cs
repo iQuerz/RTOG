@@ -33,7 +33,8 @@ namespace RTOG.Business.Services
                 Username = username,
                 IsGuest = true,
                 LastActive = DateTime.Now,
-                SessionID = Helpers.GetRandomString()
+                SessionID = Helpers.GetRandomString(),
+                Player = null
             };
 
             _dbContext.Accounts.Add(newGuest);

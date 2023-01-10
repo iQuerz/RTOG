@@ -22,6 +22,9 @@ namespace RTOG.Business.Services
             var game = new OngoingGame()
             {
                 Players = lobby.Players,
+                //Map = lobby.SelectedMap  trenutno ne postoj
+                TurnCounter = 0
+
             };
             game.Players.Insert(0, lobby.Host); //todo:mozda random redosled igraca idk
 

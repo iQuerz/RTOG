@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RTOG.Data.Persistence;
 
@@ -10,9 +11,10 @@ using RTOG.Data.Persistence;
 namespace RTOG.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230110142756_v0.2_Add_All_GameModels")]
+    partial class v02_Add_All_GameModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.12");
@@ -35,9 +37,6 @@ namespace RTOG.Data.Migrations
                     b.Property<int?>("OngoingGameID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("PlayerID")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("SessionID")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -52,9 +51,6 @@ namespace RTOG.Data.Migrations
 
                     b.HasIndex("OngoingGameID");
 
-                    b.HasIndex("PlayerID")
-                        .IsUnique();
-
                     b.ToTable("Accounts");
                 });
 
@@ -64,15 +60,9 @@ namespace RTOG.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.HasKey("ID");
 
                     b.ToTable("Factions");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Faction");
                 });
 
             modelBuilder.Entity("RTOG.Data.Models.Lobby", b =>
@@ -147,6 +137,9 @@ namespace RTOG.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("PlayerAccountID")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("TotalGold")
                         .HasColumnType("INTEGER");
 
@@ -155,6 +148,8 @@ namespace RTOG.Data.Migrations
                     b.HasIndex("FactionID");
 
                     b.HasIndex("GameID");
+
+                    b.HasIndex("PlayerAccountID");
 
                     b.ToTable("Players");
                 });
@@ -262,27 +257,6 @@ namespace RTOG.Data.Migrations
                     b.ToTable("UnitUpgrades");
                 });
 
-            modelBuilder.Entity("RTOG.Data.Models.AmericaFaction", b =>
-                {
-                    b.HasBaseType("RTOG.Data.Models.Faction");
-
-                    b.HasDiscriminator().HasValue("AmericaFaction");
-                });
-
-            modelBuilder.Entity("RTOG.Data.Models.ChineseFaction", b =>
-                {
-                    b.HasBaseType("RTOG.Data.Models.Faction");
-
-                    b.HasDiscriminator().HasValue("ChineseFaction");
-                });
-
-            modelBuilder.Entity("RTOG.Data.Models.RussiaFaction", b =>
-                {
-                    b.HasBaseType("RTOG.Data.Models.Faction");
-
-                    b.HasDiscriminator().HasValue("RussiaFaction");
-                });
-
             modelBuilder.Entity("RTOG.Data.Models.Account", b =>
                 {
                     b.HasOne("RTOG.Data.Models.Lobby", null)
@@ -292,12 +266,6 @@ namespace RTOG.Data.Migrations
                     b.HasOne("RTOG.Data.Models.OngoingGame", null)
                         .WithMany("Players")
                         .HasForeignKey("OngoingGameID");
-
-                    b.HasOne("RTOG.Data.Models.Player", "Player")
-                        .WithOne("PlayerAccount")
-                        .HasForeignKey("RTOG.Data.Models.Account", "PlayerID");
-
-                    b.Navigation("Player");
                 });
 
             modelBuilder.Entity("RTOG.Data.Models.Lobby", b =>
@@ -336,9 +304,17 @@ namespace RTOG.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("RTOG.Data.Models.Account", "PlayerAccount")
+                        .WithMany()
+                        .HasForeignKey("PlayerAccountID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Faction");
 
                     b.Navigation("Game");
+
+                    b.Navigation("PlayerAccount");
                 });
 
             modelBuilder.Entity("RTOG.Data.Models.Tile", b =>
@@ -427,9 +403,6 @@ namespace RTOG.Data.Migrations
                     b.Navigation("AllMyUnits");
 
                     b.Navigation("OwnedTiles");
-
-                    b.Navigation("PlayerAccount")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("RTOG.Data.Models.Tile", b =>

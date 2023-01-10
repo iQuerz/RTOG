@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RTOG.Data.Persistence;
 
@@ -10,9 +11,10 @@ using RTOG.Data.Persistence;
 namespace RTOG.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230110172216_v0.3_Add_Player_to_account")]
+    partial class v03_Add_Player_to_account
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.12");
@@ -64,15 +66,9 @@ namespace RTOG.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.HasKey("ID");
 
                     b.ToTable("Factions");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Faction");
                 });
 
             modelBuilder.Entity("RTOG.Data.Models.Lobby", b =>
@@ -260,27 +256,6 @@ namespace RTOG.Data.Migrations
                     b.HasIndex("UnitID");
 
                     b.ToTable("UnitUpgrades");
-                });
-
-            modelBuilder.Entity("RTOG.Data.Models.AmericaFaction", b =>
-                {
-                    b.HasBaseType("RTOG.Data.Models.Faction");
-
-                    b.HasDiscriminator().HasValue("AmericaFaction");
-                });
-
-            modelBuilder.Entity("RTOG.Data.Models.ChineseFaction", b =>
-                {
-                    b.HasBaseType("RTOG.Data.Models.Faction");
-
-                    b.HasDiscriminator().HasValue("ChineseFaction");
-                });
-
-            modelBuilder.Entity("RTOG.Data.Models.RussiaFaction", b =>
-                {
-                    b.HasBaseType("RTOG.Data.Models.Faction");
-
-                    b.HasDiscriminator().HasValue("RussiaFaction");
                 });
 
             modelBuilder.Entity("RTOG.Data.Models.Account", b =>

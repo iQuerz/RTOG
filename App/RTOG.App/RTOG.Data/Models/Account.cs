@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RTOG.Data.Models
 {
@@ -15,6 +16,9 @@ namespace RTOG.Data.Models
 
         [Required]
         public string SessionID { get; set; }
+
+        [ForeignKey("PlayerID")]
+        public Player? Player { get; set; }
 
     }
 }

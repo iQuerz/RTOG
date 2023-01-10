@@ -5,16 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace RTOG.Data.Models
 {
-    public class OngoingGame : BaseEntity
+    public class UnitUpgrade : BaseEntity
     {
         [Required]
-        public List<Account> Players { get; set; }
+        public string Name { get; set; }
         [Required]
-        public Map Map { get; set; }
+        public Unit Unit { get; set; }
         [Required]
-        public int TurnCounter { get; set; }
+        public int Price { get; set; }
 
     }
 }
