@@ -4,9 +4,12 @@
     --gray: #CAC2B9;
     --green: #A2D8C0;
     --dark-green: #18453b;
+    --black: #222;
+    --red: #c51f3b;
 }
 *{
     font-family: Tahoma;
+    color: var(--black);
     margin: 0;
     padding: 0;
 }
@@ -97,4 +100,8 @@ a{
 
 .padding{
     padding: 0.5em;
+}
+
+.hoverBackground:hover{
+    background-color:#0001;
 }

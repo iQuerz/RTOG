@@ -8,6 +8,31 @@
     <link rel="stylesheet" href="~/RTOG.App.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/iconoir/iconoir.css">
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/notify/notify.min.js"></script>
+    <script>
+        $.notify.addStyle('default', {
+            html: "<div><span data-notify-text/></div>",
+            classes: {
+                base: {
+                    "white-space": "nowrap",
+                    "background-color": "var(--white)",
+                    "color": "var(--black)",
+                    "border-radius": "0.1em",
+                    "font-size": "0.6em",
+                    "padding": "5px"
+                }
+            }
+        });
+        $.notify.defaults({
+            style: 'default',
+            autoHideDelay: 1000,
+            arrowShow: false,
+            showAnimation: 'fadeIn',
+            showDuration: 200,
+            hideAnimation: 'fadeOut',
+            hideDuration: 200
+        });
+    </script>
 </head>
 <body>
     <div class="container">
