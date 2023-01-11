@@ -12,9 +12,9 @@ namespace RTOG.Data.Models
 
         public override Unit CreateSolder(string name)
         {
-            var unit = new AmericaSolder();
+            var unit = new AmericaSoldier();
             unit.Name = name;
-            army.Add(unit);
+            Army.Add(unit);
             return unit;
         }
 
@@ -22,7 +22,7 @@ namespace RTOG.Data.Models
         {
             var unit = new AmericaTank();
             unit.Name = name;
-            army.Add(unit);
+            Army.Add(unit);
             return unit;
         }
     }

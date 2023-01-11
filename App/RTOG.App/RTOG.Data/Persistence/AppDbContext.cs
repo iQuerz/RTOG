@@ -20,6 +20,7 @@ namespace RTOG.Data.Persistence
         public DbSet<RussiaFaction> RussiaFactions { get; set; }
         public DbSet<UnitUpgrade> UnitUpgrades { get; set; }
         public DbSet<Map> Maps { get; set; }
+        public DbSet<Tile> Tiles { get; set; }
 
     }
 }

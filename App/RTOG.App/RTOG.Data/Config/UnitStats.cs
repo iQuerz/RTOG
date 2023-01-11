@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RTOG.Data.Models
+namespace RTOG.Data.Config
 {
-    internal class AmericaTank : Unit
+    internal class UnitStats
     {
-        public AmericaTank() : base("AmericaTank") { }
     }
 }

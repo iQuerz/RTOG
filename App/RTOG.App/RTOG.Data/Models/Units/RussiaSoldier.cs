@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace RTOG.Data.Models
 {
-    internal class AmericaSolder : Unit
+    internal class RussiaSoldier : Unit
     {
+        public RussiaSoldier() : base("RussiaSoldier") { }
     }
 }

@@ -10,6 +10,7 @@ namespace RTOG.Data.Models
     {
         protected string Name { get; set; }
         public List<Unit> Army { get; set; }
+        public Player Player { get; set; }
 
         public Faction(string name)
         {

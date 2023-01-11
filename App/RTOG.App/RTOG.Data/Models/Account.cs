@@ -20,5 +20,6 @@ namespace RTOG.Data.Models
         [ForeignKey("PlayerID")]
         public Player? Player { get; set; }
 
+
     }
 }

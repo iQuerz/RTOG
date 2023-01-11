@@ -14,7 +14,7 @@ namespace RTOG.Data.Models
         {
             var unit = new AmericaSolder();
             unit.Name = name;
-            army.Add(unit);
+            Army.Add(unit);
             return unit;
         }
 
@@ -22,7 +22,7 @@ namespace RTOG.Data.Models
         {
             var unit = new AmericaTank();
             unit.Name = name;
-            army.Add(unit);
+            Army.Add(unit);
             return unit;
         }
     }
