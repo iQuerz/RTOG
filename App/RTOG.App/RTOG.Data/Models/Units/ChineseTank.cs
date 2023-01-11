@@ -8,5 +8,6 @@ namespace RTOG.Data.Models
 {
     internal class ChineseTank : Unit
     {
+        public ChineseTank() : base("ChineseTank") { }
     }
 }

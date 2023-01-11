@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RTOG.Data.Persistence;
 
@@ -10,9 +11,10 @@ using RTOG.Data.Persistence;
 namespace RTOG.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230111141022_v0.6.5_Add_edge_For_real_now")]
+    partial class v065_Add_edge_For_real_now
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.12");
@@ -202,11 +204,16 @@ namespace RTOG.Data.Migrations
                     b.Property<float>("PositionY")
                         .HasColumnType("REAL");
 
+                    b.Property<int?>("TileID")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("ID");
 
                     b.HasIndex("MapID");
 
                     b.HasIndex("OwnerID");
+
+                    b.HasIndex("TileID");
 
                     b.ToTable("Tiles");
                 });
@@ -392,6 +399,10 @@ namespace RTOG.Data.Migrations
                         .WithMany("OwnedTiles")
                         .HasForeignKey("OwnerID");
 
+                    b.HasOne("RTOG.Data.Models.Tile", null)
+                        .WithMany("Neighbors")
+                        .HasForeignKey("TileID");
+
                     b.Navigation("Map");
 
                     b.Navigation("Owner");
@@ -470,6 +481,8 @@ namespace RTOG.Data.Migrations
 
             modelBuilder.Entity("RTOG.Data.Models.Tile", b =>
                 {
+                    b.Navigation("Neighbors");
+
                     b.Navigation("Units");
                 });
 

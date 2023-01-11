@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RTOG.Data.Persistence;
 
@@ -10,9 +11,10 @@ using RTOG.Data.Persistence;
 namespace RTOG.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230111135451_v0.5_Add_Tiles")]
+    partial class v05_Add_Tiles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.12");
@@ -79,27 +81,6 @@ namespace RTOG.Data.Migrations
                     b.ToTable("Factions");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Faction");
-                });
-
-            modelBuilder.Entity("RTOG.Data.Models.Field.Edge", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("EndTileID")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("StartTileID")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EndTileID");
-
-                    b.HasIndex("StartTileID");
-
-                    b.ToTable("Edges");
                 });
 
             modelBuilder.Entity("RTOG.Data.Models.Lobby", b =>
@@ -193,7 +174,7 @@ namespace RTOG.Data.Migrations
                     b.Property<int>("MapID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("OwnerID")
+                    b.Property<int>("OwnerID")
                         .HasColumnType("INTEGER");
 
                     b.Property<float>("PositionX")
@@ -202,11 +183,16 @@ namespace RTOG.Data.Migrations
                     b.Property<float>("PositionY")
                         .HasColumnType("REAL");
 
+                    b.Property<int?>("TileID")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("ID");
 
                     b.HasIndex("MapID");
 
                     b.HasIndex("OwnerID");
+
+                    b.HasIndex("TileID");
 
                     b.ToTable("Tiles");
                 });
@@ -328,25 +314,6 @@ namespace RTOG.Data.Migrations
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("RTOG.Data.Models.Field.Edge", b =>
-                {
-                    b.HasOne("RTOG.Data.Models.Tile", "EndTile")
-                        .WithMany()
-                        .HasForeignKey("EndTileID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RTOG.Data.Models.Tile", "StartTile")
-                        .WithMany()
-                        .HasForeignKey("StartTileID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("EndTile");
-
-                    b.Navigation("StartTile");
-                });
-
             modelBuilder.Entity("RTOG.Data.Models.Lobby", b =>
                 {
                     b.HasOne("RTOG.Data.Models.Account", "Host")
@@ -390,7 +357,13 @@ namespace RTOG.Data.Migrations
 
                     b.HasOne("RTOG.Data.Models.Player", "Owner")
                         .WithMany("OwnedTiles")
-                        .HasForeignKey("OwnerID");
+                        .HasForeignKey("OwnerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RTOG.Data.Models.Tile", null)
+                        .WithMany("Neighbors")
+                        .HasForeignKey("TileID");
 
                     b.Navigation("Map");
 
@@ -470,6 +443,8 @@ namespace RTOG.Data.Migrations
 
             modelBuilder.Entity("RTOG.Data.Models.Tile", b =>
                 {
+                    b.Navigation("Neighbors");
+
                     b.Navigation("Units");
                 });
 

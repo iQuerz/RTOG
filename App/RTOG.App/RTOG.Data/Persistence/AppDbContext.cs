@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using RTOG.Data.Models;
+using RTOG.Data.Models.Field;
 
 namespace RTOG.Data.Persistence
 {
@@ -21,6 +22,7 @@ namespace RTOG.Data.Persistence
         public DbSet<UnitUpgrade> UnitUpgrades { get; set; }
         public DbSet<Map> Maps { get; set; }
         public DbSet<Tile> Tiles { get; set; }
+        public DbSet<Edge> Edges { get; set; }
 
     }
 }

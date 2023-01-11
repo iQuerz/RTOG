@@ -20,7 +20,7 @@ namespace RTOG.Business.Services
         public async Task<Unit> CreateUnit(Player player, string name)
         {
 
-            var unit = player.Faction.CreateSolder(name);
+            var unit = player.Faction.CreateSoldier(name);
 
 
             _dbContext.Units.Add(unit);

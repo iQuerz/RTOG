@@ -25,7 +25,8 @@ namespace RTOG.Data.Models
             Unit = unit;
             Unit.Upgrades.Add(this);
         }
+        public UnitUpgrade() { }
     }
 
 }
-}
+

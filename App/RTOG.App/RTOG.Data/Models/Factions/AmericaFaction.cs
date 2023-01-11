@@ -10,9 +10,11 @@ namespace RTOG.Data.Models
     {
         public AmericaFaction(string name) : base(name) { }
 
-        public override Unit CreateSolder(string name)
+        public AmericaFaction() { }
+
+        public override Unit CreateSoldier(string name)
         {
-            var unit = new AmericaSolder();
+            var unit = new AmericaSoldier();
             unit.Name = name;
             Army.Add(unit);
             return unit;
