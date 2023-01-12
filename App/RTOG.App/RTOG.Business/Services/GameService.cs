@@ -1,4 +1,5 @@
-﻿using RTOG.Business.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using RTOG.Business.Interfaces;
 using RTOG.Data.Models;
 using RTOG.Data.Persistence;
 using System;
@@ -17,12 +18,12 @@ namespace RTOG.Business.Services
             _dbContext = dbContext;
         }
 
-        public async Task<OngoingGame> Create(Lobby lobby)
+        public async Task<OngoingGame> Create(Lobby lobby, Map map)
         {
             var game = new OngoingGame()
             {
                 Players = lobby.Players,
-                //Map = lobby.SelectedMap  trenutno ne postoj
+                Map = map,
                 TurnCounter = 0
 
             };
@@ -36,7 +37,10 @@ namespace RTOG.Business.Services
 
         public async Task<OngoingGame> Get(int gameID)
         {
-            var game = await _dbContext.Games.FindAsync(gameID);
+            var game = _dbContext.Games.Where(g => g.ID == gameID)
+                                             .Include(g => g.Map)
+                                             .ThenInclude(m => m.AllTiles)
+                                             .FirstOrDefault();
 
             if (game is null)
                 throw new Exception("Game not found.");

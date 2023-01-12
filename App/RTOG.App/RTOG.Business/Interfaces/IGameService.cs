@@ -11,6 +11,6 @@ namespace RTOG.Business.Interfaces
     {
         public Task<OngoingGame> Get(int gameID);
 
-        public Task<OngoingGame> Create(Lobby lobby);
+        public Task<OngoingGame> Create(Lobby lobby, Map map);
     }
 }

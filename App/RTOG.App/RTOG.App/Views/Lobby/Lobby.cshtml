@@ -105,9 +105,9 @@
         let lobbyId = $('#LobbyID').val()
         $.ajax({
             type: 'POST',
-            url: $('#CreateGameUrl').val() + "/" + accountId + "/" + lobbyId,
+            url: $('#CreateGameUrl').val() + "/" + accountId + "/" + lobbyId + "/8",
             success: function (response) {
-                window.location.href = $('#GameUrl').val() + "/" + accountId + "/" + response.id
+                window.location.href = $('#GameUrl').val() + "/" + accountId + "/" + response.id  
             }
         });
     }
