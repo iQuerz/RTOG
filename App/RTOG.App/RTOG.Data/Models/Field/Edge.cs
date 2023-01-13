@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace RTOG.Data.Models.Field
+namespace RTOG.Data.Models
 {
     public class Edge
     {

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using RTOG.Data.Models;
-using RTOG.Data.Models.Field;
 
 namespace RTOG.Data.Persistence
 {
