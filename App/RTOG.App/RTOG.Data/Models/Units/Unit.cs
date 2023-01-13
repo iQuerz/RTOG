@@ -24,8 +24,8 @@ namespace RTOG.Data.Models
         public int Movement { get; set; }
         [Required]
         public Tile Tile { get; set; }
-        [Required]
-        public Faction? Faction { get; set; }
+        //[Required]
+        //public Faction? Faction { get; set; }
         [Required]
         public Player Player { get; set; }
         public List<UnitUpgrade> Upgrades { get; set; }

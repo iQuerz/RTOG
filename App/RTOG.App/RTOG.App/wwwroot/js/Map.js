@@ -1,27 +1,25 @@
-﻿const height = 900
+﻿//configurise se context
+const height = 900
 const width = 1600
-
-console.log(Map);
-
-
-
 var canvas = document.createElement("canvas");
 canvas.width = width
 canvas.height = height
 var context = canvas.getContext("2d");
 const div = document.getElementById("Map");
 div.appendChild(canvas)
-
-
 context.clearRect(0, 0, width, height);
 context.lineWidth = 1.5;
 context.font = "18px sans-serif";
 context.textAlign = "center";
 context.textBaseline = "middle";
 
+// inicijalizacija promenljivih
 const gold = new Image();
 var TexturePatter
-console.log(TexturePatter);
+let delaunay
+let voronoi
+
+//loaduje slike 
 async function createPatterns() {
     try {
 
@@ -43,14 +41,16 @@ async function createPatterns() {
 }
 
 createPatterns()
-let delaunay
-let voronoi
+
+//renderuje board
 function DrawBoard() {
-    const particles = Map.allTiles.map(tile => [tile.positionX, tile.positionY]);
+    const particles = Game.map.allTiles.map(tile => [tile.positionX, tile.positionY]);
+    console.log(Game)
     //const particlesRandom = Array.from({ length: 50 }, () => [Math.random() * width, Math.random() * height]);
     delaunay = d3.Delaunay.from(particles);
     voronoi = delaunay.voronoi([0.5, 0.5, width - 0.5, height - 0.5]);
     context.clearRect(0, 0, width, height);
+    //renderuje base mapu
     for (let i = 0; i < particles.length; i++) {
         context.beginPath();
 
@@ -61,48 +61,47 @@ function DrawBoard() {
         context.fill();
     }
 
-    context.globalAlpha = 0.5;
+    
+    //renderuje ko ownuje koju teritoriju
+    context.globalAlpha = 0.65;
     for (let i = 0; i < particles.length; i++) {
         context.beginPath();
         context.globalAlpha = 0.5;
         voronoi.renderCell(i, context);
-        if (Map.allTiles[i].owner == null)
-        {
+        if (Game.map.allTiles[i].owner == null) {
             context.fillStyle = "#000000";
         }
-        else if (Map.allTiles[i].owner == 1)
-        {
-            context.fillStyle = "#eb5954";
-        } else if (Map.allTiles[i].owner == 2)
-        {
-            context.fillStyle = "#77eb54";
-        }
+        else if (Game.map.allTiles[i].owner != null) {
+            context.fillStyle = Game.map.allTiles[i].owner.color;
+        } 
+
         context.stroke();
         context.fill();
     }
     context.globalAlpha = 1;
+    //dodaje stroke teritorijama mora da bude posle teritorije
     for (let i = 0; i < particles.length; i++) {
         context.beginPath();
         voronoi.renderCell(i, context);
         context.stroke();
     }
+    //renderuje resurse
     for (let i = 0; i < particles.length; i++) {
         context.fillStyle = "#000";
         const polygon = voronoi.cellPolygon(i);
         const centroid = d3.polygonCentroid(polygon);
         context.drawImage(gold, centroid[0], centroid[1], 20, 20);
-        context.fillText("  +" + Map.allTiles[i].gold, centroid[0] + 35, centroid[1] + 5);
+        context.fillText("  +" + Game.map.allTiles[i].gold, centroid[0] + 35, centroid[1] + 5);
     }
 }
-document.getElementById("my-button").addEventListener("click", DrawBoard);
 
 
-
+//simulacija igre za sada
 canvas.addEventListener("click", event => {
     const x = event.offsetX, y = event.offsetY;
     const cell = delaunay.find(x, y);
     if (cell !== undefined) {
-        Map.allTiles[cell].owner = 1;
+        Game.map.allTiles[cell].owner = Game.players[0];
     }
     DrawBoard()
 });
@@ -112,7 +111,7 @@ canvas.addEventListener("contextmenu", event => {
     const x = event.offsetX, y = event.offsetY;
     const cell = delaunay.find(x, y);
     if (cell !== undefined) {
-        Map.allTiles[cell].owner = 2;
+        Game.map.allTiles[cell].owner = Game.players[1];
     }
     DrawBoard()
 });

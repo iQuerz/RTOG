@@ -15,5 +15,11 @@ namespace RTOG.Business.Infrastructure
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
+        public static string GetRandomHexColor()
+        {
+            Random random = new Random();
+            string color = String.Format("#{0:X6}", random.Next(0x1000000));
+            return color;
+        }
     }
 }

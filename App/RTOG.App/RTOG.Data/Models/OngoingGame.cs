@@ -10,7 +10,7 @@ namespace RTOG.Data.Models
     public class OngoingGame : BaseEntity
     {
         [Required]
-        public List<Account> Players { get; set; }
+        public List<Player> Players { get; set; }
         [Required]
         public Map Map { get; set; }
         [Required]

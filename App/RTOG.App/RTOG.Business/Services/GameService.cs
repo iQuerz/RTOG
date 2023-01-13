@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RTOG.Business.Infrastructure;
 using RTOG.Business.Interfaces;
 using RTOG.Data.Models;
 using RTOG.Data.Persistence;
@@ -20,14 +21,35 @@ namespace RTOG.Business.Services
 
         public async Task<OngoingGame> Create(Lobby lobby, Map map)
         {
+
             var game = new OngoingGame()
             {
-                Players = lobby.Players,
+
+                Players = new List<Player>(),
                 Map = map,
                 TurnCounter = 0
 
             };
-            game.Players.Insert(0, lobby.Host); //todo:mozda random redosled igraca idk
+            List<Account> players = lobby.Players;
+            players.Add(lobby.Host);
+
+            foreach (Account acc in players)
+            {
+                Player player = new Player()
+                {
+                    PlayerAccount = acc,
+                    Game = game,
+                    Faction = new AmericaFaction("PlayerOne"), //privremeno resenje dok ne izvucemo koj je faction iz lobija
+                    Name = acc.Username, //redundandna infomacija ali da ne moramo da zovemo account u game vise
+                    Color = Helpers.GetRandomHexColor(), //privremeno resenje dok ne implementiramo da se izvuce boja iz lobija
+                    TotalGold = 0,
+                    AllMyUnits = new List<Unit>(),
+                    OwnedTiles = new List<Tile>()
+                };
+                game.Players.Add(player);
+                _dbContext.Players.Add(player);
+            }
+            //game.Players.Insert(0, lobby.Host.Player); //todo:mozda random redosled igraca idk
 
             _dbContext.Games.Add(game);
             _dbContext.Lobbies.Remove(lobby);
@@ -38,6 +60,7 @@ namespace RTOG.Business.Services
         public async Task<OngoingGame> Get(int gameID)
         {
             var game = _dbContext.Games.Where(g => g.ID == gameID)
+                                             .Include(g => g.Players)
                                              .Include(g => g.Map)
                                              .ThenInclude(m => m.AllTiles)
                                              .FirstOrDefault();
