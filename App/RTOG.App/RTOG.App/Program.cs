@@ -1,8 +1,11 @@
+using RTOG.App.Hubs;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddSignalR();
 
 //Business Layer
 RTOG.Business.Extensions.StartupExtensions.ConfigureServices(builder.Services);
@@ -33,8 +36,7 @@ app.UseEndpoints(endpoints =>
         pattern: "{controller=Login}/{action=Login}");
 });
 
-app.UseAuthentication();
-app.UseAuthorization();
+app.MapHub<LobbyPlayersHub>("/LobbyPlayers");
 
 app.MapControllerRoute(
     name: "default",
