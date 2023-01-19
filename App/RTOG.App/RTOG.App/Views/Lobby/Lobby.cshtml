@@ -41,6 +41,38 @@
         
     });
 
+    //#region SignalR
+    var LobbyHubConnection = new signalR.HubConnectionBuilder().withUrl("/Hubs/Lobby").build();
+    LobbyHubConnection.start().then(hubConnectionSuccess, hubConnectionFailure);
+
+    LobbyHubConnection.on("updateLobby", function () {
+        UpdateLobbyPlayers();
+    })
+    LobbyHubConnection.on("connectToGame", function (gameID) {
+        let accountId = $('#AccountID').val()
+        //console.log("called connectToGame, connection: ", gameID):
+        window.location.href = $('#GameUrl').val() + "/" + accountId + "/" + gameID
+    })
+
+    function updateOtherLobbyPlayers() {
+        let lobbyId = $('#LobbyID').val()
+        LobbyHubConnection.send("updateLobbyPlayers", lobbyId);
+    }
+    function startOtherPlayersGames(gameID){
+        LobbyHubConnection.send("startGame", gameID.toString())
+    }
+
+    function hubConnectionSuccess() {
+        let lobbyId = $('#LobbyID').val();
+        LobbyHubConnection.send("registerConnection", lobbyId);
+        updateOtherLobbyPlayers();
+    }
+    function hubConnectionFailure() {
+        alert("not connected to signalR hub.");
+    }
+
+    //#endregion
+
     function StartGame(){
         let accountId = $('#AccountID').val()
         let lobbyId = $('#LobbyID').val()
@@ -48,8 +80,8 @@
             type: 'POST',
             url: $('#CreateGameUrl').val() + "/" + accountId + "/" + lobbyId + "/8",
             success: function (response) {
-                LobbyHubConnection.send("startGame", response.id)
-                window.location.href = $('#GameUrl').val() + "/" + accountId + "/" + response.id
+                console.log("calling startGame...")
+                startOtherPlayersGames(response.id);
             }
         });
     }
@@ -75,31 +107,5 @@
         });
     }
 
-    //#region SignalR
-    var LobbyHubConnection = new signalR.HubConnectionBuilder().withUrl("/Hubs/Lobby").build();
-    LobbyHubConnection.start().then(hubConnectionSuccess, hubConnectionFailure);
-
-    LobbyHubConnection.on("updateLobby", function() {
-        UpdateLobbyPlayers();
-    })
-    LobbyHubConnection.on("connectToGame", function(gameID) {
-        console.log("called connectToGame")
-        window.location.href = $('#GameUrl').val() + "/" + accountId + "/" + gameID
-    })
-
-    function updateOtherLobbyPlayers(){
-        let lobbyId = $('#LobbyID').val()
-        LobbyHubConnection.send("updateLobbyPlayers", lobbyId);
-    }
-
-    function hubConnectionSuccess(){
-        let lobbyId = $('#LobbyID').val();
-        LobbyHubConnection.send("registerConnection", lobbyId);
-        updateOtherLobbyPlayers();
-    }
-    function hubConnectionFailure(){
-        alert("not connected to signalR hub.");
-    }
-    //#endregion
 
 </script>
