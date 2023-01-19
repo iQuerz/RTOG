@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RTOG.Data.Models
 {
-    public class PlayerColors : BaseEntity
+    public class PlayerColor : BaseEntity
     {
         public string Name { get; set; }
         public string Hex { get; set; }

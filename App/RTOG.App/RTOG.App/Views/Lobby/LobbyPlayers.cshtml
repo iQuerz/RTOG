@@ -1,0 +1,67 @@
+﻿@{
+    Layout = null;
+}
+<div style="display:flex;flex-direction:column;align-items:center;">
+    <div class="lobby-card white-bg" style="width:40em;display:flex;align-items:center;gap:0.3em">
+        <i class="iconoir-antenna-signal-tag" style="font-size:1.6em" title="Host"></i>
+        @if (Model.Lobby.Host.ID == Model.MyAccount.ID)
+        {
+            <strong style="color:var(--red)">@Model.Lobby.Host.Username (Me)</strong>
+
+            <table id="colorTable" style="background-color:transparent;margin-left:auto;">
+                <tr>
+                    <td class="btn" style="background-color:#f44;height:1em;width:1em;border:1px solid var(--black);"></td>
+                    <td class="btn" style="background-color:#4f4;height:1em;width:1em;border:1px solid var(--black);"></td>
+                    <td class="btn" style="background-color:#44f;height:1em;width:1em;border:1px solid var(--black);"></td>
+                </tr>
+            </table>
+
+            <div style="margin-left:auto">
+                Faction:
+                <select>
+                    <option>Elves</option>
+                    <option>Orcs</option>
+                    <option>Humans</option>
+                </select>
+            </div>
+        }
+        else
+        {
+            <strong>@Model.Lobby.Host.Username</strong>
+        }
+
+    </div>
+
+    @foreach (var player in Model.Lobby.Players)
+    {
+        <div class="lobby-card trans-white-bg" style="margin-left:2em; width:38em; display:flex;align-items:center;gap:0.3em">
+            @if (player.ID == Model.MyAccount.ID)
+            {
+                <b style="color:var(--red)">@player.Username (Me)</b>
+
+
+                <table id="colorTable" style="background-color:transparent;margin-left:auto;">
+                    <tr>
+                        <td class="btn" style="background-color:#f44;height:1em;width:1em;border:1px solid var(--black);"></td>
+                        <td class="btn" style="background-color:#4f4;height:1em;width:1em;border:1px solid var(--black);"></td>
+                        <td class="btn" style="background-color:#44f;height:1em;width:1em;border:1px solid var(--black);"></td>
+                    </tr>
+                </table>
+
+                <div style="margin-left:auto">
+                    Faction:
+                    <select>
+                        <option>Elves</option>
+                        <option>Orcs</option>
+                        <option>Humans</option>
+                    </select>
+                </div>
+            }
+            else
+            {
+                <b>@player.Username</b>
+            }
+
+        </div>
+    }
+</div>

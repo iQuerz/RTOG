@@ -15,7 +15,7 @@
     
     @if(Model.Lobby.Host.ID == Model.MyAccount.ID)
     {
-        <button style="width:5em" class="btn-green biggest-font padding" onclick="StartGame()">START</button>
+        <button style="width:5em" class="btn-green biggest-font padding" onclick="UpdateLobbyPlayers()">START</button>
     }
     else
     {
@@ -23,81 +23,22 @@
     }
 </div>
 
-<div style="display:flex;flex-direction:column;align-items:center;">
-    <div class="lobby-card white-bg" style="width:40em;display:flex;align-items:center;gap:0.3em">
-        <i class="iconoir-antenna-signal-tag" style="font-size:1.6em" title="Host"></i>
-        @if(Model.Lobby.Host.ID == Model.MyAccount.ID)
-        {
-            <strong style="color:var(--red)">@Model.Lobby.Host.Username (Me)</strong>
-            
-            <table id="colorTable" style="background-color:transparent;margin-left:auto;">
-                <tr>
-                    <td class="btn" style="background-color:#f44;height:1em;width:1em;border:1px solid var(--black);"></td>
-                    <td class="btn" style="background-color:#4f4;height:1em;width:1em;border:1px solid var(--black);"></td>
-                    <td class="btn" style="background-color:#44f;height:1em;width:1em;border:1px solid var(--black);"></td>
-                </tr>
-            </table>
-
-            <div style="margin-left:auto">
-                Faction:
-                <select>
-                    <option>Elves</option>
-                    <option>Orcs</option>
-                    <option>Humans</option>
-                </select>
-            </div>
-        }
-        else
-        {
-            <strong>@Model.Lobby.Host.Username</strong>
-        }
-
-    </div>
-
-    @foreach (var player in Model.Lobby.Players)
-    {
-        <div class="lobby-card trans-white-bg" style="margin-left:2em; width:38em; display:flex;align-items:center;gap:0.3em">
-            @if (player.ID == Model.MyAccount.ID)
-            {
-                <b style="color:var(--red)">@player.Username (Me)</b>
-                
-            
-                <table id="colorTable" style="background-color:transparent;margin-left:auto;">
-                    <tr>
-                        <td class="btn" style="background-color:#f44;height:1em;width:1em;border:1px solid var(--black);"></td>
-                        <td class="btn" style="background-color:#4f4;height:1em;width:1em;border:1px solid var(--black);"></td>
-                        <td class="btn" style="background-color:#44f;height:1em;width:1em;border:1px solid var(--black);"></td>
-                    </tr>
-                </table>
-
-                <div style="margin-left:auto">
-                    Faction:
-                    <select>
-                        <option>Elves</option>
-                        <option>Orcs</option>
-                        <option>Humans</option>
-                    </select>
-                </div>
-            }
-            else
-            {
-                <b>@player.Username</b>
-            }
-
-        </div>
-    }
+<div id="playersView">
+    <partial name="./LobbyPlayers.cshtml"></partial>
 </div>
 
 <input id="AccountID" hidden value="@Model.MyAccount.ID" />
 <input id="LobbyID" hidden value="@Model.Lobby.ID" />
+<input id="LobbyPlayersUrl" hidden value="@Url.Action("LobbyPlayers", "Lobby")" />
 <input id="DisbandLobbyUrl" hidden value="@Url.Action("DisbandLobby","Lobby", null, Context.Request.Scheme)" />
 <input id="CreateGameUrl" hidden value="@Url.Action("CreateGame","Game", null, Context.Request.Scheme)" />
 <input id="GameUrl" hidden value="@Url.Action("Game", "Game", null, Context.Request.Scheme)" />
 
+<script src="~/lib/signalR/signalr.js"></script>
 <script>
     var colors = ['#000', '#f33', '#3f3', '#33f'];
     $(document).ready(function () {
-
+        
     });
 
     function StartGame(){
@@ -120,4 +61,42 @@
             }
         );
     }
+    function UpdateLobbyPlayers(){
+        let accountId = $('#AccountID').val()
+        let lobbyId = $('#LobbyID').val()
+        let playersView = $('#playersView')
+        $.ajax({
+            type: 'GET',
+            url: $('#LobbyPlayersUrl').val() + "/" + accountId + "/" + lobbyId,
+            success: function (response) {
+                playersView.html(response);
+            }
+        });
+    }
+
+    //#region SignalR
+    var LobbyHubConnection = new signalR.HubConnectionBuilder().withUrl("/Hubs/Lobby").build();
+    LobbyHubConnection.start().then(hubConnectionSuccess, hubConnectionFailure);
+
+    LobbyHubConnection.on("updateLobby", function(message) {
+        let lobbyId = $('#LobbyID').val();
+        if (lobbyId == message) {
+            UpdateLobbyPlayers();
+        }
+    })
+
+    function updateOtherLobbyPlayers(){
+        let lobbyId = $('#LobbyID').val()
+        LobbyHubConnection.send("updateLobbyPlayers", lobbyId);
+    }
+
+    function hubConnectionSuccess(){
+        console.log("hub connection success.");
+        updateOtherLobbyPlayers();
+    }
+    function hubConnectionFailure(){
+        alert("not connected to signalR hub.");
+    }
+    //#endregion
+
 </script>

@@ -36,7 +36,7 @@ app.UseEndpoints(endpoints =>
         pattern: "{controller=Login}/{action=Login}");
 });
 
-app.MapHub<LobbyPlayersHub>("/LobbyPlayers");
+app.MapHub<LobbyHub>("/Hubs/Lobby");
 
 app.MapControllerRoute(
     name: "default",

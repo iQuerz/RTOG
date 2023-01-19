@@ -23,7 +23,7 @@ namespace RTOG.Data.Persistence
         public DbSet<Tile> Tiles { get; set; }
         public DbSet<Edge> Edges { get; set; }
 
-        public DbSet<PlayerColors> PlayerColors { get; set; }
+        public DbSet<PlayerColor> PlayerColors { get; set; }
 
         public DbSet<MapPreset> MapPresets { get; set; }
         public DbSet<TilePreset> TilePresets { get; set; }

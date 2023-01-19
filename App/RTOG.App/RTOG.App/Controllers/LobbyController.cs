@@ -9,11 +9,14 @@ namespace RTOG.App.Controllers
     {
         private readonly ILobbyService _lobbyService;
         private readonly IAccountService _accountService;
+        private readonly IColorsService _colorsService;
         public LobbyController(ILobbyService lobbyService,
-                             IAccountService accountService)
+                             IAccountService accountService,
+                              IColorsService colorsService)
         {
             _lobbyService = lobbyService;
             _accountService = accountService;
+            _colorsService = colorsService;
         }
 
         [Route("{api}/Lobby/{accountID}/{lobbyID}")]
@@ -26,9 +29,26 @@ namespace RTOG.App.Controllers
             var lobbyModel = new LobbyViewModel()
             {
                 MyAccount = account,
-                Lobby = lobby
+                Lobby = lobby,
+                PlayerColors = _colorsService.getColors()
             };
             return View("Lobby", lobbyModel);
+        }
+
+        [Route("{api}/LobbyPlayers/{accountID}/{lobbyID}")]
+        public async Task<IActionResult> LobbyPlayers(int accountID, int lobbyID)
+        {
+            var account = await _accountService.Get(accountID);
+            var lobby = await _lobbyService.Get(lobbyID);
+            //todo:ako osoba ne postoji u lobby ne vracaj view
+
+            var lobbyModel = new LobbyViewModel()
+            {
+                MyAccount = account,
+                Lobby = lobby,
+                PlayerColors = _colorsService.getColors()
+            };
+            return View("LobbyPlayers", lobbyModel);
         }
 
         [HttpPost]
