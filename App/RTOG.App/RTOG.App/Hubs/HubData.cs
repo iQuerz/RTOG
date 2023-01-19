@@ -1,15 +1,32 @@
 ﻿namespace RTOG.App.Hubs
 {
-    public static class HubData
+    public sealed class HubData
     {
-        public static Dictionary<string, List<string>> LobbyConnections { get; set; } = new Dictionary<string, List<string>>();
+        HubData()
+        {
+            LobbyConnections = new Dictionary<string, List<string>>();
+            GameConnections = new Dictionary<string, List<string>>();
+        }
+        private static readonly object _lock = new object();
+        private static HubData _instance = null;
+        public static HubData Instance
+        {
+            get
+            {
+                lock (_lock)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new HubData();
+                    }
+                    return _instance;
+                }
+            }
+        }
 
-        private static Dictionary<string, List<string>> GameConnections { get; set; } = new Dictionary<string, List<string>>();
 
-        //public HubData()
-        //{
-        //    LobbyConnections = new Dictionary<string, string>();
-        //    GameConnections = new Dictionary<string, string>();
-        //}
+        public Dictionary<string, List<string>> LobbyConnections { get; set; }
+
+        public Dictionary<string, List<string>> GameConnections { get; set; }
     }
 }
