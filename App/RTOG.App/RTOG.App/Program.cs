@@ -7,6 +7,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddSignalR();
 
+//builder.Services.AddSingleton<HubData>();
+
 //Business Layer
 RTOG.Business.Extensions.StartupExtensions.ConfigureServices(builder.Services);
 
@@ -42,5 +44,4 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Login}/{id?}");
 app.MapRazorPages();
-
 app.Run();
