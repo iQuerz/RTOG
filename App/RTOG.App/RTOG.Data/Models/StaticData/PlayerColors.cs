@@ -8,6 +8,7 @@ namespace RTOG.Data.Models
 {
     public class PlayerColors : BaseEntity
     {
-        public static string ColorHex { get; set; }
+        public string Name { get; set; }
+        public string Hex { get; set; }
     }
 }
