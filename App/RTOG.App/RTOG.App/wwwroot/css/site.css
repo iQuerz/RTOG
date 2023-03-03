@@ -63,6 +63,12 @@ a{
     flex-direction: column;
     justify-content: space-between;
 }
+.is-flex-row{
+    display: flex;
+    flex-direction: row;
+    justify-content:center;
+    align-content: center;
+}
 
 /*#region Buttons*/
 .btn-green {
@@ -117,4 +123,8 @@ a{
 .disabled-color {
     pointer-events: none;
     opacity: 0.3;
+}
+
+canvas{
+    cursor: pointer;
 }

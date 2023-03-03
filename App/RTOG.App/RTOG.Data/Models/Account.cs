@@ -18,7 +18,7 @@ namespace RTOG.Data.Models
         public string SessionID { get; set; }
 
         [Required]
-        public TimeSpan SessionDuration { get; set; } = TimeSpan.FromHours(1);
+        public TimeSpan SessionDuration { get; set; }
 
         [ForeignKey("PlayerID")]
         public Player? Player { get; set; }

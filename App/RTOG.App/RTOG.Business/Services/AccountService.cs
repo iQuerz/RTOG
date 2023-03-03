@@ -34,6 +34,7 @@ namespace RTOG.Business.Services
                 IsGuest = true,
                 LastActive = DateTime.Now,
                 SessionID = Helpers.GetRandomString(),
+                SessionDuration = TimeSpan.FromHours(1),
                 Player = null
             };
 
