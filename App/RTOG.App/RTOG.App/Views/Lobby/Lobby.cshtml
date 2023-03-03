@@ -12,7 +12,7 @@
             @Model.Lobby.Code
         </a>
     </h2>
-    
+
     @if(Model.Lobby.Host.ID == Model.MyAccount.ID)
     {
         <button style="width:5em" class="btn-green biggest-font padding" onclick="StartGame()">START</button>
@@ -36,7 +36,6 @@
 
 <script src="~/lib/signalR/signalr.js"></script>
 <script>
-    var colors = ['#000', '#f33', '#3f3', '#33f'];
     $(document).ready(function () {
         
     });
@@ -106,6 +105,4 @@
             }
         });
     }
-
-
 </script>

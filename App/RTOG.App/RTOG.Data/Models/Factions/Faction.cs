@@ -11,7 +11,7 @@ namespace RTOG.Data.Models
     public abstract class Faction : BaseEntity
     {
         [Required]
-        protected string Name { get; set; }
+        public string Name { get; set; }
 
         public List<Unit> Army { get; set; }
 

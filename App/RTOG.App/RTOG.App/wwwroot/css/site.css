@@ -105,3 +105,16 @@ a{
 .hoverBackground:hover{
     background-color:#0001;
 }
+
+.selected-color {
+    /*height: 1.2em !important;
+    width: 1.2em !important;*/
+    position: relative;
+    bottom: 10px;
+    transform: scale(1.2, 1.2);
+    border-radius: 2px;
+}
+.disabled-color {
+    pointer-events: none;
+    opacity: 0.3;
+}

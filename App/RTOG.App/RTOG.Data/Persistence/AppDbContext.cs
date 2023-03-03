@@ -29,5 +29,53 @@ namespace RTOG.Data.Persistence
         public DbSet<TilePreset> TilePresets { get; set; }
         public DbSet<EdgePreset> EdgePresets { get; set; }
 
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PlayerColor>().HasData(
+                new PlayerColor
+                {
+                    ID = 1,
+                    Hex = "#000",
+                    Name = "Black"
+                },
+                new PlayerColor
+                {
+                    ID = 2,
+                    Hex = "#f33",
+                    Name = "Red"
+                },
+                new PlayerColor
+                {
+                    ID = 3,
+                    Hex = "#3f3",
+                    Name = "Green"
+                },
+                new PlayerColor
+                {
+                    ID = 4,
+                    Hex = "#33f",
+                    Name = "Blue"
+                },
+                new PlayerColor
+                {
+                    ID = 5,
+                    Hex = "#ff3",
+                    Name = "Yellow"
+                },
+                new PlayerColor
+                {
+                    ID = 6,
+                    Hex = "#f3f",
+                    Name = "Magenta"
+                },
+                new PlayerColor
+                {
+                    ID = 7,
+                    Hex = "#3ff",
+                    Name = "Cyan"
+                }
+            );
+        }
     }
 }

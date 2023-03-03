@@ -1,4 +1,5 @@
-﻿@{
+﻿@model LobbyViewModel
+@{
     Layout = null;
 }
 <div style="display:flex;flex-direction:column;align-items:center;">
@@ -10,15 +11,16 @@
 
             <table id="colorTable" style="background-color:transparent;margin-left:auto;">
                 <tr>
-                    <td class="btn" style="background-color:#f44;height:1em;width:1em;border:1px solid var(--black);"></td>
-                    <td class="btn" style="background-color:#4f4;height:1em;width:1em;border:1px solid var(--black);"></td>
-                    <td class="btn" style="background-color:#44f;height:1em;width:1em;border:1px solid var(--black);"></td>
+                    @foreach (var color in Model.PlayerColors)
+                    {
+                        <td class="btn" onclick="OnColorClick(event)" style="background-color:@color.Hex;height:1em;width:1em;border:1px solid var(--black);"></td>
+                    }
                 </tr>
             </table>
 
             <div style="margin-left:auto">
                 Faction:
-                <select>
+                <select onchange="OnFactionSelect(event)">
                     <option>Elves</option>
                     <option>Orcs</option>
                     <option>Humans</option>
@@ -42,9 +44,10 @@
 
                 <table id="colorTable" style="background-color:transparent;margin-left:auto;">
                     <tr>
-                        <td class="btn" style="background-color:#f44;height:1em;width:1em;border:1px solid var(--black);"></td>
-                        <td class="btn" style="background-color:#4f4;height:1em;width:1em;border:1px solid var(--black);"></td>
-                        <td class="btn" style="background-color:#44f;height:1em;width:1em;border:1px solid var(--black);"></td>
+                        @foreach (var color in Model.PlayerColors)
+                        {
+                            <td class="btn" style="background-color:@color.Hex;height:1em;width:1em;border:1px solid var(--black);"></td>
+                        }
                     </tr>
                 </table>
 
@@ -65,3 +68,22 @@
         </div>
     }
 </div>
+
+<script>
+    var selectedColor = null;
+    function OnColorClick(event) {
+        selectedColor?.classList.remove("selected-color");
+        selectedColor = event.target;
+        selectedColor.classList.add("selected-color");
+        let lobbyId = $('#LobbyID').val()
+        //update lobby with new selected color
+        LobbyHubConnection.send("updateLobbyPlayers", lobbyId);
+    }
+
+    var selectedFaction = null;
+    function OnFactionSelect(event) {
+        selectedFaction = event.target;
+        //update lobby with new selected faction
+        LobbyHubConnection.send("updateLobbyPlayers", lobbyId);
+    }
+</script>

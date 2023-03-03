@@ -14,7 +14,6 @@ RTOG.Business.Extensions.StartupExtensions.ConfigureServices(builder.Services);
 
 var app = builder.Build();
 
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

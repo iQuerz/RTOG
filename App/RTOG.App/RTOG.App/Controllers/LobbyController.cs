@@ -42,11 +42,18 @@ namespace RTOG.App.Controllers
             var lobby = await _lobbyService.Get(lobbyID);
             //todo:ako osoba ne postoji u lobby ne vracaj view
 
+            var factions = new List<Faction>()
+            {
+                new AmericaFaction(),
+                new ChineseFaction(),
+                new RussiaFaction("")
+            };
+
             var lobbyModel = new LobbyViewModel()
             {
                 MyAccount = account,
                 Lobby = lobby,
-                PlayerColors = _colorsService.getColors()
+                PlayerColors = _colorsService.getColors() 
             };
             return View("LobbyPlayers", lobbyModel);
         }
