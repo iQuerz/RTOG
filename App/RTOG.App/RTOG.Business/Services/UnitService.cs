@@ -1,4 +1,5 @@
-﻿using RTOG.Business.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore;
+using RTOG.Business.Infrastructure;
 using RTOG.Business.Interfaces;
 using RTOG.Data.Models;
 using RTOG.Data.Persistence;
@@ -17,16 +18,45 @@ namespace RTOG.Business.Services
         {
             _dbContext = context;
         }
-        public async Task<Unit> CreateUnit(Player player, string name)
+        public async Task<Unit> CreateUnit(int playerID, string name, int tileID)
         {
+            var player = _dbContext.Players.Where(p => p.ID == playerID)
+                                          .Include(p => p.Faction)
+                                          .FirstOrDefault();
+
+            if (player is null)
+                throw new Exception("Player not found.");
+
+            var tile = _dbContext.Tiles.Where(t => t.ID == tileID)
+                                        .Include(p => p.Units)
+                                        .FirstOrDefault();
+
+            if (tile is null)
+                throw new Exception("Tile not found.");
+
+            var faction = _dbContext.Factions.Where(f => f.ID == player.Faction.ID)
+                                .FirstOrDefault();
+
+            if (faction is null)
+                throw new Exception("Faction not found.");
+
+
 
             var unit = player.Faction.CreateSoldier(name);
 
-
             _dbContext.Units.Add(unit);
+
+            faction.Army.Add(unit);
+
+            tile.Units.Add(unit);
+
             await _dbContext.SaveChangesAsync();
 
+            Console.WriteLine(unit.ID);
+            Console.WriteLine(unit.Name);
             return unit;
+           
+            
         }
     }
 }

@@ -7,6 +7,11 @@
     var Game = @Json.Serialize(Model.Game);
 </script>
 <script type="module" src="~/js/Map.js" defer></script>
+<script type="module" src="~/js/menu.js" defer></script>
+<script src="/lib/bootstrap-menu/BootstrapMenu.min.js"></script>
+
+<!-- Link BootstrapMenu CSS stylesheet -->
+<link rel="stylesheet" href="/css/dropdown.css">
 
 <div class="is-flex-row">
     <div class="is-flex-down" style="justify-content: flex-start; align-items:flex-start; width:150px;">
@@ -14,9 +19,9 @@
         <p>points:</p>
         <p>idk stats</p>
         <p>more stats</p>
-    </div>
+    </div> 
 
-    <div id="Map">
+    <div class="hasTileMenu" id="Map">
     </div>
 
     <div class="is-flex-down" style="justify-content: flex-start; align-items:flex-end; width:150px;">

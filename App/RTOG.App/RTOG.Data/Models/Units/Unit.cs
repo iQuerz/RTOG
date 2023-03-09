@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using RTOG.Data.Config;
 
@@ -22,12 +23,11 @@ namespace RTOG.Data.Models
         public int Price { get; set; }
         [Required]
         public int Movement { get; set; }
-        [Required]
-        public Tile Tile { get; set; }
+        //[Required]
+        //[JsonIgnore]
+        //public Tile Tile { get; set; }
         //[Required]
         //public Faction? Faction { get; set; }
-        [Required]
-        public Player Player { get; set; }
         public List<UnitUpgrade> Upgrades { get; set; }
         protected Unit(string type)
         {
@@ -39,8 +39,7 @@ namespace RTOG.Data.Models
             Price = UnitStats.Units[type].Price;
             Movement = UnitStats.Units[type].Movement;
             Upgrades = new List<UnitUpgrade>();
-            Tile = new Tile();
-            Player = new Player();
+            //Tile = new Tile();
             
         }
 

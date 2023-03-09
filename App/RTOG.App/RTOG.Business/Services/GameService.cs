@@ -43,7 +43,6 @@ namespace RTOG.Business.Services
                     Name = acc.Username, //redundandna infomacija ali da ne moramo da zovemo account u game vise
                     Color = Helpers.GetRandomHexColor(), //privremeno resenje dok ne implementiramo da se izvuce boja iz lobija
                     TotalGold = 0,
-                    AllMyUnits = new List<Unit>(),
                     OwnedTiles = new List<Tile>()
                 };
                 game.Players.Add(player);
@@ -63,10 +62,28 @@ namespace RTOG.Business.Services
                                              .Include(g => g.Players)
                                              .Include(g => g.Map)
                                              .ThenInclude(m => m.AllTiles)
+                                             .ThenInclude(t => t.Units)
                                              .FirstOrDefault();
 
             if (game is null)
                 throw new Exception("Game not found.");
+
+            return game;
+        }
+        public async Task<OngoingGame> Update(OngoingGame updatedGame)
+        {
+            var game = _dbContext.Games.Where(g => g.ID == updatedGame.ID)
+                                             .Include(g => g.Players)
+                                             .Include(g => g.Map)
+                                             .ThenInclude(m => m.AllTiles)
+                                             .FirstOrDefault();
+
+            game = updatedGame;
+
+            if (game is null)
+                throw new Exception("Game not found.");
+
+            await _dbContext.SaveChangesAsync();
 
             return game;
         }

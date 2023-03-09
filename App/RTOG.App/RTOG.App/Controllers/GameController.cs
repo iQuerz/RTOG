@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RTOG.App.Models;
 using RTOG.Business.Interfaces;
+using RTOG.Data.Models;
 
 namespace RTOG.App.Controllers
 {
@@ -35,6 +36,15 @@ namespace RTOG.App.Controllers
             };
 
             return View("Game", gameModel);
+        }
+
+        [Route("{api}/Update")]
+        public async Task<IActionResult> Update([FromBody] OngoingGame game)
+        {
+
+            await _gameService.Update(game);
+
+            return Ok(game);
         }
 
         [HttpPost]

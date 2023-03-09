@@ -22,6 +22,7 @@ namespace RTOG.Business.Services
         {
             var map = _dbContext.Maps.Where(m => m.ID == mapID)
                                           .Include(m => m.AllTiles)
+                                          .ThenInclude(t => t.Units)
                                           .FirstOrDefault();
 
 
@@ -62,6 +63,64 @@ namespace RTOG.Business.Services
             _dbContext.SaveChanges();
             return map;
         }
+        public async Task<MapPreset> GenerateMapPreset(List<Point> points)
+        {
+            var map = new MapPreset()
+            {
+                Tiles = new List<TilePreset>()
 
+            };
+
+
+            _dbContext.MapPresets.Add(map);
+            //_dbContext.SaveChanges();
+
+            foreach (Point p in points)
+            {
+                var tile = new TilePreset()
+                {
+                    PositionX = p.x,
+                    PositionY = p.y,
+                    MapPreset = map,
+                };
+                map.Tiles.Add(tile);
+                _dbContext.TilePresets.Add(tile);
+
+            }
+            _dbContext.SaveChanges();
+            return map;
+        }
+        public async Task<Map> GenerateMapFromPreset(int MapPresetID, int playerCount)
+        {
+
+            var random = new Random();
+            var map = _dbContext.MapPresets.Where(m => m.ID == MapPresetID)
+                                           .Include(m => m.Tiles)
+                                           .FirstOrDefault();
+
+
+            if (map is null)
+                throw new Exception("Map not found.");
+
+            var newMap = new Map()
+            {
+                PlayerCount = playerCount,
+            };
+            foreach (TilePreset tile in map.Tiles)
+            {
+                newMap.AllTiles.Add(new Tile()
+                {
+                    PositionX = tile.PositionX,
+                    PositionY = tile.PositionY,
+                    Gold = random.Next(10, 90),
+                    Map = newMap,
+                    Owner = null,
+                    Units = null,
+                });
+            }    
+
+            return newMap;
+
+        }
     }
 }

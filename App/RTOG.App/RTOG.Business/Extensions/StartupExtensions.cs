@@ -15,6 +15,7 @@ namespace RTOG.Business.Extensions
             services.AddScoped<ILobbyService, LobbyService>();
             services.AddScoped<IGameService, GameService>();
             services.AddScoped<IMapService, MapService>();
+            services.AddScoped<IUnitService, UnitService>();
 
             services.AddScoped<IColorsService, ColorsService>();
         }

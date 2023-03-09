@@ -10,6 +10,7 @@ namespace RTOG.Business.Interfaces
     public interface IGameService
     {
         public Task<OngoingGame> Get(int gameID);
+        public Task<OngoingGame> Update(OngoingGame updatedGame);
 
         public Task<OngoingGame> Create(Lobby lobby, Map map);
     }

@@ -13,8 +13,10 @@ context.font = "18px sans-serif";
 context.textAlign = "center";
 context.textBaseline = "middle";
 
+
 // inicijalizacija promenljivih
 const gold = new Image();
+const solider = new Image();
 var TexturePatter
 let delaunay
 let voronoi
@@ -25,6 +27,10 @@ async function createPatterns() {
 
         gold.src = "https://cdn-icons-png.flaticon.com/512/199/199541.png";
         gold.onload = function () {
+        }  
+
+        solider.src = "https://www.freepnglogos.com/uploads/soldier-png/soldier-battlefield-graphic-pack-0.png";
+        solider.onload = function () {
         }  
 
 
@@ -90,12 +96,22 @@ function DrawBoard() {
         context.fillStyle = "#000";
         const polygon = voronoi.cellPolygon(i);
         const centroid = d3.polygonCentroid(polygon);
+        var distance = 0;
+        Game.map.allTiles[i].units.forEach(unit => {
+            context.drawImage(solider, centroid[0], centroid[1], -20, -20 + distance);
+            distance += 5;
+        })
+        if (Game.map.allTiles[i].units )
         context.drawImage(gold, centroid[0], centroid[1], 20, 20);
         context.fillText("  +" + Game.map.allTiles[i].gold, centroid[0] + 35, centroid[1] + 5);
     }
 }
 
+function AddUnit(x, y) {
+    const cell = delaunay.find(x, y);
 
+    Game.map.allTiles[cell]
+}
 //simulacija igre za sada
 canvas.addEventListener("click", event => {
     const x = event.offsetX, y = event.offsetY;
@@ -106,12 +122,12 @@ canvas.addEventListener("click", event => {
     DrawBoard()
 });
 
-canvas.addEventListener("contextmenu", event => {
-    event.preventDefault();
-    const x = event.offsetX, y = event.offsetY;
-    const cell = delaunay.find(x, y);
-    if (cell !== undefined) {
-        Game.map.allTiles[cell].owner = Game.players[1];
-    }
-    DrawBoard()
-});
+//canvas.addEventListener("contextmenu", event => {
+//    event.preventDefault();
+//    const x = event.offsetX, y = event.offsetY;
+//    const cell = delaunay.find(x, y);
+//    if (cell !== undefined) {
+//        Game.map.allTiles[cell].owner = Game.players[1];
+//    }
+//    DrawBoard()
+//});

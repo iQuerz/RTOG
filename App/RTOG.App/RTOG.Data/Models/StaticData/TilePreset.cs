@@ -11,5 +11,9 @@ namespace RTOG.Data.Models
     {
         public float PositionY { get; set; }
         public float PositionX { get; set; }
+
+        public MapPreset MapPreset { get; set; }
+
+
     }
 }

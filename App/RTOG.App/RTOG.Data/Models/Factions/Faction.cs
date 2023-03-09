@@ -24,7 +24,9 @@ namespace RTOG.Data.Models
             Army = new List<Unit>();
             Player = new Player();
         }
-        public Faction() { }
+        public Faction() {
+        Army= new List<Unit>();
+        }
         public abstract Unit CreateSoldier(string name);
         public abstract Unit CreateTank(string name);
     }

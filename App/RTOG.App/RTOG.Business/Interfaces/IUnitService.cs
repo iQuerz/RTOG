@@ -9,6 +9,6 @@ namespace RTOG.Business.Interfaces
 {
     public interface IUnitService
     {
-        public Task<Unit> CreateUnit(Player player, string name);
+        public Task<Unit> CreateUnit(int playerID, string name, int tileID);
     }
 }

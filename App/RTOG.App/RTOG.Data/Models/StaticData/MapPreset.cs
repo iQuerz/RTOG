@@ -9,6 +9,6 @@ namespace RTOG.Data.Models
     public class MapPreset : BaseEntity
     {
         public string Name { get; set; }
-        List<TilePreset> Tiles { get; set; }
+        public List<TilePreset> Tiles { get; set; }
     }
 }

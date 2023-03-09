@@ -40,3 +40,5 @@ var menu = new BootstrapMenu('.hasTileMenu', {
             iconClass: 'iconoir-cancel'
         }]
 });
+
+

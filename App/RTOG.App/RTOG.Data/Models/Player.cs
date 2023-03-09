@@ -27,8 +27,6 @@ namespace RTOG.Data.Models
         [Required]
         public int TotalGold { get; set; }
         [Required]
-        public List<Unit> AllMyUnits { get; set; }
-        [Required]
         public List<Tile> OwnedTiles { get; set; }
     }
 }
