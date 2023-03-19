@@ -17,7 +17,14 @@
                     }
                 </tr>
             </table>
-
+            <div style="margin-left:auto">
+                Map:
+                <select onchange="OnFactionSelect(event)">
+                    <option>Map 1</option>
+                    <option>Map 2</option>
+                    <option>Map 3</option>
+                </select>
+            </div>
             <div style="margin-left:auto">
                 Faction:
                 <select onchange="OnFactionSelect(event)">
@@ -83,6 +90,12 @@
     var selectedFaction = null;
     function OnFactionSelect(event) {
         selectedFaction = event.target;
+        //update lobby with new selected faction
+        LobbyHubConnection.send("updateLobbyPlayers", lobbyId);
+    }
+    var selectedMap = null;
+    function OnMapSelect(event) {
+        selectedMap = event.target;
         //update lobby with new selected faction
         LobbyHubConnection.send("updateLobbyPlayers", lobbyId);
     }

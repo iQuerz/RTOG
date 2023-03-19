@@ -2,6 +2,7 @@
 const height = 900
 const width = 1600
 var canvas = document.createElement("canvas");
+canvas.classList.add('hasTileMenu');
 canvas.width = width
 canvas.height = height
 var context = canvas.getContext("2d");
@@ -107,20 +108,22 @@ function DrawBoard() {
     }
 }
 
-function AddUnit(x, y) {
+export function AddUnit(x, y) {
     const cell = delaunay.find(x, y);
 
-    Game.map.allTiles[cell]
+    console.log(Game.map.allTiles[cell])
 }
+
 //simulacija igre za sada
-canvas.addEventListener("click", event => {
-    const x = event.offsetX, y = event.offsetY;
-    const cell = delaunay.find(x, y);
-    if (cell !== undefined) {
-        Game.map.allTiles[cell].owner = Game.players[0];
-    }
-    DrawBoard()
-});
+//canvas.addEventListener("click", event => {
+//    const x = event.offsetX, y = event.offsetY;
+//    console.log(event.offsetX, event.offsetY)
+//    const cell = delaunay.find(x, y);
+//    if (cell !== undefined) {
+//        Game.map.allTiles[cell].owner = Game.players[0];
+//    }
+//    DrawBoard()
+//});
 
 //canvas.addEventListener("contextmenu", event => {
 //    event.preventDefault();
