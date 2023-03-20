@@ -60,19 +60,22 @@ namespace RTOG.Business.Services
 
         public async Task<Account> UpdateColor(int accountID, int lobbyID, PlayerColor color)
         {
-            var account = await Get(accountID);
-
             var lobby = await _dbContext.Lobbies.Where(l => l.ID == lobbyID)
                                                 .Include(l => l.Host)
+                                                .ThenInclude(p => p.SelectedColor)
                                                 .Include(l => l.Players)
                                                 .ThenInclude(p => p.SelectedColor)
                                                 .FirstOrDefaultAsync();
 
-            var lobbyPlayers = lobby.Players.Where(p => p.SelectedColor.Equals(color));
+            var lobbyPlayers = lobby.Players.Where(p => p.SelectedColor.ID == color.ID && p.ID != accountID);
+
+            if (accountID != lobby.Host.ID && lobby.Host.SelectedColor.ID == color.ID)
+                throw new Exception("Color already selected by another member.");
 
             if (lobbyPlayers.Count() > 0)
                 throw new Exception("Color already selected by another member.");
 
+            var account = await Get(accountID);
             account.SelectedColor = color;
             await _dbContext.SaveChangesAsync();
             return account;

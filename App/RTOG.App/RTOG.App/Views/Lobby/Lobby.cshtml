@@ -23,10 +23,6 @@
     }
 </div>
 
-<div id="playersView">
-    <partial name="./LobbyPlayers.cshtml"></partial>
-</div>
-
 <input id="AccountID" hidden value="@Model.MyAccount.ID" />
 <input id="LobbyID" hidden value="@Model.Lobby.ID" />
 <input id="LobbyPlayersUrl" hidden value="@Url.Action("LobbyPlayers", "Lobby")" />
@@ -107,3 +103,8 @@
         });
     }
 </script>
+
+
+<div id="playersView">
+    <partial name="./LobbyPlayers.cshtml"></partial>
+</div>

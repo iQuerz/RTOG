@@ -92,7 +92,8 @@
                 selectedColor = event.target;
                 selectedColor.classList.add("selected-color");
                 //update lobby with new selected color
-                LobbyHubConnection.send("updateLobbyPlayers", lobbyId);
+                updateOtherLobbyPlayers();
+                //LobbyHubConnection.send("updateLobbyPlayers", lobbyId);
             }
         });
     }
