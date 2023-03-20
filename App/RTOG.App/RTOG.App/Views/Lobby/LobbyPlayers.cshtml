@@ -78,7 +78,6 @@
 </div>
 
 <script>
-    console.log("rendered!");
     var selectedColor = null;
     function OnColorClick(event, colorId) {
         let accountId = @(Model.MyAccount.ID);
@@ -94,7 +93,9 @@
                 selectedColor.classList.add("selected-color");
                 //update lobby with new selected color
                 updateOtherLobbyPlayers();
-                //LobbyHubConnection.send("updateLobbyPlayers", lobbyId);
+            },
+            error: function (response){
+                //nikola
             }
         });
     }
