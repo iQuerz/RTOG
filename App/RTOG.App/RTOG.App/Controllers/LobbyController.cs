@@ -2,6 +2,7 @@
 using RTOG.App.Models;
 using RTOG.Business.Interfaces;
 using RTOG.Data.Models;
+using System.Security.Cryptography.X509Certificates;
 
 namespace RTOG.App.Controllers
 {
@@ -83,5 +84,21 @@ namespace RTOG.App.Controllers
             return Ok(lobby);
         }
 
+        [HttpPatch]
+        [Route("{api}/UpdatePlayerColor/{accountID}/{lobbyID}/{colorID}")]
+        public async Task<IActionResult> UpdatePlayerColor(int accountID, int lobbyID, int colorID)
+        {
+            try
+            {
+                var color = await _colorsService.Get(colorID);
+
+                var account = await _accountService.UpdateColor(accountID, lobbyID, color);
+                return Ok(account);
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }

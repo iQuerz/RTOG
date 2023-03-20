@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
+using System.Drawing;
 
 namespace RTOG.Data.Models
 {
@@ -19,6 +21,9 @@ namespace RTOG.Data.Models
 
         [Required]
         public TimeSpan SessionDuration { get; set; }
+
+        [AllowNull]
+        public PlayerColor SelectedColor { get; set; }
 
         [ForeignKey("PlayerID")]
         public Player? Player { get; set; }

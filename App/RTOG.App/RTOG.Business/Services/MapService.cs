@@ -31,16 +31,8 @@ namespace RTOG.Business.Services
 
             return map;
         }
-        public async Task<List<MapPreset>> GetAllMapPresets()
-        {
-            var maps = _dbContext.MapPresets.ToList();
 
-            if (maps is null)
-                throw new Exception("Map not found.");
 
-            return maps;
-        }
-        //ovo ispod je legecy code to je kako je funkcionisalo ranije
         public async Task<Map> GenerateMap(List<Point> points, int playerCount)
         {
             var random = new Random();
@@ -50,7 +42,6 @@ namespace RTOG.Business.Services
                 AllTiles = new List<Tile>()
 
             };
-
 
             _dbContext.Maps.Add(map);
             //_dbContext.SaveChanges();
@@ -94,7 +85,6 @@ namespace RTOG.Business.Services
 
             };
 
-
             _dbContext.MapPresets.Add(map);
             //_dbContext.SaveChanges();
 
@@ -113,6 +103,8 @@ namespace RTOG.Business.Services
             _dbContext.SaveChanges();
             return map;
         }
+
+
         public async Task<Map> GenerateMapFromPreset(int MapPresetID, int playerCount)
         {
 
@@ -149,6 +141,11 @@ namespace RTOG.Business.Services
             _dbContext.SaveChanges();
             return newMap;
 
+        }
+
+        public async Task<List<MapPreset>> GetAllMapPresets()
+        {
+            return await _dbContext.MapPresets.ToListAsync();
         }
     }
 }

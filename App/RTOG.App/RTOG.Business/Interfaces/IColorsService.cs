@@ -9,6 +9,7 @@ namespace RTOG.Business.Interfaces
 {
     public interface IColorsService
     {
+        public Task<PlayerColor> Get(int colorID);
         public List<PlayerColor> getColors();
     }
 }

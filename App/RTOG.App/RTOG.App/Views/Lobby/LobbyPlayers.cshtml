@@ -13,7 +13,7 @@
                 <tr>
                     @foreach (var color in Model.PlayerColors)
                     {
-                        <td class="btn" onclick="OnColorClick(event)" style="background-color:@color.Hex;height:1em;width:1em;border:1px solid var(--black);"></td>
+                        <td class="btn @(Model.MyAccount.SelectedColor.Equals(color) ? "selected-color" : "")" onclick="OnColorClick(event, @color.ID)" style="background-color:@color.Hex;height:1em;width:1em;border:1px solid var(--black);"></td>
                     }
                 </tr>
             </table>
@@ -54,7 +54,7 @@
                     <tr>
                         @foreach (var color in Model.PlayerColors)
                         {
-                            <td class="btn" style="background-color:@color.Hex;height:1em;width:1em;border:1px solid var(--black);"></td>
+                            <td class="btn @(Model.MyAccount.SelectedColor.Equals(color) ? "selected-color" : "")" onclick="OnColorClick(event, @color.ID)" style="background-color:@color.Hex;height:1em;width:1em;border:1px solid var(--black);"></td>
                         }
                     </tr>
                 </table>
@@ -78,14 +78,25 @@
 </div>
 
 <script>
+    console.log("rendered!");
     var selectedColor = null;
-    function OnColorClick(event) {
-        selectedColor?.classList.remove("selected-color");
-        selectedColor = event.target;
-        selectedColor.classList.add("selected-color");
-        let lobbyId = $('#LobbyID').val()
-        //update lobby with new selected color
-        LobbyHubConnection.send("updateLobbyPlayers", lobbyId);
+    function OnColorClick(event, colorId) {
+        let accountId = @(Model.MyAccount.ID);
+        let lobbyId = @(Model.Lobby.ID);
+        $.ajax({
+            type: 'PATCH',
+            url: $('#UpdatePlayerColorUrl').val() + "/" + accountId + "/" + lobbyId + "/" + colorId,
+            success: function (response) {
+                $("#colorTable tr td").each(function () {
+                    $(this)[0].classList.remove("selected-color");
+                });
+                selectedColor = event.target;
+                selectedColor.classList.add("selected-color");
+                //update lobby with new selected color
+                updateOtherLobbyPlayers();
+                //LobbyHubConnection.send("updateLobbyPlayers", lobbyId);
+            }
+        });
     }
 
     var selectedFaction = null;
