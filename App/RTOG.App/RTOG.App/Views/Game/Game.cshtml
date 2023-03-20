@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="/css/dropdown.css">
 
 <div class="is-flex-row">
-    <div class="is-flex-down" style="justify-content: flex-start; align-items:flex-start; width:150px;">
+    <div class="is-flex-down" style="flex-shrink:0; justify-content: flex-start; align-items:flex-start; width:150px;">
         <h1>@Model.MyAccount.Username</h1>
         <p>points:</p>
         <p>idk stats</p>
@@ -25,14 +25,15 @@
     <div id="Map">
     </div>
 
-    <div class="is-flex-down" style="justify-content: flex-start; align-items:flex-end; width:150px;">
+    <div class="is-flex-down" style="flex-shrink:0; justify-content: flex-start; align-items:flex-end; width:150px;">
         @foreach(var player in Model.Game.Players)
         {
             if (player.Name == Model.MyAccount.Username) continue;
-            <h2>@player.Name</h2>            
+            <div class="padding" style="border:1px solid black; flex-shrink:0; width: 80%; margin-bottom:1rem;">
+                <h2>@player.Name</h2>
+                <p>money:</p>
+                <p>stats</p>
+            </div>
         }
-        <h2>opponent1</h2>
-        <h2>opponent2</h2>
-        <h2>opponent3</h2>
     </div>
 </div>

@@ -12,3 +12,10 @@ const api = function (endpoint, data) {
         }
     });
 }
+
+const startLoading = function() {
+    $(".loading").addClass("active")
+}
+const stopLoading = function() {
+    $(".loading").removeClass("active")
+}

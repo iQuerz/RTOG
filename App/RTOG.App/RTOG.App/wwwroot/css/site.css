@@ -30,6 +30,45 @@ a{
     background-position: center;
 }
 
+/*#region Loading*/
+.loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right:0;
+    bottom: 0;
+    background-color: #0008;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    height: 0;
+    width: 0;
+    overflow: hidden;
+}
+.loading.active {
+    height:unset;
+    width:unset;
+}
+.spinner {
+    width: 8rem;
+    height: 8rem;
+    border: 1rem solid var(--white);
+    border-bottom: 1rem solid var(--green);
+    border-radius: 50%;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+/*#endregion*/
+
 /*#region Cards*/
 .card{
     align-content:center;

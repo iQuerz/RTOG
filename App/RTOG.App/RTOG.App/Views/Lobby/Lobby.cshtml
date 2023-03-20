@@ -71,6 +71,7 @@
     //#endregion
 
     function StartGame(){
+        startLoading();
         let accountId = $('#AccountID').val()
         let lobbyId = $('#LobbyID').val()
         let selectedMapID = $("#SelectedMapID").val()
@@ -78,7 +79,6 @@
             type: 'POST',
             url: $('#CreateGameUrl').val() + "/" + accountId + "/" + lobbyId + "/" + selectedMapID,
             success: function (response) {
-                console.log("calling startGame...")
                 startOtherPlayersGames(response.id);
             }
         });

@@ -20,12 +20,14 @@
         let requestData = {
             guestUsername: username
         };
+        startLoading();
         $.ajax({
             url: $('#CreateGuestUrl').val(),
             type: 'POST',
             data: requestData,
             success: function(response){
                 window.location.href = $('#HomeUrl').val() +"/"+ response.id;
+                stopLoading();
             }
         })
     }

@@ -20,22 +20,26 @@
 
 <script>
     function joinLobby() {
+        startLoading();
         let code = $('#codeInput').val()
         let accountId = $('#AccountID').val()
         $.ajax({
             type: 'PUT',
             url: $('#JoinLobbyUrl').val() + "/" + accountId + "/" + code,
             success: function(response){
+                stopLoading();
                 window.location.href = $('#LobbyUrl').val() + "/" + accountId + "/" + response.id
             }
         });
     }
     function createLobby(){
+        startLoading();
         let accountId = $('#AccountID').val()
         $.ajax({
             type: 'POST',
             url: $('#CreateLobbyUrl').val() + "/" + accountId,
             success: function(response){
+                stopLoading();
                 window.location.href = $('#LobbyUrl').val() + "/" + accountId + "/" + response.id
             }
         });
