@@ -31,6 +31,8 @@ namespace RTOG.Business.Services
 
             return map;
         }
+
+
         public async Task<Map> GenerateMap(List<Point> points, int playerCount)
         {
             var random = new Random();
@@ -40,7 +42,6 @@ namespace RTOG.Business.Services
                 AllTiles = new List<Tile>()
 
             };
-
 
             _dbContext.Maps.Add(map);
             //_dbContext.SaveChanges();
@@ -63,6 +64,8 @@ namespace RTOG.Business.Services
             _dbContext.SaveChanges();
             return map;
         }
+
+
         public async Task<MapPreset> GenerateMapPreset(List<Point> points)
         {
             var map = new MapPreset()
@@ -70,7 +73,6 @@ namespace RTOG.Business.Services
                 Tiles = new List<TilePreset>()
 
             };
-
 
             _dbContext.MapPresets.Add(map);
             //_dbContext.SaveChanges();
@@ -90,6 +92,8 @@ namespace RTOG.Business.Services
             _dbContext.SaveChanges();
             return map;
         }
+
+
         public async Task<Map> GenerateMapFromPreset(int MapPresetID, int playerCount)
         {
 
@@ -121,6 +125,11 @@ namespace RTOG.Business.Services
 
             return newMap;
 
+        }
+
+        public async Task<List<MapPreset>> GetAllMapPresets()
+        {
+            return await _dbContext.MapPresets.ToListAsync();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using RTOG.Business.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore;
+using RTOG.Business.Infrastructure;
 using RTOG.Business.Infrastructure.Messages;
 using RTOG.Business.Interfaces;
 using RTOG.Data.Models;
@@ -57,9 +58,21 @@ namespace RTOG.Business.Services
             return account;
         }
 
-        public async Task<Account> UpdateColor(int accountID, PlayerColor color)
+        public async Task<Account> UpdateColor(int accountID, int lobbyID, PlayerColor color)
         {
             var account = await Get(accountID);
+
+            var lobby = await _dbContext.Lobbies.Where(l => l.ID == lobbyID)
+                                                .Include(l => l.Host)
+                                                .Include(l => l.Players)
+                                                .ThenInclude(p => p.SelectedColor)
+                                                .FirstOrDefaultAsync();
+
+            var lobbyPlayers = lobby.Players.Where(p => p.SelectedColor.Equals(color));
+
+            if (lobbyPlayers.Count() > 0)
+                throw new Exception("Color already selected by another member.");
+
             account.SelectedColor = color;
             await _dbContext.SaveChangesAsync();
             return account;

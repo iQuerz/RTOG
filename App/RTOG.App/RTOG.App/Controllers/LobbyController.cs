@@ -83,12 +83,17 @@ namespace RTOG.App.Controllers
         [Route("{api}/UpdatePlayerColor/{accountID}/{lobbyID}/{colorID}")]
         public async Task<IActionResult> UpdatePlayerColor(int accountID, int lobbyID, int colorID)
         {
-            var account = await _accountService.Get(accountID);
-            var color = await _colorsService.Get(colorID);
-            //var lobby = await _lobbyService.Get(lobbyID); //wanted to use this to check if player is inside the lobby
+            try
+            {
+                var color = await _colorsService.Get(colorID);
 
-            await _accountService.UpdateColor(accountID, color);
-            return Ok(account);
+                var account = await _accountService.UpdateColor(accountID, lobbyID, color);
+                return Ok(account);
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

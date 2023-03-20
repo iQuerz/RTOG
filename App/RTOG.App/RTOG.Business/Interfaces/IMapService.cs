@@ -15,5 +15,7 @@ namespace RTOG.Business.Interfaces
         public Task<Map> GenerateMap(List<Point> points, int PlayerCount);
         public Task<MapPreset> GenerateMapPreset(List<Point> points);
         public Task<Map> GenerateMapFromPreset(int MapPresetID, int playerCount);
+
+        public Task<List<MapPreset>> GetAllMapPresets();
     }
 }

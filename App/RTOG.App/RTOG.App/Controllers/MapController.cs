@@ -25,7 +25,7 @@ namespace RTOG.App.Controllers
         [Route("{api}/GenerateMap/{Name}")]
         public async Task<IActionResult> GenerateMapPreset([FromBody]List<Point> points, string name)
         {
-            var generatedMap = await _MapService.GenerateMapPreset(points, name);
+            var generatedMap = await _MapService.GenerateMapPreset(points); //, name);
             return Ok(generatedMap);
         }
         [HttpPost]
