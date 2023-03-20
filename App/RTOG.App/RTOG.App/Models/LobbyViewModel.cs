@@ -7,5 +7,6 @@ namespace RTOG.App.Models
         public Lobby Lobby { get; set; }
         public List<PlayerColor> PlayerColors { get; set; }
         public List<Faction> Factions { get; set; }
+        public List<MapPreset> MapPresets { get; set; }
     }
 }

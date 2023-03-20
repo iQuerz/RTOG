@@ -10,13 +10,16 @@ namespace RTOG.App.Controllers
         private readonly ILobbyService _lobbyService;
         private readonly IAccountService _accountService;
         private readonly IColorsService _colorsService;
+        private readonly IMapService _mapService;
         public LobbyController(ILobbyService lobbyService,
                              IAccountService accountService,
-                              IColorsService colorsService)
+                              IColorsService colorsService,
+                              IMapService mapService)
         {
             _lobbyService = lobbyService;
             _accountService = accountService;
             _colorsService = colorsService;
+            _mapService = mapService;
         }
 
         [Route("{api}/Lobby/{accountID}/{lobbyID}")]
@@ -30,7 +33,8 @@ namespace RTOG.App.Controllers
             {
                 MyAccount = account,
                 Lobby = lobby,
-                PlayerColors = _colorsService.getColors()
+                PlayerColors = _colorsService.getColors(),
+                MapPresets = await _mapService.GetAllMapPresets()
             };
             return View("Lobby", lobbyModel);
         }
@@ -53,7 +57,8 @@ namespace RTOG.App.Controllers
             {
                 MyAccount = account,
                 Lobby = lobby,
-                PlayerColors = _colorsService.getColors() 
+                PlayerColors = _colorsService.getColors(),
+                MapPresets = await _mapService.GetAllMapPresets()
             };
             return View("LobbyPlayers", lobbyModel);
         }

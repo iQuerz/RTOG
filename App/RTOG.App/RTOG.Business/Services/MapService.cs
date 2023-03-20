@@ -31,6 +31,16 @@ namespace RTOG.Business.Services
 
             return map;
         }
+        public async Task<List<MapPreset>> GetAllMapPresets()
+        {
+            var maps = _dbContext.MapPresets.ToList();
+
+            if (maps is null)
+                throw new Exception("Map not found.");
+
+            return maps;
+        }
+        //ovo ispod je legecy code to je kako je funkcionisalo ranije
         public async Task<Map> GenerateMap(List<Point> points, int playerCount)
         {
             var random = new Random();
@@ -63,11 +73,24 @@ namespace RTOG.Business.Services
             _dbContext.SaveChanges();
             return map;
         }
-        public async Task<MapPreset> GenerateMapPreset(List<Point> points)
+
+        //ovo je kako funkcionise sada
+        public async Task<MapPreset> GenerateMapPreset(List<Point> points, string name)
         {
+
+            string nameSize = name;
+            if (points.Count > 80)
+                nameSize += " (Gaint)";
+            else if (points.Count > 50)
+                nameSize += " (Large)";
+            else if(points.Count > 35)
+                nameSize += " (Medium)";
+            else
+                nameSize += " (Tiny)";
             var map = new MapPreset()
             {
-                Tiles = new List<TilePreset>()
+                Tiles = new List<TilePreset>(),
+                Name = nameSize
 
             };
 
@@ -104,11 +127,13 @@ namespace RTOG.Business.Services
 
             var newMap = new Map()
             {
+                AllTiles = new List<Tile>(),
                 PlayerCount = playerCount,
             };
+            _dbContext.Maps.Add(newMap);
             foreach (TilePreset tile in map.Tiles)
             {
-                newMap.AllTiles.Add(new Tile()
+                var newTile = new Tile()
                 {
                     PositionX = tile.PositionX,
                     PositionY = tile.PositionY,
@@ -116,9 +141,12 @@ namespace RTOG.Business.Services
                     Map = newMap,
                     Owner = null,
                     Units = null,
-                });
-            }    
+                };
+                newMap.AllTiles.Add(newTile);
+                _dbContext.Tiles.Add(newTile);
+            }
 
+            _dbContext.SaveChanges();
             return newMap;
 
         }

@@ -4,7 +4,7 @@
 //const addUnit = require('./Map');
 // ovo pravi context menu nad elementima sa klasom .hasTileMenu koji se pojavljuje ispod misa
 
-import { AddUnit } from './Map.js';
+import Map from './Map.js';
 
 var eventClicekd;
 
@@ -15,6 +15,7 @@ tileMenus.addEventListener("click", event => {
     eventClicekd = event
 });
 
+const MapObject = new Map();
 var menu = new BootstrapMenu('.hasTileMenu', {
     menuEvent: 'click',
     actions: [
@@ -23,7 +24,7 @@ var menu = new BootstrapMenu('.hasTileMenu', {
             iconClass: 'iconoir-add-circle',
             onClick: function () {
                 //console.log(eventClicekd.offsetX, eventClicekd.offsetY)
-                AddUnit(eventClicekd.offsetX, eventClicekd.offsetY)
+                MapObject.AddUnit(eventClicekd.offsetX, eventClicekd.offsetY)
                 //alert("hi");
             }
         },

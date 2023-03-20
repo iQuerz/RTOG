@@ -19,10 +19,11 @@
             </table>
             <div style="margin-left:auto">
                 Map:
-                <select onchange="OnFactionSelect(event)">
-                    <option>Map 1</option>
-                    <option>Map 2</option>
-                    <option>Map 3</option>
+                <select onchange="OnMapSelect(event)">
+                    @foreach(var map in Model.MapPresets)
+                    {
+                        <option value="@map.ID.ToString()">@map.Name</option>
+                    }
                 </select>
             </div>
             <div style="margin-left:auto">
@@ -93,10 +94,9 @@
         //update lobby with new selected faction
         LobbyHubConnection.send("updateLobbyPlayers", lobbyId);
     }
-    var selectedMap = null;
     function OnMapSelect(event) {
-        selectedMap = event.target;
-        //update lobby with new selected faction
-        LobbyHubConnection.send("updateLobbyPlayers", lobbyId);
+        $("#SelectedMapID").val(event.target.value)
+        //update lobby with new selected map
+        //LobbyHubConnection.send("updateLobbyPlayers", lobbyId);
     }
 </script>

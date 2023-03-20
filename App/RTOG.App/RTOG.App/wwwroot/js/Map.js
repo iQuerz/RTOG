@@ -22,33 +22,68 @@ var TexturePatter
 let delaunay
 let voronoi
 
-//loaduje slike 
-async function createPatterns() {
+async function createPatternsV2() {
     try {
+        const goldPromise = new Promise(resolve => {
+            gold.src = "https://cdn-icons-png.flaticon.com/512/199/199541.png";
+            gold.onload = () => resolve();
+        });
 
-        gold.src = "https://cdn-icons-png.flaticon.com/512/199/199541.png";
-        gold.onload = function () {
-        }  
+        const soliderPromise = new Promise(resolve => {
+            solider.src = "https://www.freepnglogos.com/uploads/soldier-png/soldier-battlefield-graphic-pack-0.png";
+            solider.onload = () => resolve();
+        });
 
-        solider.src = "https://www.freepnglogos.com/uploads/soldier-png/soldier-battlefield-graphic-pack-0.png";
-        solider.onload = function () {
-        }  
+        const backgroundPromise = new Promise(resolve => {
+            const background = new Image();
+            background.src = "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/65614919-0734-4dc8-9460-7034fd979346/dbg8qqd-0fb0aced-d05c-4df6-a7c6-b8e04c184ac5.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzY1NjE0OTE5LTA3MzQtNGRjOC05NDYwLTcwMzRmZDk3OTM0NlwvZGJnOHFxZC0wZmIwYWNlZC1kMDVjLTRkZjYtYTdjNi1iOGUwNGMxODRhYzUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.9IQbxC3HC3uuJLf8V9Ridq005b2_-4zFg6Cb9rJ2tbw";
+            background.onload = () => {
+                TexturePatter = context.createPattern(background, "repeat");
+                resolve();
+            };
+        });
 
-
-        const image = new Image();
-        image.src = "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/65614919-0734-4dc8-9460-7034fd979346/dbg8qqd-0fb0aced-d05c-4df6-a7c6-b8e04c184ac5.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzY1NjE0OTE5LTA3MzQtNGRjOC05NDYwLTcwMzRmZDk3OTM0NlwvZGJnOHFxZC0wZmIwYWNlZC1kMDVjLTRkZjYtYTdjNi1iOGUwNGMxODRhYzUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.9IQbxC3HC3uuJLf8V9Ridq005b2_-4zFg6Cb9rJ2tbw";
-        image.onload = function () {
-            TexturePatter = context.createPattern(image, "repeat");
-            DrawBoard();
-        }  
-    } catch(error)
-    {
+        await Promise.all([goldPromise, soliderPromise, backgroundPromise]);
+        
+    } catch (error) {
         console.error(error);
     }
 }
 
-createPatterns()
+await createPatternsV2().then(() => DrawBoard());
 
+//loaduje slike 
+//async function createPatterns() {
+//    try {
+
+//        gold.src = "https://cdn-icons-png.flaticon.com/512/199/199541.png";
+//        gold.onload = function () {
+//        }  
+
+//        solider.src = "https://www.freepnglogos.com/uploads/soldier-png/soldier-battlefield-graphic-pack-0.png";
+//        solider.onload = function () {
+//        }  
+
+
+//        const image = new Image();
+//        image.src = "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/65614919-0734-4dc8-9460-7034fd979346/dbg8qqd-0fb0aced-d05c-4df6-a7c6-b8e04c184ac5.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzY1NjE0OTE5LTA3MzQtNGRjOC05NDYwLTcwMzRmZDk3OTM0NlwvZGJnOHFxZC0wZmIwYWNlZC1kMDVjLTRkZjYtYTdjNi1iOGUwNGMxODRhYzUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.9IQbxC3HC3uuJLf8V9Ridq005b2_-4zFg6Cb9rJ2tbw";
+//        image.onload = function () {
+//            TexturePatter = context.createPattern(image, "repeat");
+//            DrawBoard();
+//        }  
+//    } catch(error)
+//    {
+//        console.error(error);
+//    }
+//}
+
+//await createPatterns().then(() =>
+//    DrawBoard()
+//    )
+
+console.log(Game)
+console.log(solider)
+console.log(gold)
 //renderuje board
 function DrawBoard() {
     const particles = Game.map.allTiles.map(tile => [tile.positionX, tile.positionY]);
@@ -100,20 +135,33 @@ function DrawBoard() {
         var distance = 0;
         Game.map.allTiles[i].units.forEach(unit => {
             context.drawImage(solider, centroid[0], centroid[1], -20, -20 + distance);
-            distance += 5;
+            distance += 20;
         })
         if (Game.map.allTiles[i].units )
         context.drawImage(gold, centroid[0], centroid[1], 20, 20);
         context.fillText("  +" + Game.map.allTiles[i].gold, centroid[0] + 35, centroid[1] + 5);
     }
 }
+export class Map {
 
-export function AddUnit(x, y) {
-    const cell = delaunay.find(x, y);
+    constructor() { }
 
-    console.log(Game.map.allTiles[cell])
+        AddUnit(x, y) {
+        const cell = delaunay.find(x, y);
+        console.log(MyAccount)
+        console.log(Game.map.allTiles[cell])
+
+            fetch("https://localhost:7281/Unit/Create/" + MyAccount.player.id + "/" + Game.map.allTiles[cell].id, {
+                method: "POST"
+                })
+                .then((response) => response.json())
+                .then((data) => console.log(data));
+
+            DrawBoard();
+    }
 }
 
+export default Map;
 //simulacija igre za sada
 //canvas.addEventListener("click", event => {
 //    const x = event.offsetX, y = event.offsetY;

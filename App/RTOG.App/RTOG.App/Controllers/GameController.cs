@@ -49,10 +49,10 @@ namespace RTOG.App.Controllers
 
         [HttpPost]
         [Route("{api}/CreateGame/{hostID}/{lobbyID}/{mapID}")]
-        public async Task<IActionResult> CreateGame(int hostID, int lobbyID, int mapID = 8)
-        {
+        public async Task<IActionResult> CreateGame(int hostID, int lobbyID, int mapID)
+        { 
             var lobby = await _lobbyService.Get(lobbyID);
-            var map = await _mapService.Get(mapID);
+            var map = await _mapService.GenerateMapFromPreset(mapID, lobby.Players.Count() + 1); //host je + 1
 
             if (lobby.Host.ID != hostID)
                 throw new Exception("Only lobby hosts can start games.");

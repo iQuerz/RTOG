@@ -24,8 +24,11 @@ namespace RTOG.Data.Models
         public string Name { get; set; }
         [Required]
         public string Color { get; set; }
+        //[Required]
+        //public int TurnOrder { get; set; }
         [Required]
         public int TotalGold { get; set; }
+        [JsonIgnore]
         [Required]
         public List<Tile> OwnedTiles { get; set; }
     }

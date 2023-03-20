@@ -12,7 +12,7 @@ namespace RTOG.App.Controllers
         {
             _unitService = unitService;
         }
-
+        [HttpPost]
         [Route("{api}/Create/{playerID}/{tileID}")]
         public async Task<IActionResult> Create(int playerID, int tileID)
         {

@@ -50,6 +50,9 @@ namespace RTOG.Business.Services
 
             tile.Units.Add(unit);
 
+            if (tile.Owner == null)
+                tile.Owner = player;
+
             await _dbContext.SaveChangesAsync();
 
             Console.WriteLine(unit.ID);

@@ -29,6 +29,7 @@
 
 <input id="AccountID" hidden value="@Model.MyAccount.ID" />
 <input id="LobbyID" hidden value="@Model.Lobby.ID" />
+<input id="SelectedMapID" hidden value="1" />
 <input id="LobbyPlayersUrl" hidden value="@Url.Action("LobbyPlayers", "Lobby")" />
 <input id="DisbandLobbyUrl" hidden value="@Url.Action("DisbandLobby","Lobby", null, Context.Request.Scheme)" />
 <input id="CreateGameUrl" hidden value="@Url.Action("CreateGame","Game", null, Context.Request.Scheme)" />
@@ -75,9 +76,10 @@
     function StartGame(){
         let accountId = $('#AccountID').val()
         let lobbyId = $('#LobbyID').val()
+        let selectedMapID = $("#SelectedMapID").val()
         $.ajax({
             type: 'POST',
-            url: $('#CreateGameUrl').val() + "/" + accountId + "/" + lobbyId + "/8",
+            url: $('#CreateGameUrl').val() + "/" + accountId + "/" + lobbyId + "/" + selectedMapID,
             success: function (response) {
                 console.log("calling startGame...")
                 startOtherPlayersGames(response.id);

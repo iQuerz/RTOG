@@ -62,6 +62,9 @@ namespace RTOG.Business.Services
                                              .Include(g => g.Players)
                                              .Include(g => g.Map)
                                              .ThenInclude(m => m.AllTiles)
+                                             .ThenInclude(t => t.Owner)
+                                             .Include(g => g.Map)
+                                             .ThenInclude(m => m.AllTiles)
                                              .ThenInclude(t => t.Units)
                                              .FirstOrDefault();
 
