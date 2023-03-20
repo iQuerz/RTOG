@@ -1,9 +1,20 @@
 ﻿
-
 // mora da se import na cshtml skripta iz "/lib/bootstrap-menu/BootstrapMenu.min.js"
 // mora da se linkuje css stylesheet href "/css/dropdown.css"
-
+//const addUnit = require('./Map');
 // ovo pravi context menu nad elementima sa klasom .hasTileMenu koji se pojavljuje ispod misa
+
+import { AddUnit } from './Map.js';
+
+var eventClicekd;
+
+//korisimo da uzimamo lokaciju prvobitnog klika a ne drugog klika na menu
+const tileMenus = document.querySelector('.hasTileMenu');
+console.log(tileMenus)
+tileMenus.addEventListener("click", event => {
+    eventClicekd = event
+});
+
 var menu = new BootstrapMenu('.hasTileMenu', {
     menuEvent: 'click',
     actions: [
@@ -11,7 +22,9 @@ var menu = new BootstrapMenu('.hasTileMenu', {
             name: 'Add new unit',
             iconClass: 'iconoir-add-circle',
             onClick: function () {
-                alert("hi");
+                //console.log(eventClicekd.offsetX, eventClicekd.offsetY)
+                AddUnit(eventClicekd.offsetX, eventClicekd.offsetY)
+                //alert("hi");
             }
         },
         {
