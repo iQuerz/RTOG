@@ -8,32 +8,12 @@
     var MyAccount = @Json.Serialize(Model.MyAccount);
 </script>
 <script type="module" src="~/js/Map.js" defer></script>
-<script type="module" src="~/js/menu.js" defer></script>
-<script src="/lib/bootstrap-menu/BootstrapMenu.min.js"></script>
 
-<!-- Link BootstrapMenu CSS stylesheet -->
-<link rel="stylesheet" href="/css/dropdown.css">
-
-<div class="is-flex-row">
-    <div class="is-flex-down" style="flex-shrink:0; justify-content: flex-start; align-items:flex-start; width:150px;">
-        <h1>@Model.MyAccount.Username</h1>
-        <p>points:</p>
-        <p>idk stats</p>
-        <p>more stats</p>
-    </div> 
-
-    <div id="Map">
-    </div>
-
-    <div class="is-flex-down" style="flex-shrink:0; justify-content: flex-start; align-items:flex-end; width:150px;">
-        @foreach(var player in Model.Game.Players)
-        {
-            if (player.Name == Model.MyAccount.Username) continue;
-            <div class="padding" style="border:1px solid black; flex-shrink:0; width: 80%; margin-bottom:1rem;">
-                <h2>@player.Name</h2>
-                <p>money:</p>
-                <p>stats</p>
-            </div>
-        }
-    </div>
-</div>
+@*kada budem imao logiku za proveravanje da li je MyAccount na potezu:*@
+@if(true){
+    <partial name="./_Game_Playing.cshtml"/>
+}
+else
+{
+    <partial name="./_Game_Watching.cshtml"/>
+}
