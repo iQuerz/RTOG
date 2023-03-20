@@ -2,6 +2,7 @@
 using RTOG.App.Models;
 using RTOG.Business.Interfaces;
 using RTOG.Data.Models;
+using System.Security.Cryptography.X509Certificates;
 
 namespace RTOG.App.Controllers
 {
@@ -78,5 +79,16 @@ namespace RTOG.App.Controllers
             return Ok(lobby);
         }
 
+        [HttpPatch]
+        [Route("{api}/UpdatePlayerColor/{accountID}/{lobbyID}/{colorID}")]
+        public async Task<IActionResult> UpdatePlayerColor(int accountID, int lobbyID, int colorID)
+        {
+            var account = await _accountService.Get(accountID);
+            var color = await _colorsService.Get(colorID);
+            //var lobby = await _lobbyService.Get(lobbyID); //wanted to use this to check if player is inside the lobby
+
+            await _accountService.UpdateColor(accountID, color);
+            return Ok(account);
+        }
     }
 }

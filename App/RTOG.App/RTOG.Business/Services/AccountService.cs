@@ -28,6 +28,10 @@ namespace RTOG.Business.Services
 
         public async Task<Account> CreateGuest(string username)
         {
+            var colors = _dbContext.PlayerColors.ToList();
+            var randomIndex = new Random().Next(0, colors.Count);
+            var randomColor = colors[randomIndex];
+
             var newGuest = new Account()
             {
                 Username = username,
@@ -35,7 +39,8 @@ namespace RTOG.Business.Services
                 LastActive = DateTime.Now,
                 SessionID = Helpers.GetRandomString(),
                 SessionDuration = TimeSpan.FromHours(1),
-                Player = null
+                Player = null,
+                SelectedColor = randomColor
             };
 
             _dbContext.Accounts.Add(newGuest);
@@ -49,6 +54,14 @@ namespace RTOG.Business.Services
             var account = await _dbContext.Accounts.FindAsync(accountID);
             if (account is null)
                 throw new Exception("Account not found");//todo:bljak static string
+            return account;
+        }
+
+        public async Task<Account> UpdateColor(int accountID, PlayerColor color)
+        {
+            var account = await Get(accountID);
+            account.SelectedColor = color;
+            await _dbContext.SaveChangesAsync();
             return account;
         }
     }

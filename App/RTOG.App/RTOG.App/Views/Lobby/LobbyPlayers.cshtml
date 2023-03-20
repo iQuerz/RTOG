@@ -13,7 +13,7 @@
                 <tr>
                     @foreach (var color in Model.PlayerColors)
                     {
-                        <td class="btn" onclick="OnColorClick(event)" style="background-color:@color.Hex;height:1em;width:1em;border:1px solid var(--black);"></td>
+                        <td class="btn" onclick="OnColorClick(event, @color.ID)" style="background-color:@color.Hex;height:1em;width:1em;border:1px solid var(--black);"></td>
                     }
                 </tr>
             </table>

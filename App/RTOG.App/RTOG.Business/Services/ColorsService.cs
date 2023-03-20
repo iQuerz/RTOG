@@ -17,6 +17,13 @@ namespace RTOG.Business.Services
             _dbContext = dbContext;
         }
 
+        public async Task<PlayerColor> Get(int colorID)
+        {
+            var color = await _dbContext.PlayerColors.FindAsync(colorID);
+            if(color == null) { throw new Exception("Color Not found"); }
+            return color;
+        }
+
         public List<PlayerColor> getColors()
         {
             return _dbContext.PlayerColors.ToList();
