@@ -13,5 +13,6 @@ namespace RTOG.Business.Interfaces
         public Task<Account> CreateGuest(string username);
         public Task<Account> Get(int accountID);
         public Task<Account> UpdateColor(int accountID, int lobbyID, PlayerColor color);
+        public Task<Account> UpdateFaction(int accountID,FactionChoice choice);
     }
 }

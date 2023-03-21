@@ -24,6 +24,7 @@ namespace RTOG.Data.Persistence
         public DbSet<Edge> Edges { get; set; }
 
         public DbSet<PlayerColor> PlayerColors { get; set; }
+        public DbSet<FactionChoice> FactionChoices { get; set; }
 
         public DbSet<MapPreset> MapPresets { get; set; }
         public DbSet<TilePreset> TilePresets { get; set; }
@@ -74,6 +75,23 @@ namespace RTOG.Data.Persistence
                     ID = 7,
                     Hex = "#3ff",
                     Name = "Cyan"
+                }
+            );
+            modelBuilder.Entity<FactionChoice>().HasData(
+                new FactionChoice
+                {
+                    ID = 1,
+                    Name = "America"
+                },
+                new FactionChoice
+                {
+                    ID = 2,
+                    Name = "China"
+                },
+                new FactionChoice
+                {
+                    ID = 3,
+                    Name = "Russia"
                 }
             );
         }

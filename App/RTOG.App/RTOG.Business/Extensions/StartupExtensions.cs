@@ -18,6 +18,7 @@ namespace RTOG.Business.Extensions
             services.AddScoped<IUnitService, UnitService>();
 
             services.AddScoped<IColorsService, ColorsService>();
+            services.AddScoped<IFactionService, FactionService>();
         }
     }
 }

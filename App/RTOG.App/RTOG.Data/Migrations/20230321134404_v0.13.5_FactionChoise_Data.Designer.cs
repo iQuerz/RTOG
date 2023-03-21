@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RTOG.Data.Persistence;
 
@@ -10,9 +11,10 @@ using RTOG.Data.Persistence;
 namespace RTOG.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230321134404_v0.13.5_FactionChoise_Data")]
+    partial class v0135_FactionChoise_Data
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.12");
@@ -38,9 +40,6 @@ namespace RTOG.Data.Migrations
                     b.Property<int>("SelectedColorID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("SelectedFactionID")
-                        .HasColumnType("INTEGER");
-
                     b.Property<TimeSpan>("SessionDuration")
                         .HasColumnType("TEXT");
 
@@ -60,8 +59,6 @@ namespace RTOG.Data.Migrations
                         .IsUnique();
 
                     b.HasIndex("SelectedColorID");
-
-                    b.HasIndex("SelectedFactionID");
 
                     b.ToTable("Accounts");
                 });
@@ -253,9 +250,6 @@ namespace RTOG.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("TotalGold")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TurnOrder")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ID");
@@ -480,17 +474,9 @@ namespace RTOG.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RTOG.Data.Models.FactionChoice", "SelectedFaction")
-                        .WithMany()
-                        .HasForeignKey("SelectedFactionID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Player");
 
                     b.Navigation("SelectedColor");
-
-                    b.Navigation("SelectedFaction");
                 });
 
             modelBuilder.Entity("RTOG.Data.Models.Edge", b =>

@@ -33,6 +33,10 @@ namespace RTOG.Business.Services
             var randomIndex = new Random().Next(0, colors.Count);
             var randomColor = colors[randomIndex];
 
+            var factions = _dbContext.FactionChoices.ToList();
+            var randomIndexF = new Random().Next(0, factions.Count);
+            var randomFaction = factions[randomIndexF];
+
             var newGuest = new Account()
             {
                 Username = username,
@@ -41,7 +45,9 @@ namespace RTOG.Business.Services
                 SessionID = Helpers.GetRandomString(),
                 SessionDuration = TimeSpan.FromHours(1),
                 Player = null,
-                SelectedColor = randomColor
+                SelectedColor = randomColor,
+                SelectedFaction= randomFaction
+
             };
 
             _dbContext.Accounts.Add(newGuest);
@@ -77,6 +83,14 @@ namespace RTOG.Business.Services
 
             var account = await Get(accountID);
             account.SelectedColor = color;
+            await _dbContext.SaveChangesAsync();
+            return account;
+        }
+        public async Task<Account> UpdateFaction(int accountID, FactionChoice choice)
+        {
+
+            var account = await Get(accountID);
+            account.SelectedFaction = choice;
             await _dbContext.SaveChangesAsync();
             return account;
         }

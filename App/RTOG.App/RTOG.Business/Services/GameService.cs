@@ -33,22 +33,26 @@ namespace RTOG.Business.Services
             List<Account> players = lobby.Players;
             players.Add(lobby.Host);
 
+            int turnOrderIncrement = 0;
             foreach (Account acc in players)
             {
                 Player player = new Player()
                 {
                     PlayerAccount = acc,
                     Game = game,
-                    Faction = new AmericaFaction("PlayerOne"), //privremeno resenje dok ne izvucemo koj je faction iz lobija
+                    Faction = (Faction)Helpers.Factions[acc.SelectedFaction.Name]("Name"), //privremeno resenje dok ne izvucemo koj je faction iz lobija
                     Name = acc.Username, //redundandna infomacija ali da ne moramo da zovemo account u game vise
-                    Color = Helpers.GetRandomHexColor(), //privremeno resenje dok ne implementiramo da se izvuce boja iz lobija
+                    Color = acc.SelectedColor.Hex,
                     TotalGold = 0,
-                    OwnedTiles = new List<Tile>()
+                    OwnedTiles = new List<Tile>(),
+                    TurnOrder = turnOrderIncrement
                 };
+                turnOrderIncrement++;
                 game.Players.Add(player);
                 _dbContext.Players.Add(player);
             }
             //game.Players.Insert(0, lobby.Host.Player); //todo:mozda random redosled igraca idk
+
 
             _dbContext.Games.Add(game);
             _dbContext.Lobbies.Remove(lobby);

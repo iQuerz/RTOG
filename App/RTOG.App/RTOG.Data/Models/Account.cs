@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
+using System.Text.Json.Serialization;
 
 namespace RTOG.Data.Models
 {
@@ -24,6 +25,9 @@ namespace RTOG.Data.Models
 
         [AllowNull]
         public PlayerColor SelectedColor { get; set; }
+
+        [AllowNull]
+        public FactionChoice SelectedFaction { get; set; }
 
         [ForeignKey("PlayerID")]
         public Player? Player { get; set; }

@@ -1,6 +1,8 @@
-﻿using System;
+﻿using RTOG.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,5 +23,11 @@ namespace RTOG.Business.Infrastructure
             string color = String.Format("#{0:X6}", random.Next(0x1000000));
             return color;
         }
+        public static Dictionary<string, Func< string, object>> Factions = new Dictionary<string, Func<string, object>>()
+        {
+            { "America", (name) => new AmericaFaction(name) },
+            { "China", (name) => new ChineseFaction(name) },
+            { "Russia", (name) => new RussiaFaction(name) },
+        };
     }
 }

@@ -18,7 +18,13 @@ namespace RTOG.Business.Services
         {
             var lobby = _dbContext.Lobbies.Where(l => l.ID == lobbyID)
                                           .Include(l => l.Host)
+                                          .ThenInclude(p => p.SelectedColor)
+                                          .Include(l => l.Host)
+                                          .ThenInclude(l => l.SelectedFaction)
                                           .Include(l => l.Players)
+                                          .ThenInclude(p => p.SelectedColor)
+                                          .Include(l => l.Players)
+                                          .ThenInclude(p => p.SelectedFaction)
                                           .FirstOrDefault();
 
             if (lobby is null)

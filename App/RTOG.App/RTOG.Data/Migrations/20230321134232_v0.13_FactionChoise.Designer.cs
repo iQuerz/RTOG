@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RTOG.Data.Persistence;
 
@@ -10,9 +11,10 @@ using RTOG.Data.Persistence;
 namespace RTOG.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230321134232_v0.13_FactionChoise")]
+    partial class v013_FactionChoise
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.12");
@@ -38,9 +40,6 @@ namespace RTOG.Data.Migrations
                     b.Property<int>("SelectedColorID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("SelectedFactionID")
-                        .HasColumnType("INTEGER");
-
                     b.Property<TimeSpan>("SessionDuration")
                         .HasColumnType("TEXT");
 
@@ -60,8 +59,6 @@ namespace RTOG.Data.Migrations
                         .IsUnique();
 
                     b.HasIndex("SelectedColorID");
-
-                    b.HasIndex("SelectedFactionID");
 
                     b.ToTable("Accounts");
                 });
@@ -148,23 +145,6 @@ namespace RTOG.Data.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("FactionChoices");
-
-                    b.HasData(
-                        new
-                        {
-                            ID = 1,
-                            Name = "America"
-                        },
-                        new
-                        {
-                            ID = 2,
-                            Name = "China"
-                        },
-                        new
-                        {
-                            ID = 3,
-                            Name = "Russia"
-                        });
                 });
 
             modelBuilder.Entity("RTOG.Data.Models.Lobby", b =>
@@ -253,9 +233,6 @@ namespace RTOG.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("TotalGold")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TurnOrder")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ID");
@@ -480,17 +457,9 @@ namespace RTOG.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RTOG.Data.Models.FactionChoice", "SelectedFaction")
-                        .WithMany()
-                        .HasForeignKey("SelectedFactionID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Player");
 
                     b.Navigation("SelectedColor");
-
-                    b.Navigation("SelectedFaction");
                 });
 
             modelBuilder.Entity("RTOG.Data.Models.Edge", b =>
