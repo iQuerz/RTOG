@@ -12,15 +12,18 @@ namespace RTOG.App.Controllers
         private readonly IAccountService _accountService;
         private readonly IColorsService _colorsService;
         private readonly IMapService _mapService;
+        private readonly IFactionService _factionService;
         public LobbyController(ILobbyService lobbyService,
                              IAccountService accountService,
                               IColorsService colorsService,
-                              IMapService mapService)
+                              IMapService mapService,
+                              IFactionService factionService)
         {
             _lobbyService = lobbyService;
             _accountService = accountService;
             _colorsService = colorsService;
             _mapService = mapService;
+            _factionService = factionService;
         }
 
         [Route("{api}/Lobby/{accountID}/{lobbyID}")]
@@ -35,6 +38,7 @@ namespace RTOG.App.Controllers
                 MyAccount = account,
                 Lobby = lobby,
                 PlayerColors = _colorsService.getColors(),
+                FactionChoices = await _factionService.GetAllFactions(),
                 MapPresets = await _mapService.GetAllMapPresets()
             };
             return View("Lobby", lobbyModel);
@@ -59,6 +63,7 @@ namespace RTOG.App.Controllers
                 MyAccount = account,
                 Lobby = lobby,
                 PlayerColors = _colorsService.getColors(),
+                FactionChoices = await _factionService.GetAllFactions(),
                 MapPresets = await _mapService.GetAllMapPresets()
             };
             return View("LobbyPlayers", lobbyModel);
@@ -96,6 +101,22 @@ namespace RTOG.App.Controllers
                 return Ok(account);
             }
             catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        [HttpPatch]
+        [Route("{api}/UpdatePlayerFaction/{accountID}/{factionID}")]
+        public async Task<IActionResult> UpdatePlayerFaction(int accountID, int factionID)
+        {
+            try
+            {
+                var choice = await _factionService.GetChoice(factionID);
+
+                var account = await _accountService.UpdateFaction(accountID, choice);
+                return Ok(account);
+            }
+            catch (Exception e)
             {
                 return BadRequest(e.Message);
             }

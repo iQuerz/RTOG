@@ -29,9 +29,10 @@
             <div style="margin-left:auto">
                 Faction:
                 <select onchange="OnFactionSelect(event)">
-                    <option>Elves</option>
-                    <option>Orcs</option>
-                    <option>Humans</option>
+                    @foreach (var faction in Model.FactionChoices)
+                    {
+                        <option value="@faction.ID.ToString()">@faction.Name</option>
+                    }
                 </select>
             </div>
         }
@@ -62,9 +63,10 @@
                 <div style="margin-left:auto">
                     Faction:
                     <select>
-                        <option>Elves</option>
-                        <option>Orcs</option>
-                        <option>Humans</option>
+                        @foreach(var faction in Model.FactionChoices)
+                        {
+                            <option value="@faction.ID.ToString()">@faction.Name</option>
+                        }
                     </select>
                 </div>
             }
@@ -102,13 +104,25 @@
 
     var selectedFaction = null;
     function OnFactionSelect(event) {
-        selectedFaction = event.target;
-        //update lobby with new selected faction
-        LobbyHubConnection.send("updateLobbyPlayers", lobbyId);
+        let accountId = @(Model.MyAccount.ID);
+        $.ajax({
+            type: 'PATCH',
+            url: $('#UpdatePlayerFactionUrl').val() + "/" + accountId + "/" + colorId,
+            success: function (response) {
+                $("#colorTable tr td").each(function () {
+                    $(this)[0].classList.remove("selected-color");
+                });
+                selectedColor = event.target;
+                selectedColor.classList.add("selected-color");
+                //update lobby with new selected color
+                updateOtherLobbyPlayers();
+            },
+            error: function (response) {
+                //nikola
+            }
+        });
     }
     function OnMapSelect(event) {
         $("#SelectedMapID").val(event.target.value)
-        //update lobby with new selected map
-        //LobbyHubConnection.send("updateLobbyPlayers", lobbyId);
     }
 </script>

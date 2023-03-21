@@ -8,5 +8,6 @@ namespace RTOG.App.Models
         public List<PlayerColor> PlayerColors { get; set; }
         public List<Faction> Factions { get; set; }
         public List<MapPreset> MapPresets { get; set; }
+        public List<FactionChoice> FactionChoices { get; set; }
     }
 }
