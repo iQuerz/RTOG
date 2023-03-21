@@ -47,6 +47,15 @@ namespace RTOG.App.Controllers
             return Ok(game);
         }
 
+        [Route("{api}/NextTurn/{gameID}")]
+        public async Task<IActionResult> NextTurn(int gameID)
+        {
+
+            await _gameService.NextTurn(gameID);
+
+            return Ok();
+        }
+
         [HttpPost]
         [Route("{api}/CreateGame/{hostID}/{lobbyID}/{mapID}")]
         public async Task<IActionResult> CreateGame(int hostID, int lobbyID, int mapID)

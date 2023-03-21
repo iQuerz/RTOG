@@ -10,7 +10,7 @@
 <script type="module" src="~/js/Map.js" defer></script>
 
 @*kada budem imao logiku za proveravanje da li je MyAccount na potezu:*@
-@if(true){
+@if(Model.Game.TurnCounter % Model.Game.Map.PlayerCount == Model.MyAccount.Player.TurnOrder){
     <partial name="./_Game_Playing.cshtml"/>
 }
 else
