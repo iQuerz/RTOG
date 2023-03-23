@@ -32,14 +32,13 @@
         this.updateGamePage = function() {
             $.ajax({
                 type: 'GET',
-                url: "https://localhost:7281@(Url.Action("GamePlayers", "Game"))",
+                url: "@(Url.Action("GamePlayers", "Game"))",
                 data: {
                     accountID: page.accountId,
                     gameID: page.gameId
                 },
                 success: function (response) {
                     $("#gamePlayers").html(response);
-                    console.log(response)
                 }
             });
 
