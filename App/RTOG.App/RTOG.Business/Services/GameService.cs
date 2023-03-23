@@ -53,7 +53,6 @@ namespace RTOG.Business.Services
             }
             //game.Players.Insert(0, lobby.Host.Player); //todo:mozda random redosled igraca idk
 
-
             _dbContext.Games.Add(game);
             _dbContext.Lobbies.Remove(lobby);
             await _dbContext.SaveChangesAsync();

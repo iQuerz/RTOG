@@ -39,6 +39,15 @@
         else
         {
             <strong>@Model.Lobby.Host.Username</strong>
+
+            <table style="background-color:transparent;margin-left:auto;">
+                <tr>
+                    @foreach (var color in Model.PlayerColors)
+                    {
+                        <td class="btn @(Model.Lobby.Host.SelectedColor.Equals(color) ? "selected-color" : "")" style="background-color:@color.Hex;height:1em;width:1em;border:1px solid var(--black);"></td>
+                    }
+                </tr>
+            </table>
         }
 
     </div>
@@ -73,6 +82,14 @@
             else
             {
                 <b>@player.Username</b>
+                <table style="background-color:transparent;margin-left:auto;">
+                    <tr>
+                        @foreach (var color in Model.PlayerColors)
+                        {
+                            <td class="@(player.SelectedColor.Equals(color) ? "selected-color" : "")" style="background-color:@color.Hex;height:1em;width:1em;border:1px solid var(--black);"></td>
+                        }
+                    </tr>
+                </table>
             }
 
         </div>
