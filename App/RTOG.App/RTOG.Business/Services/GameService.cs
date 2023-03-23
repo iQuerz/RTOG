@@ -94,5 +94,18 @@ namespace RTOG.Business.Services
 
             return game;
         }
+        public async Task<OngoingGame> NextTurn(int gameID)
+        {
+            var game = _dbContext.Games.Where(g => g.ID == gameID).FirstOrDefault();
+
+            if (game is null)
+                throw new Exception("Game not found.");
+
+            game.TurnCounter++;
+
+            await _dbContext.SaveChangesAsync();
+
+            return game;
+        }
     }
 }
