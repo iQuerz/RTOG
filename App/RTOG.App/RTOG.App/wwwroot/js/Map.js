@@ -150,7 +150,7 @@ export class Map {
         const cell = delaunay.find(x, y);
         console.log(MyAccount)
         console.log(Game.map.allTiles[cell])
-
+            //mora menjam url ovde da ne bude static
             fetch("https://localhost:7281/Unit/Create/" + MyAccount.player.id + "/" + Game.map.allTiles[cell].id, {
                 method: "POST"
                 })
