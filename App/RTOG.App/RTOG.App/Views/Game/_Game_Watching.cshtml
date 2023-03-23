@@ -13,7 +13,7 @@
         @foreach (var player in Model.Game.Players)
         {
             if (player.Name == Model.MyAccount.Username) continue;
-            <div class="padding" style="border:1px solid black; flex-shrink:0; width: 80%; margin-bottom:1rem;">
+            <div class="padding" style="@(Model.Game.IsPlaying(player) ? "":"opacity:0.5;")border:1px solid black; flex-shrink:0; width: 80%; margin-bottom:1rem;">
                 <h2>@player.Name</h2>
                 <p>money:</p>
                 <p>stats</p>

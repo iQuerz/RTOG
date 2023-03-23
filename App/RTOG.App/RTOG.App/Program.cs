@@ -38,6 +38,7 @@ app.UseEndpoints(endpoints =>
 });
 
 app.MapHub<LobbyHub>("/Hubs/Lobby");
+app.MapHub<GameHub>("/Hubs/Game");
 
 app.MapControllerRoute(
     name: "default",

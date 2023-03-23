@@ -5,6 +5,8 @@ using RTOG.Data.Models;
 
 namespace RTOG.App.Controllers
 {
+
+    [Route("[controller]")]
     public class GameController : Controller
     {
         private readonly ILobbyService _lobbyService;
@@ -23,7 +25,8 @@ namespace RTOG.App.Controllers
             _mapService = mapService;
         }
 
-        [Route("{api}/Game/{accountID}/{gameID}")]
+        [HttpGet]
+        [Route("Game/{accountID}/{gameID}")]
         public async Task<IActionResult> Game(int accountID, int gameID)
         {
             var account = await _accountService.Get(accountID);
@@ -38,7 +41,26 @@ namespace RTOG.App.Controllers
             return View("Game", gameModel);
         }
 
-        [Route("{api}/Update")]
+        [HttpGet]
+        [Route("GamePlayers")]
+        public async Task<IActionResult> GamePlayers(int accountID, int gameID)
+        {
+            var account = await _accountService.Get(accountID);
+            var game = await _gameService.Get(gameID);
+
+            var gameModel = new GameViewModel()
+            {
+                MyAccount = account,
+                Game = game
+            };
+
+            if (game.IsPlaying(account.Player))
+                return PartialView("~/Views/Game/_Game_Playing.cshtml", gameModel);
+
+            return PartialView("~/Views/Game/_Game_Watching.cshtml", gameModel);
+        }
+
+        [Route("Update")]
         public async Task<IActionResult> Update([FromBody] OngoingGame game)
         {
 
@@ -47,7 +69,7 @@ namespace RTOG.App.Controllers
             return Ok(game);
         }
 
-        [Route("{api}/NextTurn/{gameID}")]
+        [Route("NextTurn/{gameID}")]
         public async Task<IActionResult> NextTurn(int gameID)
         {
 
@@ -57,7 +79,7 @@ namespace RTOG.App.Controllers
         }
 
         [HttpPost]
-        [Route("{api}/CreateGame/{hostID}/{lobbyID}/{mapID}")]
+        [Route("CreateGame/{hostID}/{lobbyID}/{mapID}")]
         public async Task<IActionResult> CreateGame(int hostID, int lobbyID, int mapID)
         { 
             var lobby = await _lobbyService.Get(lobbyID);
