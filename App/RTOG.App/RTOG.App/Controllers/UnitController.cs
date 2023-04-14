@@ -13,11 +13,13 @@ namespace RTOG.App.Controllers
             _unitService = unitService;
         }
         [HttpPost]
-        [Route("{api}/Create/{playerID}/{tileID}")]
-        public async Task<IActionResult> Create(int playerID, int tileID)
+        [Route("{api}/Create/{playerID}/{tileID}/{type}")]
+
+        //@Url.Action("Create", "Unit") == {api}/Create note za mene da ne zaboravim zanemari
+        public async Task<IActionResult> Create(int playerID, int tileID,string type)
         {
 
-            var unit = await _unitService.CreateUnit(playerID, "Ivan", tileID);
+            var unit = await _unitService.CreateUnit(playerID, "Ivan", tileID,type);
 
             return Ok(unit);
         }

@@ -23,6 +23,8 @@ namespace RTOG.Data.Models
         public int Price { get; set; }
         [Required]
         public int Movement { get; set; }
+        [Required]
+        public string Type { get; set; }
         //[Required]
         //[JsonIgnore]
         //public Tile Tile { get; set; }
@@ -38,7 +40,9 @@ namespace RTOG.Data.Models
             Health = UnitStats.Units[type].Health;
             Price = UnitStats.Units[type].Price;
             Movement = UnitStats.Units[type].Movement;
+            Type = UnitStats.Units[type].Type;
             Upgrades = new List<UnitUpgrade>();
+
             //Tile = new Tile();
             
         }

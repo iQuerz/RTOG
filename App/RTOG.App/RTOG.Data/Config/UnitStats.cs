@@ -18,6 +18,7 @@ namespace RTOG.Data.Config
             public int Health { get; set; }
             public int Price { get; set; }
             public int Movement { get; set; }
+            public string Type { get; set; }
         }
 
         public UnitConfig this[string type]
@@ -31,12 +32,13 @@ namespace RTOG.Data.Config
 
             Units["AmericaSoldier"] = new UnitConfig
             {
-                Name = "America Soldier",
+                Name = "America Soldier",                
                 Attack = 10,
                 Defense = 5,
                 Health = 50,
                 Price = 110,
-                Movement = 1
+                Movement = 1,
+                Type = "A-Soldier"
             };
 
             Units["AmericaTank"] = new UnitConfig
@@ -46,7 +48,8 @@ namespace RTOG.Data.Config
                 Defense = 6,
                 Health = 90,
                 Price = 200,
-                Movement = 2
+                Movement = 2,
+                Type = "A-Tank"
             };
 
             Units["RussiaSoldier"] = new UnitConfig
@@ -56,7 +59,8 @@ namespace RTOG.Data.Config
                 Defense = 10,
                 Health = 60,
                 Price = 90,
-                Movement = 1
+                Movement = 1,
+                Type = "R-Soldier"
             };
 
             Units["RussiaTank"] = new UnitConfig
@@ -66,7 +70,8 @@ namespace RTOG.Data.Config
                 Defense = 10,
                 Health = 110,
                 Price = 185,
-                Movement = 2
+                Movement = 2,
+                Type = "R-Tank"
             };
             Units["ChineseSoldier"] = new UnitConfig
             {
@@ -75,7 +80,8 @@ namespace RTOG.Data.Config
                 Defense = 5,
                 Health = 35,
                 Price = 60,
-                Movement = 1
+                Movement = 1,
+                Type = "C-Soldier"
             };
             Units["ChineseTank"] = new UnitConfig
             {
@@ -84,7 +90,8 @@ namespace RTOG.Data.Config
                 Defense = 5,
                 Health = 90,
                 Price = 130,
-                Movement = 2
+                Movement = 2,
+                Type = "C-Tank"
             };
         }
     }

@@ -1,12 +1,12 @@
 ﻿@using RTOG.App.Models.Modals;
 @model GameViewModel
 <script src="~/js/MapInit.js"></script>
-
-<script type="module">
-    Game = @Json.Serialize(Model.Game);
-    import { mapObject } from "/js/Map.js";
-    mapObject.DrawBoard();
-</script>
+<input id="CreateUnitURL" hidden value="@Url.Action("Create", "Unit")" />
+    <script type="module">
+        Game = @Json.Serialize(Model.Game);
+        import { mapObject } from "/js/Map.js";
+        mapObject.DrawBoard();
+    </script>
 <script src="/lib/bootstrap-menu/BootstrapMenu.min.js"></script>
 <script type="module" src="~/js/menu.js" defer></script>
 

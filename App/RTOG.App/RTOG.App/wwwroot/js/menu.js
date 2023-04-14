@@ -35,7 +35,7 @@ var menu = new BootstrapMenu('.hasTileMenu', {
                 window.activeAction = 1;
                 console.log(window.eventClicekd)
                 console.log(window.eventClicekd.offsetX, window.eventClicekd.offsetY)
-                window.mapObject.AddUnit(window.eventClicekd.offsetX, window.eventClicekd.offsetY)
+                window.mapObject.AddUnit(window.eventClicekd.offsetX, window.eventClicekd.offsetY,"Soldier")
                 //windows.selectedTileID = window.mapObject.Return
             }
         },
@@ -44,6 +44,8 @@ var menu = new BootstrapMenu('.hasTileMenu', {
             iconClass: 'iconoir-arrow-up-circle',
             onClick: function () {
                 window.activeAction = 2;
+                //cisto radi testiranja ovo zove trenunto
+                window.mapObject.AddUnit(window.eventClicekd.offsetX, window.eventClicekd.offsetY, "Tank")
                 // run when the action is clicked
             }
         },

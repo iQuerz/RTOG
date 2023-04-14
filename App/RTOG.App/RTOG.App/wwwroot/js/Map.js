@@ -92,48 +92,71 @@ class Map {
         context.fillStyle = "#000";
         const polygon = voronoi.cellPolygon(i);
         const centroid = d3.polygonCentroid(polygon);
-        var distance = 0;
-        var count = 0;
+        var SoldierCount = 0;
+        var TankCount = 0;
+        var SoldierImg;
+        var TankImg;
         Game.map.allTiles[i].units.forEach(unit => {
-            //context.drawImage(solider, centroid[0], centroid[1], -40, -40 );
-            //distance += 20;
-            count++;
+            if (unit.type.includes("Soldier")) {
+                SoldierImg = unit.type;
+                SoldierCount++;
+            }
+            if (unit.type.includes("Tank")) {
+                TankImg = unit.type;
+                TankCount++;
+            }
         })
         if (Game.map.allTiles[i].units.length != 0)
         {
-            context.drawImage(solider, centroid[0], centroid[1], -35 - count * 2, -35 - count * 2);
-            context.fillText("  x" + Game.map.allTiles[i].units.length, centroid[0] - 50 - count*2, centroid[1] - 5);
+            if (SoldierCount != 0) {
+                context.drawImage(images[SoldierImg], centroid[0], centroid[1], -35 - SoldierCount * 2, -35 - SoldierCount * 2);
+                context.fillText("  x" + SoldierCount, centroid[0] - 40 - SoldierCount * 2, centroid[1] - 17 - SoldierCount * 2);
+            }
+            if (TankCount != 0) {
+                context.drawImage(images[TankImg], centroid[0], centroid[1], -60 - TankCount * 2, +35 + TankCount * 2);
+                context.fillText("  x" + TankCount, centroid[0] - 80 - TankCount * 2, centroid[1] + 17 + TankCount * 2);
+            }
+
         }
 
         if (Game.map.allTiles[i].units)
             context.drawImage(gold, centroid[0], centroid[1], 20, 20);
+        //FFD700
+        context.fillStyle = '#000000';
         context.fillText("  +" + Game.map.allTiles[i].gold, centroid[0] + 35, centroid[1] + 5);
         }
+        context.fillStyle = '#000000';
         console.log("end of drawBoard")
 }
 
-    AddUnit(x, y) {
+    AddUnit(x, y, type) {
         const cell = delaunay.find(x, y);
         console.log(MyAccount)
         console.log(Game.map.allTiles[cell])
-        //mora menjam url ovde da ne bude static
-        fetch("https://localhost:7281/Unit/Create/" + MyAccount.player.id + "/" + Game.map.allTiles[cell].id, {
+        fetch($("#CreateUnitURL").val() + "/" + MyAccount.player.id + "/" + Game.map.allTiles[cell].id + "/" + type, {
             method: "POST"
         })
             .then((response) => response.json())
             .then((data) => {
-
                 page.updateOtherGamePlayers()
-                console.log(data)
             });
     }
-
-   
-
     }
 const mapObject = new Map()
 const gold = new Image();
-const solider = new Image();
+const AmericanSolider = new Image();
+const RussianSolider = new Image();
+const ChiniseSolider = new Image();
+const AmericanTank = new Image();
+const RussianTank = new Image();
+const ChiniseTank = new Image();
+const images = {
+    "A-Soldier": AmericanSolider,
+    "R-Soldier": RussianSolider,
+    "A-Tank": AmericanTank,
+    "R-Tank": RussianTank,
+    "C-Tank": ChiniseTank,
+};
 var TexturePatter
 
 async function createPatternsV2() {
@@ -143,10 +166,31 @@ async function createPatternsV2() {
             gold.onload = () => resolve();
         });
 
-        const soliderPromise = new Promise(resolve => {
-            solider.src = "/res/Units/Unit2.png";
-            solider.onload = () => resolve();
+        const AmericanSoliderPromise = new Promise(resolve => {
+            AmericanSolider.src = "/res/Units/AmericanSolider.png";
+            AmericanSolider.onload = () => resolve();
         });
+        const RussianSoliderPromise = new Promise(resolve => {
+            RussianSolider.src = "/res/Units/RussianSolider.png";
+            RussianSolider.onload = () => resolve();
+        });
+        const ChiniseSoliderPromise = new Promise(resolve => {
+            ChiniseSolider.src = "/res/Units/ChiniseSolider.png";
+            ChiniseSolider.onload = () => resolve();
+        });
+        const AmericanTankPromise = new Promise(resolve => {
+            AmericanTank.src = "/res/Units/AmericanTank.png";
+            AmericanTank.onload = () => resolve();
+        });
+        const RussianTankPromise = new Promise(resolve => {
+            RussianTank.src = "/res/Units/RussianTank.png";
+            RussianTank.onload = () => resolve();
+        });
+        const ChiniseTankPromise = new Promise(resolve => {
+            ChiniseTank.src = "/res/Units/ChiniseTank.png";
+            ChiniseTank.onload = () => resolve();
+        });
+
 
         const backgroundPromise = new Promise(resolve => {
             const background = new Image();
@@ -161,7 +205,7 @@ async function createPatternsV2() {
             };
         });
 
-        await Promise.all([goldPromise, soliderPromise, backgroundPromise]);
+        await Promise.all([goldPromise, AmericanSoliderPromise, RussianSoliderPromise, ChiniseSoliderPromise, backgroundPromise]);
 
     } catch (error) {
         console.error(error);

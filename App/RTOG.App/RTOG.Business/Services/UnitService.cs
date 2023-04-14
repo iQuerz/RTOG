@@ -18,7 +18,7 @@ namespace RTOG.Business.Services
         {
             _dbContext = context;
         }
-        public async Task<Unit> CreateUnit(int playerID, string name, int tileID)
+        public async Task<Unit> CreateUnit(int playerID, string name, int tileID, string unitType)
         {
             var player = _dbContext.Players.Where(p => p.ID == playerID)
                                           .Include(p => p.Faction)
@@ -40,9 +40,17 @@ namespace RTOG.Business.Services
             if (faction is null)
                 throw new Exception("Faction not found.");
 
+            var unit = new Unit();
 
-
-            var unit = player.Faction.CreateSoldier(name);
+            if (unitType == "Tank")
+            {
+                unit = player.Faction.CreateTank(name);
+            }
+            else //default ponasanje
+            {
+                unit = player.Faction.CreateSoldier(name);
+            }
+            
 
             _dbContext.Units.Add(unit);
 
@@ -62,7 +70,22 @@ namespace RTOG.Business.Services
             
         }
 
+        public async Task<List<Unit>> GetUnits(int tileID)
+        {
 
+            var tile = _dbContext.Tiles.Where(t => t.ID == tileID)
+                                        .Include(p => p.Units)
+                                        .FirstOrDefault();
+
+            if (tile is null)
+                throw new Exception("Tile not found.");
+
+            //mozda nepotrebno ovo dole videcemo jos
+            if (tile.Units is null)
+                throw new Exception("Tile has no units.");
+
+            return tile.Units;
+        }
     }
 
     
