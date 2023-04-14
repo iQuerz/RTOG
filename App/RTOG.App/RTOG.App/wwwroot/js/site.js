@@ -19,3 +19,44 @@ const startLoading = function() {
 const stopLoading = function() {
     $(".loading").removeClass("active")
 }
+
+const ajaxBody = function (data) {
+    startLoading();
+    $.ajax({
+        type: data.type,
+        url: data.url,
+        data: JSON.stringify(data.data),
+        contentType: 'application/json',
+        success: function (response) {
+            stopLoading();
+            if (data.success)
+                data.success(response);
+        },
+        error: function (response) {
+            stopLoading();
+            if (data.error)
+                data.error(response);
+            alert(response.responseText)
+        }
+    });
+}
+const ajaxQuery = function (data) {
+    console.log(data.data);
+    startLoading();
+    $.ajax({
+        type: data.type,
+        url: data.url,
+        data: data.data,
+        success: function (response) {
+            stopLoading();
+            if (data.success)
+                data.success(response);
+        },
+        error: function (response) {
+            stopLoading();
+            if (data.error)
+                data.error(response);
+            alert(response.responseText)
+        }
+    });
+}

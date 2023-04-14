@@ -24,6 +24,7 @@
 //    })
 
 //const MapObject = new Map();
+window.activeAction = 0;
 var menu = new BootstrapMenu('.hasTileMenu', {
     menuEvent: 'click',
     actions: [
@@ -31,16 +32,18 @@ var menu = new BootstrapMenu('.hasTileMenu', {
             name: 'Add new unit',
             iconClass: 'iconoir-add-circle',
             onClick: function () {
+                window.activeAction = 1;
                 console.log(window.eventClicekd)
                 console.log(window.eventClicekd.offsetX, window.eventClicekd.offsetY)
                 window.mapObject.AddUnit(window.eventClicekd.offsetX, window.eventClicekd.offsetY)
-                //alert("hi");
+                //windows.selectedTileID = window.mapObject.Return
             }
         },
         {
             name: 'Upgrade unit(s)',
             iconClass: 'iconoir-arrow-up-circle',
             onClick: function () {
+                window.activeAction = 2;
                 // run when the action is clicked
             }
         },
@@ -48,6 +51,7 @@ var menu = new BootstrapMenu('.hasTileMenu', {
             name: 'Fortify tile',
             iconClass: 'iconoir-historic-shield',
             onClick: function () {
+                window.activeAction = 3;
                 // run when the action is clicked
             }
         },
@@ -55,6 +59,7 @@ var menu = new BootstrapMenu('.hasTileMenu', {
             name: 'Attack/Move',
             iconClass: 'iconoir-move-up',
             onClick: function () {
+                window.activeAction = 4;
                 // run when the action is clicked
             }
         },

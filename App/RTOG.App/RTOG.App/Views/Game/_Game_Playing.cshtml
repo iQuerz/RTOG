@@ -1,11 +1,12 @@
-﻿@model GameViewModel
+﻿@using RTOG.App.Models.Modals;
+@model GameViewModel
 <script src="~/js/MapInit.js"></script>
 
-    <script type="module">
-        Game = @Json.Serialize(Model.Game);
-        import { mapObject } from "/js/Map.js";
-        mapObject.DrawBoard();
-    </script>
+<script type="module">
+    Game = @Json.Serialize(Model.Game);
+    import { mapObject } from "/js/Map.js";
+    mapObject.DrawBoard();
+</script>
 <script src="/lib/bootstrap-menu/BootstrapMenu.min.js"></script>
 <script type="module" src="~/js/menu.js" defer></script>
 
@@ -14,17 +15,18 @@
 
 <div class="is-flex-row">
 
-    <div class="is-flex-down" style="flex-shrink:0; justify-content: flex-start; align-items:flex-start; width:150px;">
+    <div class="is-flex-down" style="flex-shrink:0; justify-content: flex-start; align-items:flex-start; width:120px;">
         <h1>@Model.MyAccount.Username</h1>
         <p>points:</p>
         <p>idk stats</p>
         <p>more stats</p>
+        <button>End Turn</button>
     </div>
 
     <div id="Map">
     </div>
 
-    <div class="is-flex-down" style="flex-shrink:0; justify-content: flex-start; align-items:flex-end; width:150px;">
+    <div class="is-flex-down" style="flex-shrink:0; justify-content: flex-start; align-items:flex-end; width:120px;">
         @foreach (var player in Model.Game.Players)
         {
             if (player.Name == Model.MyAccount.Username) continue;
@@ -35,10 +37,72 @@
             </div>
         }
     </div>
+
+    <a href="#upgradeUnitsModal" rel="modal:open">open modal</a>
+</div>
+
+<div class="modal" id="unitsSelectModal">
+    @{
+        await Html.RenderPartialAsync("_UnitsSelectModal", new UnitsSelectModalModel() { Units = new() });
+    }
+</div>
+
+<div class="modal" id="upgradeUnitsModal">
+    @{
+        await Html.RenderPartialAsync("_UpgradeUnitsModal", new UpgradeUnitsModalModel() { Upgrades = new() });
+    }
 </div>
 
 <script>
     $(document).ready(function() {
-        $.notify("Your turn!", {position:'top center'})
+        $.notify("Your turn!", { position: 'top center' })
+        $('#unitsSelectModal').on('modalClose', function(units) {
+            if (window.activeAction == 2) {
+                // upgrade selected units
+                let upgradeID = window.selectedUpgradeID;
+                ajaxBody({
+                    type: 'POST',
+                    url: '@Url.Action("UpgradeUnits", "Unit")' + '/' + upgradeID,
+                    data: units,
+                    success: function() {
+                        page.updateOtherGamePlayers();
+                    }
+                })
+            }
+            else {
+                //kod ako je selected units za move
+                let tileID = window.selectedTileID;
+                ajaxBody({
+                    type: 'POST',
+                    url: '@Url.Action("MoveUnits", "Unit")' + '/' + tileID,
+                    data: units,
+                    success: function(){
+                        page.updateOtherGamePlayers();
+                    }
+                })
+            }
+        });
+
+        $('#upgradeUnitsModal').on('upgradesModalClose', function(upgradeID) {
+            console.log("event caught", upgradeID)
+
+            @*ajaxQuery({
+                type: 'GET',
+                url: '@Url.Action("GetAvailableUnitsForUpgrade","Unit")',
+                data: {
+                    upgradeID: upgradeID,
+                    tileID: window.clickedTileID
+                },
+                success: function() {
+                    page.updateOtherGamePlayers();
+                }
+            });*@
+            showUnitsSelectModal();
+            console.log("hi")
+        });
     });
+
+    function showUnitsSelectModal(){
+        $('#unitsSelectModal').modal();
+    }
 </script>

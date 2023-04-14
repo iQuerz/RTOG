@@ -1,0 +1,25 @@
+﻿@using RTOG.App.Models.Modals;
+@model UpgradeUnitsModalModel
+
+<div style="width:90%;height:80%;border:1px solid black; padding:1rem;">
+    <h2>Select upgrades</h2>
+    @foreach(var upgrade in Model.Upgrades)
+    {
+        <div style="padding:2px;border:1px solid black">
+            <p>@upgrade.Name</p>
+            <input type="radio" onchange="selectUnit(event, @upgrade.ID)">
+        </div>
+    }
+</div>
+<a href="#" rel="modal:close" onclick="confirm()">Confirm</a>
+<a href="#" rel="modal:close">Cancel</a>
+
+<script>
+    var selectedUpgradeID = 0;
+    function selectUnit(event, upgradeID){ //does both select and deselect
+        window.selectedUpgradeID = upgradeID;
+    }
+    function confirm() {
+        $('#upgradeUnitsModal').trigger('upgradesModalClose', units);
+    }
+</script>

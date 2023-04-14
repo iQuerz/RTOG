@@ -1,0 +1,36 @@
+﻿@using RTOG.App.Models.Modals;
+@model UnitsSelectModalModel
+
+<div style="width:90%;height:80%;border:1px solid black; padding:1rem;">
+    <h2>Select units</h2>
+    @foreach(var unit in Model.Units)
+    {
+        <div style="padding:2px;border:1px solid black">
+            <p>@unit.Name</p>
+            <p>(@foreach(var upgrade in unit.Upgrades)
+                {
+                    <span>@upgrade.Name</span>
+                })</p>
+            <input type="checkbox" onchange="selectUnit(event, @unit.ID)">
+        </div>
+    }
+</div>
+<a href="#" rel="modal:close" onclick="confirm()">Confirm</a>
+<a href="#" rel="modal:close">Cancel</a>
+
+<script>
+    var units = [];
+    function selectUnit(event, unitID){ //does both select and deselect
+        if(event.target.checked){
+            units.push(unitID);
+        }
+        else {
+            let index = units.indexOf(unitID);
+            if (index > -1)
+                units.splice(index, 1);
+        }
+    }
+    function confirm() {
+        $('#unitsSelectModal').trigger('modalClose', units);
+    }
+</script>
