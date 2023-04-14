@@ -14,7 +14,7 @@ namespace RTOG.Data.Models
 
         public override Unit CreateSoldier(string name)
         {
-            var unit = new AmericaSoldier();
+            var unit = new ChineseSoldier();
             unit.Name = name;
             Army.Add(unit);
             return unit;
@@ -22,7 +22,7 @@ namespace RTOG.Data.Models
 
         public override Unit CreateTank(string name)
         {
-            var unit = new AmericaTank();
+            var unit = new ChineseTank();
             unit.Name = name;
             Army.Add(unit);
             return unit;

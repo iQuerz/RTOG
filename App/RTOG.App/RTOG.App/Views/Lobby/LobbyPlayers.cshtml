@@ -122,17 +122,16 @@
     var selectedFaction = null;
     function OnFactionSelect(event) {
         let accountId = @(Model.MyAccount.ID);
+        console.log(event.target.value);
+        selectedFaction = event.target.value;
         $.ajax({
             type: 'PATCH',
-            url: $('#UpdatePlayerFactionUrl').val() + "/" + accountId + "/" + colorId,
+            url: $('#UpdatePlayerFactionUrl').val() + "/" + accountId + "/" + selectedFaction,
             success: function (response) {
                 $("#colorTable tr td").each(function () {
                     $(this)[0].classList.remove("selected-color");
                 });
-                selectedColor = event.target;
-                selectedColor.classList.add("selected-color");
                 //update lobby with new selected color
-                updateOtherLobbyPlayers();
             },
             error: function (response) {
                 //nikola

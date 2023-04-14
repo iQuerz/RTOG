@@ -153,6 +153,7 @@ const ChiniseTank = new Image();
 const images = {
     "A-Soldier": AmericanSolider,
     "R-Soldier": RussianSolider,
+    "C-Soldier": ChiniseSolider,
     "A-Tank": AmericanTank,
     "R-Tank": RussianTank,
     "C-Tank": ChiniseTank,
@@ -205,7 +206,8 @@ async function createPatternsV2() {
             };
         });
 
-        await Promise.all([goldPromise, AmericanSoliderPromise, RussianSoliderPromise, ChiniseSoliderPromise, backgroundPromise]);
+        await Promise.all([goldPromise, AmericanSoliderPromise, RussianSoliderPromise, ChiniseSoliderPromise, AmericanTankPromise,
+            ,RussianTankPromise, ChiniseTankPromise, backgroundPromise]);
 
     } catch (error) {
         console.error(error);
