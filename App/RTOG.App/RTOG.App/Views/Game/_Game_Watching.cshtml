@@ -1,4 +1,10 @@
-﻿<div class="is-flex-row">
+﻿<script src="~/js/MapInit.js"></script>
+<script type="module">
+    Game = @Json.Serialize(Model.Game);
+    import { mapObject } from "/js/Map.js";
+    mapObject.DrawBoard();
+</script>
+<div class="is-flex-row">
     <div class="is-flex-down" style="opacity:0.5; flex-shrink:0; justify-content: flex-start; align-items:flex-start; width:150px;">
         <h1>@Model.MyAccount.Username</h1>
         <p>points:</p>

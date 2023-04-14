@@ -4,18 +4,26 @@
 //const addUnit = require('./Map');
 // ovo pravi context menu nad elementima sa klasom .hasTileMenu koji se pojavljuje ispod misa
 
-import Map from './Map.js';
+//import { mapObject } from './Map.js';
 
-var eventClicekd;
+/*var eventClicekd;*/
 
 //korisimo da uzimamo lokaciju prvobitnog klika a ne drugog klika na menu
-const tileMenus = document.querySelector('.hasTileMenu');
-console.log(tileMenus)
-tileMenus.addEventListener("click", event => {
-    eventClicekd = event
-});
+//var tileMenus = document.querySelector('.hasTileMenu');
+//console.log(tileMenus)
+//tileMenus.addEventListener("click", event => {
+//        console.log("Test")
+//        eventClicekd = event
+//    });
 
-const MapObject = new Map();
+
+//var mapDiv = document.querySelector('#Map');
+//console.log(mapDiv)
+//mapDiv.addEventListener("click", event => {
+//    console.log("clicked")
+//    })
+
+//const MapObject = new Map();
 var menu = new BootstrapMenu('.hasTileMenu', {
     menuEvent: 'click',
     actions: [
@@ -23,8 +31,9 @@ var menu = new BootstrapMenu('.hasTileMenu', {
             name: 'Add new unit',
             iconClass: 'iconoir-add-circle',
             onClick: function () {
-                //console.log(eventClicekd.offsetX, eventClicekd.offsetY)
-                MapObject.AddUnit(eventClicekd.offsetX, eventClicekd.offsetY)
+                console.log(window.eventClicekd)
+                console.log(window.eventClicekd.offsetX, window.eventClicekd.offsetY)
+                window.mapObject.AddUnit(window.eventClicekd.offsetX, window.eventClicekd.offsetY)
                 //alert("hi");
             }
         },
@@ -54,5 +63,4 @@ var menu = new BootstrapMenu('.hasTileMenu', {
             iconClass: 'iconoir-cancel'
         }]
 });
-
 

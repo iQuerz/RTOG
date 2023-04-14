@@ -61,12 +61,14 @@
     const page = new Page();
     $(document).ready(function(){
         page.init();
+
     });
 </script>
-<script type="module" src="~/js/Map.js" defer></script>
+@*<script type="module" src="~/js/Map.js" defer></script>*@
+
+
 
 <div id="gamePlayers">
-
     @*kada budem imao logiku za proveravanje da li je MyAccount na potezu:*@
     @if(Model.Game.TurnCounter % Model.Game.Map.PlayerCount == Model.MyAccount.Player.TurnOrder){
         <partial name="./_Game_Playing.cshtml"/>
@@ -75,5 +77,5 @@
     {
         <partial name="./_Game_Watching.cshtml"/>
     }
-
+    <button onclick="DrawBoard()">Click me</button>
 </div>

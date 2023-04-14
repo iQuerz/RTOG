@@ -1,11 +1,19 @@
 ﻿@model GameViewModel
-<script type="module" src="~/js/menu.js" defer></script>
+<script src="~/js/MapInit.js"></script>
+
+    <script type="module">
+        Game = @Json.Serialize(Model.Game);
+        import { mapObject } from "/js/Map.js";
+        mapObject.DrawBoard();
+    </script>
 <script src="/lib/bootstrap-menu/BootstrapMenu.min.js"></script>
+<script type="module" src="~/js/menu.js" defer></script>
 
 <!-- Link BootstrapMenu CSS stylesheet -->
 <link rel="stylesheet" href="/css/dropdown.css">
 
 <div class="is-flex-row">
+
     <div class="is-flex-down" style="flex-shrink:0; justify-content: flex-start; align-items:flex-start; width:150px;">
         <h1>@Model.MyAccount.Username</h1>
         <p>points:</p>
