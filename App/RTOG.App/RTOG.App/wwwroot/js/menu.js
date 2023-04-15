@@ -34,7 +34,7 @@ var menu = new BootstrapMenu('.hasTileMenu', {
             onClick: function () {
                 window.activeAction = 1;
                 var tileId = window.mapObject.ReturnTileID(window.eventClicekd.offsetX, window.eventClicekd.offsetY);
-                page.showAddUnitsModal(tileId)
+                page.showAddUnitsModal(tileId);
                 //window.mapObject.AddUnit(window.eventClicekd.offsetX, window.eventClicekd.offsetY,"Soldier")
                 //windows.selectedTileID = window.mapObject.Return
             }
@@ -45,7 +45,8 @@ var menu = new BootstrapMenu('.hasTileMenu', {
             onClick: function () {
                 window.activeAction = 2;
                 //cisto radi testiranja ovo zove trenunto
-                window.mapObject.AddUnit(window.eventClicekd.offsetX, window.eventClicekd.offsetY, "Tank")
+                window.mapObject.AddUnit(window.eventClicekd.offsetX, window.eventClicekd.offsetY, "Tank");
+                page.showUpgradeUnitsModal(tileId);
                 // run when the action is clicked
             }
         },
@@ -64,6 +65,8 @@ var menu = new BootstrapMenu('.hasTileMenu', {
             iconClass: 'iconoir-move-up',
             onClick: function () {
                 window.activeAction = 4;
+                var tileId = window.mapObject.ReturnTileID(window.eventClicekd.offsetX, window.eventClicekd.offsetY);
+                page.showUnitsSelectModal(tileId)
                 // run when the action is clicked
             }
         },

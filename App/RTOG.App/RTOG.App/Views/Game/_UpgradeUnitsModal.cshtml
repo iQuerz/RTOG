@@ -20,6 +20,7 @@
         window.selectedUpgradeID = upgradeID;
     }
     function confirm() {
+        page.showUpgradeUnitsModal(tileId, selectedUpgradeID);
         $('#upgradeUnitsModal').trigger('upgradesModalClose', units);
     }
 </script>

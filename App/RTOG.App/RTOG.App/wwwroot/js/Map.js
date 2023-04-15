@@ -25,10 +25,10 @@ let voronoi
 class Map {
 
     constructor() {
-       
-    }
 
-    DrawBoard() {
+    }
+    //oko kog tile-a da se highligtuje
+    DrawBoard(selectedTileID = -1) {
         const height = 900
         const width = 1600
         var canvas = document.querySelector(".hasTileMenu")
@@ -82,11 +82,34 @@ class Map {
     }
     context.globalAlpha = 1;
     //dodaje stroke teritorijama mora da bude posle teritorije
+    var DrawStrokeLaterIndx = [];
     for (let i = 0; i < particles.length; i++) {
         context.beginPath();
+        console.log(selectedTileID)
+        if (selectedTileID != -1) {
+            const selectedTileIndex = Game.map.allTiles.findIndex(tile => tile.id === selectedTileID);
+            const neighborsIndices = delaunay.neighbors(selectedTileIndex)
+            const neighbors = Array.from(neighborsIndices);
+            if (neighbors.includes(i))
+            {
+                DrawStrokeLaterIndx.push(i);
+            }
+        }
+
         voronoi.renderCell(i, context);
         context.stroke();
-    }
+        }
+        //crtamo highlighovana polja kasnije
+        if (DrawStrokeLaterIndx != undefined) {
+            context.strokeStyle = "#0f0"
+            DrawStrokeLaterIndx.forEach((idx) => {
+                context.beginPath();
+                voronoi.renderCell(idx, context);
+                context.stroke();
+            })
+            context.strokeStyle = "#000"
+        }
+
     //renderuje resurse i units
     for (let i = 0; i < particles.length; i++) {
         context.fillStyle = "#000";
@@ -142,8 +165,24 @@ class Map {
         }
     ReturnTileID(x, y) {
         const cell = delaunay.find(x, y);
+        console.log("Cell is " + cell)
+        console.log(Game.map);
         return Game.map.allTiles[cell].id
     }
+    //HighlightMovmentOptions(tileID)
+    //{
+    //    const neighborsIndices = delaunay.neighbors(tileID)
+    //    const neighbors = Array.from(neighborsIndices);
+    //    console.log(neighbors)
+    //    neighbors.forEach((indx)=>
+    //    {
+    //        context.strokeStyle = "#010"
+    //        context.beginPath();
+    //        voronoi.renderCell(indx, context);
+    //        context.stroke();
+    //    })
+    //    context.strokeStyle = "#000"
+    //}
 }
 const mapObject = new Map()
 const gold = new Image();

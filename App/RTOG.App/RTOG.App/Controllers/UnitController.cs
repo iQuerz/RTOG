@@ -37,6 +37,7 @@ namespace RTOG.App.Controllers
         [Route("getUpgradeUnitsModal")]
         public async Task<IActionResult> getUpgradeUnitsModal(int tileID)
         {
+
             var model = new UpgradeUnitsModalModel()
             {
                 Upgrades = new()//piksi: svi available upgrades za units na tile
@@ -49,10 +50,21 @@ namespace RTOG.App.Controllers
         [Route("getUnitsSelectModal")]
         public async Task<IActionResult> getUnitsSelectModal(int tileID, int upgradeID)
         {
-
+            List<Unit> units = await _unitService.GetUnits(tileID);
+            if(upgradeID != 0)
+            {
+                for (int i = units.Count - 1; i >= 0; i--)
+                {
+                    if (units[i].Upgrades.Any(up => up.ID == upgradeID))
+                    {
+                        units.RemoveAt(i);
+                    }
+                }
+            }
             var model = new UnitsSelectModalModel()
             {
-                Units = new()//piksi: svi available units za selection unutar tile.
+                tileID= tileID,
+                Units = units//piksi: svi available units za selection unutar tile.
                              //ukoliko je upgradeID != 0, svi available units za taj upgrade na tom tile 
             };
 
@@ -61,7 +73,6 @@ namespace RTOG.App.Controllers
 
         [HttpPost]
         [Route("Create/{playerID}/{tileID}")]
-        //@Url.Action("Create", "Unit") == {api}/Create note za mene da ne zaboravim zanemari
         public async Task<IActionResult> Create(int playerID, int tileID, [FromBody] List<string> units)
         {
 
@@ -71,8 +82,6 @@ namespace RTOG.App.Controllers
         }
         [HttpGet]
         [Route("Get/{tileID}")]
-
-        //@Url.Action("Create", "Unit") == {api}/Create note za mene da ne zaboravim zanemari
         public async Task<IActionResult> Get(int tileID)
         {
 
