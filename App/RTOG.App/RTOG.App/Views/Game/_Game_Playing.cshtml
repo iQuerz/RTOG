@@ -1,5 +1,6 @@
 ﻿@using RTOG.App.Models.Modals;
 @model GameViewModel
+
 <script src="~/js/MapInit.js"></script>
 <input id="CreateUnitURL" hidden value="@Url.Action("Create", "Unit")" />
     <script type="module">
@@ -53,10 +54,14 @@
     }
 </div>
 
+<div class="modal" id="addUnitsModal">
+
+</div>
+
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $.notify("Your turn!", { position: 'top center' })
-        $('#unitsSelectModal').on('modalClose', function(units) {
+        $('#unitsSelectModal').on('modalClose', function(event, units) {
             if (window.activeAction == 2) {
                 // upgrade selected units
                 let upgradeID = window.selectedUpgradeID;
@@ -64,7 +69,7 @@
                     type: 'POST',
                     url: '@Url.Action("UpgradeUnits", "Unit")' + '/' + upgradeID,
                     data: units,
-                    success: function() {
+                    success: function(response) {
                         page.updateOtherGamePlayers();
                     }
                 })
@@ -83,8 +88,9 @@
             }
         });
 
-        $('#upgradeUnitsModal').on('upgradesModalClose', function(upgradeID) {
+        $('#upgradeUnitsModal').on('upgradesModalClose', function(event, upgradeID) {
             console.log("event caught", upgradeID)
+            showUnitsSelectModal();
 
             @*ajaxQuery({
                 type: 'GET',
@@ -97,12 +103,54 @@
                     page.updateOtherGamePlayers();
                 }
             });*@
-            showUnitsSelectModal();
             console.log("hi")
         });
     });
 
-    function showUnitsSelectModal(){
+    page.showUnitsSelectModal = function(){
+
         $('#unitsSelectModal').modal();
+        console.log("idkk")
     }
+    page.showAddUnitsModal = function(){
+        ajaxQuery({
+            type: 'GET',
+            url: '@Url.Action("getAddUnitsModal", "Unit")',
+            data:{
+                playerID: @Model.MyAccount.Player.ID
+            },
+            success: function(response) {
+                $('#addUnitsModal').html(response);
+                $('#addUnitsModal').modal();
+            }
+        })
+    }
+    page.showUpgradeUnitsModal = function(tileID){
+        ajaxQuery({
+            type: 'GET',
+            url: '@Url.Action("getUpgradeUnitsModal", "Unit")',
+            data: {
+                tileID: tileID
+            },
+            success: function(response) {
+                $('#upgradeUnitsModal').html(response);
+                $('#upgradeUnitsModal').modal();
+            }
+        })
+    }
+    page.showUnitsSelectModal = function(tileID, upgradeID = 0) {
+        ajaxQuery({
+            type: 'GET',
+            url: '@Url.Action("getUnitsSelectModal", "Unit")',
+            data: {
+                tileID: tileID
+            },
+            success: function (response) {
+                $('#unitsSelectModal').html(response);
+                $('#unitsSelectModal').modal();
+            }
+        })
+    }
+
+    $('#unitsSelectModal').modal();
 </script>

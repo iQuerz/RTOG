@@ -1,0 +1,54 @@
+﻿@using RTOG.App.Models.Modals;
+@model AddUnitsModalModel
+
+<h2>Buy units</h2>
+<div style="width:90%;height:80%;border:1px solid black; padding:1rem;">
+    @foreach(var unit in Model.Units)
+    {
+        <div style="padding:2px;border:1px solid black">
+            <p>@unit.Name</p>
+            <span id="@(unit.ID + "counter")">0</span>
+            <span>
+                <button onclick="addUnit(@unit.ID)">+</button>
+                <button onclick="remUnit(@unit.ID)">-</button>
+            </span>
+        </div>
+    }
+</div>
+<a href="#" rel="modal:close" onclick="confirm()">Confirm</a>
+<a href="#" rel="modal:close">Cancel</a>
+
+<script>
+    var units = [];
+    function addUnit(unitID){
+        units.push(unitID);
+        updateCount(unitID);
+    }
+    function remUnit(){
+        let index = units.indexOf(unitID);
+        if (index > -1)
+            units.splice(index, 1);
+        updateCount(unitID);
+    }
+
+
+    function updateCount(unitID){
+        let count = 0;
+        for (let i = 0; i < units.length; i++) {
+            if (units[i] === unitID) {
+                count++;
+            }
+        }
+
+        $('#' + unitID + 'counter').text(count.toString());
+    }
+    function confirm() {
+        ajaxBody({
+            type: 'POST',
+            url: '@Url.Action("AddUnit", "Unit")',
+            data: {
+
+            }
+        })
+    }
+</script>

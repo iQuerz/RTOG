@@ -58,7 +58,7 @@ namespace RTOG.Business.Services
 
         public async Task<Account> Get(int accountID)
         {
-            var account = await _dbContext.Accounts.FindAsync(accountID);
+            var account = await _dbContext.Accounts.Where(a => a.ID == accountID).Include(a => a.Player).FirstOrDefaultAsync();
             if (account is null)
                 throw new Exception("Account not found");//todo:bljak static string
             return account;
