@@ -6,11 +6,11 @@
     @foreach(var unit in Model.Units)
     {
         <div style="padding:2px;border:1px solid black">
-            <p>@unit.Name</p>
-            <span id="@(unit.ID + "counter")">0</span>
+            <p>@unit</p>
+            <span id="@(unit + "counter")">0</span>
             <span>
-                <button onclick="addUnit(@unit.ID)">+</button>
-                <button onclick="remUnit(@unit.ID)">-</button>
+                <button onclick="addUnit(@("\"" + unit +"\""))">+</button>
+                <button onclick="remUnit(@("\"" + unit +"\""))">-</button>
             </span>
         </div>
     }
@@ -22,9 +22,10 @@
     var units = [];
     function addUnit(unitID){
         units.push(unitID);
+        console.log(units)
         updateCount(unitID);
     }
-    function remUnit(){
+    function remUnit(unitID){
         let index = units.indexOf(unitID);
         if (index > -1)
             units.splice(index, 1);
@@ -45,10 +46,11 @@
     function confirm() {
         ajaxBody({
             type: 'POST',
-            url: '@Url.Action("AddUnit", "Unit")',
-            data: {
-
-            }
+            url: '@Url.Action("Create", "Unit")' + "/" + @Model.playerID + "/" + @Model.tileID,
+            data: units,
+            success: function() {
+                page.updateOtherGamePlayers()
+            } 
         })
     }
 </script>

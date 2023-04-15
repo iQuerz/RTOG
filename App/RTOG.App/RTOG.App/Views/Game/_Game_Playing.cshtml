@@ -112,12 +112,13 @@
         $('#unitsSelectModal').modal();
         console.log("idkk")
     }
-    page.showAddUnitsModal = function(){
+    page.showAddUnitsModal = function(tileID){
         ajaxQuery({
             type: 'GET',
             url: '@Url.Action("getAddUnitsModal", "Unit")',
             data:{
-                playerID: @Model.MyAccount.Player.ID
+                playerID: @Model.MyAccount.Player.ID,
+                tileID: tileID
             },
             success: function(response) {
                 $('#addUnitsModal').html(response);

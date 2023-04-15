@@ -33,9 +33,9 @@ var menu = new BootstrapMenu('.hasTileMenu', {
             iconClass: 'iconoir-add-circle',
             onClick: function () {
                 window.activeAction = 1;
-                console.log(window.eventClicekd)
-                console.log(window.eventClicekd.offsetX, window.eventClicekd.offsetY)
-                window.mapObject.AddUnit(window.eventClicekd.offsetX, window.eventClicekd.offsetY,"Soldier")
+                var tileId = window.mapObject.ReturnTileID(window.eventClicekd.offsetX, window.eventClicekd.offsetY);
+                page.showAddUnitsModal(tileId)
+                //window.mapObject.AddUnit(window.eventClicekd.offsetX, window.eventClicekd.offsetY,"Soldier")
                 //windows.selectedTileID = window.mapObject.Return
             }
         },
@@ -54,6 +54,8 @@ var menu = new BootstrapMenu('.hasTileMenu', {
             iconClass: 'iconoir-historic-shield',
             onClick: function () {
                 window.activeAction = 3;
+                var tileId = window.mapObject.ReturnTileID(window.eventClicekd.offsetX, window.eventClicekd.offsetY);
+                console.log(tileId);
                 // run when the action is clicked
             }
         },

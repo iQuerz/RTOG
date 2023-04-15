@@ -6,8 +6,10 @@ using RTOG.Data.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace RTOG.Business.Services
 {
@@ -18,7 +20,7 @@ namespace RTOG.Business.Services
         {
             _dbContext = context;
         }
-        public async Task<Unit> CreateUnit(int playerID, string name, int tileID, string unitType)
+        public async Task<List<Unit>> CreateUnit(int playerID, string name, int tileID, List<string> unitsToCreate)
         {
             var player = _dbContext.Players.Where(p => p.ID == playerID)
                                           .Include(p => p.Faction)
@@ -40,34 +42,38 @@ namespace RTOG.Business.Services
             if (faction is null)
                 throw new Exception("Faction not found.");
 
-            var unit = new Unit();
+            List<Unit> units = new ();
 
-            if (unitType == "Tank")
+            Type factionType = player.Faction.GetType();
+            MethodInfo[] methods = factionType.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
+            foreach (string unitToCreate in unitsToCreate)
             {
-                unit = player.Faction.CreateTank(name);
+                foreach (MethodInfo method in methods)
+                {
+                    if (method.Name.Contains(unitToCreate))
+                    {
+                        var unit = (Unit)method.Invoke(player.Faction, new object[] { name });
+
+                        _dbContext.Units.Add(unit);
+
+                        faction.Army.Add(unit);
+
+                        tile.Units.Add(unit);
+
+                        units.Add(unit);
+                    }
+
+                }
             }
-            else //default ponasanje
-            {
-                unit = player.Faction.CreateSoldier(name);
-            }
-            
-
-            _dbContext.Units.Add(unit);
-
-            faction.Army.Add(unit);
-
-            tile.Units.Add(unit);
 
             if (tile.Owner == null)
                 tile.Owner = player;
 
             await _dbContext.SaveChangesAsync();
 
-            Console.WriteLine(unit.ID);
-            Console.WriteLine(unit.Name);
-            return unit;
-           
-            
+            return units;
+
+
         }
 
         public async Task<List<Unit>> GetUnits(int tileID)
@@ -86,7 +92,25 @@ namespace RTOG.Business.Services
 
             return tile.Units;
         }
+
+        public async Task<List<string>> GetUnitsOptions(int playerID)
+        {
+            var player = _dbContext.Players.Where(p => p.ID == playerID)
+                                          .Include(p => p.Faction)
+                                          .FirstOrDefault();
+
+            if (player is null)
+                throw new Exception("Player not found.");
+
+            Type factionType = player.Faction.GetType();
+            MethodInfo[] methods = factionType.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
+            var unitOptions = new List<string>();
+            foreach (MethodInfo method in methods)
+            {
+                unitOptions.Add(method.Name);
+            }
+            return unitOptions;
+        }
     }
 
-    
 }

@@ -4,6 +4,9 @@ namespace RTOG.App.Models.Modals
 {
     public class AddUnitsModalModel
     {
-        public List<Unit> Units { get; set; }
+        public int tileID { get; set; }
+        public int playerID { get; set; }
+        public List<string> Units { get; set; }
+        
     }
 }

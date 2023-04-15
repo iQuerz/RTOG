@@ -131,7 +131,6 @@ class Map {
 
     AddUnit(x, y, type) {
         const cell = delaunay.find(x, y);
-        console.log(MyAccount)
         console.log(Game.map.allTiles[cell])
         fetch($("#CreateUnitURL").val() + "/" + MyAccount.player.id + "/" + Game.map.allTiles[cell].id + "/" + type, {
             method: "POST"
@@ -140,8 +139,12 @@ class Map {
             .then((data) => {
                 page.updateOtherGamePlayers()
             });
+        }
+    ReturnTileID(x, y) {
+        const cell = delaunay.find(x, y);
+        return Game.map.allTiles[cell].id
     }
-    }
+}
 const mapObject = new Map()
 const gold = new Image();
 const AmericanSolider = new Image();

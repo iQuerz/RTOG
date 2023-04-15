@@ -2,6 +2,8 @@
 using RTOG.App.Models.Modals;
 using RTOG.Business.Interfaces;
 using RTOG.Data.Models;
+using System.Numerics;
+using System.Reflection;
 
 namespace RTOG.App.Controllers
 {
@@ -17,11 +19,15 @@ namespace RTOG.App.Controllers
 
         [HttpGet]
         [Route("getAddUnitsModal")]
-        public async Task<IActionResult> getAddUnitsModal(int playerID)
+        public async Task<IActionResult> getAddUnitsModal(int playerID, int tileID)
         {
+
+            List<string> units = await _unitService.GetUnitsOptions(playerID);
             var model = new AddUnitsModalModel()
             {
-                Units = new()//piksi: units koje player moze da napravi
+                playerID= playerID,
+                tileID = tileID,
+                Units = units//piksi: units koje player moze da napravi
             };
 
             return PartialView("Views/Game/_AddUnitsModal.cshtml", model);
@@ -54,12 +60,23 @@ namespace RTOG.App.Controllers
         }
 
         [HttpPost]
-        [Route("{api}/Create/{playerID}/{tileID}/{type}")]
+        [Route("Create/{playerID}/{tileID}")]
         //@Url.Action("Create", "Unit") == {api}/Create note za mene da ne zaboravim zanemari
-        public async Task<IActionResult> Create(int playerID, int tileID, string type)
+        public async Task<IActionResult> Create(int playerID, int tileID, [FromBody] List<string> units)
         {
 
-            var unit = await _unitService.CreateUnit(playerID, "Ivan", tileID,type);
+            var unit = await _unitService.CreateUnit(playerID, "Ivan", tileID, units);
+
+            return Ok(unit);
+        }
+        [HttpGet]
+        [Route("Get/{tileID}")]
+
+        //@Url.Action("Create", "Unit") == {api}/Create note za mene da ne zaboravim zanemari
+        public async Task<IActionResult> Get(int tileID)
+        {
+
+            var unit = await _unitService.GetUnits(tileID);
 
             return Ok(unit);
         }
