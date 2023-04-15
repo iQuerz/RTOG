@@ -32,6 +32,7 @@ var menu = new BootstrapMenu('.hasTileMenu', {
             name: 'Add new unit',
             iconClass: 'iconoir-add-circle',
             onClick: function () {
+                page.showAddUnitsModal();
                 window.activeAction = 1;
                 var tileId = window.mapObject.ReturnTileID(window.eventClicekd.offsetX, window.eventClicekd.offsetY);
                 page.showAddUnitsModal(tileId)

@@ -38,8 +38,6 @@
             </div>
         }
     </div>
-
-    <a href="#upgradeUnitsModal" rel="modal:open">open modal</a>
 </div>
 
 <div class="modal" id="unitsSelectModal">
@@ -107,11 +105,6 @@
         });
     });
 
-    page.showUnitsSelectModal = function(){
-
-        $('#unitsSelectModal').modal();
-        console.log("idkk")
-    }
     page.showAddUnitsModal = function(tileID){
         ajaxQuery({
             type: 'GET',
@@ -144,7 +137,8 @@
             type: 'GET',
             url: '@Url.Action("getUnitsSelectModal", "Unit")',
             data: {
-                tileID: tileID
+                tileID: tileID,
+                upgradeID: upgradeID
             },
             success: function (response) {
                 $('#unitsSelectModal').html(response);
@@ -152,6 +146,4 @@
             }
         })
     }
-
-    $('#unitsSelectModal').modal();
 </script>
