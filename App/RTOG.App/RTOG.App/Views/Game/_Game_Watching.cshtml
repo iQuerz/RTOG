@@ -1,4 +1,6 @@
-﻿<script src="~/js/MapInit.js"></script>
+﻿@model GameViewModel
+
+<script src="~/js/MapInit.js"></script>
 <script type="module">
     Game = @Json.Serialize(Model.Game);
     import { mapObject } from "/js/Map.js";
@@ -7,9 +9,8 @@
 <div class="is-flex-row">
     <div class="is-flex-down" style="opacity:0.5; flex-shrink:0; justify-content: flex-start; align-items:flex-start; width:120px;">
         <h1>@Model.MyAccount.Username</h1>
-        <p>points:</p>
-        <p>idk stats</p>
-        <p>more stats</p>
+        <p>gold: @Model.MyAccount.Player.TotalGold</p>
+        <p>tiles: @Model.MyAccount.Player.OwnedTiles.Count (@Model.Game.Map.getTilePercentageString(Model.MyAccount.Player.OwnedTiles.Count))</p>
     </div> 
 
     <div id="Map" style="cursor:default!important">
@@ -21,8 +22,7 @@
             if (player.Name == Model.MyAccount.Username) continue;
             <div class="padding" style="@(Model.Game.IsPlaying(player) ? "":"opacity:0.5;")border:1px solid black; flex-shrink:0; width: 80%; margin-bottom:1rem;">
                 <h2>@player.Name</h2>
-                <p>money:</p>
-                <p>stats</p>
+                <p>tiles: @player.OwnedTiles.Count (@(player.OwnedTiles.Count/Model.Game.Map.AllTiles.Count * 100)%)</p>
             </div>
         }
     </div>

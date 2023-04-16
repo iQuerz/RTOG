@@ -41,7 +41,6 @@ const ajaxBody = function (data) {
     });
 }
 const ajaxQuery = function (data) {
-    console.log(data.data);
     startLoading();
     $.ajax({
         type: data.type,

@@ -5,24 +5,27 @@
 <div style="width:90%;height:80%;border:1px solid black; padding:1rem;">
     @foreach(var unit in Model.Units)
     {
-        <div style="padding:2px;border:1px solid black">
-            <p>@unit</p>
-            <span id="@(unit + "counter")">0</span>
+        <div class="is-flex-row" style="padding:4px;border:1px solid black; justify-content:space-between;align-items:center;margin:2px;">
+            <div>
+                @unit
+            </div>
             <span>
-                <button onclick="addUnit(@("\"" + unit +"\""))">+</button>
-                <button onclick="remUnit(@("\"" + unit +"\""))">-</button>
+                <span id="@(unit + "counter")">0</span>
+                <button class="padding" onclick="addUnit(@("\"" + unit +"\""))">+</button>
+                <button class="padding" onclick="remUnit(@("\"" + unit +"\""))">-</button>
             </span>
         </div>
     }
 </div>
-<a href="#" rel="modal:close" onclick="confirm()">Confirm</a>
-<a href="#" rel="modal:close">Cancel</a>
+<div class="is-flex-row" style="justify-content:space-around; align-items:center; margin-top:18px">
+    <a href="#" rel="modal:close" onclick="confirm()">Confirm</a>
+    <a href="#" rel="modal:close">Cancel</a>
+</div>
 
 <script>
     var units = [];
     function addUnit(unitID){
         units.push(unitID);
-        console.log(units)
         updateCount(unitID);
     }
     function remUnit(unitID){
@@ -31,7 +34,6 @@
             units.splice(index, 1);
         updateCount(unitID);
     }
-
 
     function updateCount(unitID){
         let count = 0;

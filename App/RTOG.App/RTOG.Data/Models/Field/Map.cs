@@ -10,5 +10,11 @@ namespace RTOG.Data.Models
     {
         public int PlayerCount { get; set; }
         public List<Tile> AllTiles { get; set; }
+
+        public string getTilePercentageString(int tileNum)
+        {
+            double percentage = (double)tileNum / AllTiles.Count * 100;
+            return Math.Round(percentage, 1).ToString() + "%";
+        }
     }
 }

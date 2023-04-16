@@ -1,5 +1,4 @@
 ﻿//configurise se context
-//console.log("starting map generation")
 //const height = 900
 //const width = 1600
 //var canvas = document.createElement("canvas");
@@ -46,7 +45,6 @@ class Map {
         
 
     const particles = Game.map.allTiles.map(tile => [tile.positionX, tile.positionY]);
-    console.log(Game)
     //const particlesRandom = Array.from({ length: 50 }, () => [Math.random() * width, Math.random() * height]);
     delaunay = d3.Delaunay.from(particles);
     voronoi = delaunay.voronoi([0.5, 0.5, width - 0.5, height - 0.5]);
@@ -85,7 +83,6 @@ class Map {
     var DrawStrokeLaterIndx = [];
     for (let i = 0; i < particles.length; i++) {
         context.beginPath();
-        console.log(selectedTileID)
         if (selectedTileID != -1) {
             const selectedTileIndex = Game.map.allTiles.findIndex(tile => tile.id === selectedTileID);
             const neighborsIndices = delaunay.neighbors(selectedTileIndex)
@@ -149,12 +146,10 @@ class Map {
         context.fillText("  +" + Game.map.allTiles[i].gold, centroid[0] + 35, centroid[1] + 5);
         }
         context.fillStyle = '#000000';
-        console.log("end of drawBoard")
 }
 
     AddUnit(x, y, type) {
         const cell = delaunay.find(x, y);
-        console.log(Game.map.allTiles[cell])
         fetch($("#CreateUnitURL").val() + "/" + MyAccount.player.id + "/" + Game.map.allTiles[cell].id + "/" + type, {
             method: "POST"
         })
@@ -165,15 +160,12 @@ class Map {
         }
     ReturnTileID(x, y) {
         const cell = delaunay.find(x, y);
-        console.log("Cell is " + cell)
-        console.log(Game.map);
         return Game.map.allTiles[cell].id
     }
     //HighlightMovmentOptions(tileID)
     //{
     //    const neighborsIndices = delaunay.neighbors(tileID)
     //    const neighbors = Array.from(neighborsIndices);
-    //    console.log(neighbors)
     //    neighbors.forEach((indx)=>
     //    {
     //        context.strokeStyle = "#010"

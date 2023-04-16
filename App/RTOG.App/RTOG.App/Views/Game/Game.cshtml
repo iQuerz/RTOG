@@ -15,7 +15,6 @@
         this.LobbyHubConnection = null;
 
         this.updateOtherGamePlayers = function() {
-            console.log("updating others...")
             page.LobbyHubConnection.send("updateGamePlayers", page.gameId);
         }
         this.finishOtherPlayersGames = function() {

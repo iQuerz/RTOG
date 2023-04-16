@@ -11,16 +11,17 @@
         </div>
     }
 </div>
-<a href="#" rel="modal:close" onclick="confirm()">Confirm</a>
-<a href="#" rel="modal:close">Cancel</a>
+<div class="is-flex-row" style="justify-content:space-around; align-items:center; margin-top:18px">
+    <a href="#" rel="modal:close" onclick="confirm()">Confirm</a>
+    <a href="#" rel="modal:close">Cancel</a>
+</div>
 
 <script>
     var selectedUpgradeID = 0;
     function selectUnit(event, upgradeID){ //does both select and deselect
-        window.selectedUpgradeID = upgradeID;
+        selectedUpgradeID = upgradeID;
     }
     function confirm() {
-        page.showUpgradeUnitsModal(tileId, selectedUpgradeID);
-        $('#upgradeUnitsModal').trigger('upgradesModalClose', units);
+        page.showUnitsSelectModal(tileId, selectedUpgradeID);
     }
 </script>

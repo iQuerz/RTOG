@@ -18,10 +18,10 @@
 
     <div class="is-flex-down" style="flex-shrink:0; justify-content: flex-start; align-items:flex-start; width:120px;">
         <h1>@Model.MyAccount.Username</h1>
-        <p>points:</p>
-        <p>idk stats</p>
-        <p>more stats</p>
-        <button>End Turn</button>
+        <p>gold: @Model.MyAccount.Player.TotalGold</p>
+        <p>tiles: @Model.MyAccount.Player.OwnedTiles.Count (@Model.Game.Map.getTilePercentageString(Model.MyAccount.Player.OwnedTiles.Count))</p>
+
+        <button class="padding" onclick="page.endTurn()">End Turn</button>
     </div>
 
     <div id="Map">
@@ -55,6 +55,7 @@
         $('#unitsSelectModal').on('modalClose', function(event, units) {
             if (window.activeAction == 2) {
                 // upgrade selected units
+                console.log("units selected for upgrade:", units);
                 let upgradeID = window.selectedUpgradeID;
                 ajaxBody({
                     type: 'POST',
@@ -80,7 +81,7 @@
         });
 
         $('#upgradeUnitsModal').on('upgradesModalClose', function(event, upgradeID) {
-            showUnitsSelectModal(window.selectedTileID, upgradeID);
+            page.showUnitsSelectModal(window.selectedTileID, upgradeID);
         });
     });
 

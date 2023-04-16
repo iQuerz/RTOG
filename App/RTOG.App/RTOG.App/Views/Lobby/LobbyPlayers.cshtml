@@ -129,7 +129,6 @@
     var selectedFaction = null;
     function OnFactionSelect(event) {
         let accountId = @(Model.MyAccount.ID);
-        console.log(event.target.value);
         selectedFaction = event.target.value;
         $.ajax({
             type: 'PATCH',

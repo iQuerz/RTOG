@@ -63,12 +63,13 @@ namespace RTOG.Business.Services
         {
             var game = _dbContext.Games.Where(g => g.ID == gameID)
                                              .Include(g => g.Players)
+                                                .ThenInclude(p => p.OwnedTiles)
                                              .Include(g => g.Map)
-                                             .ThenInclude(m => m.AllTiles)
-                                             .ThenInclude(t => t.Owner)
+                                                .ThenInclude(m => m.AllTiles)
+                                                    .ThenInclude(t => t.Owner)
                                              .Include(g => g.Map)
-                                             .ThenInclude(m => m.AllTiles)
-                                             .ThenInclude(t => t.Units)
+                                                .ThenInclude(m => m.AllTiles)
+                                                    .ThenInclude(t => t.Units)
                                              .FirstOrDefault();
 
             if (game is null)

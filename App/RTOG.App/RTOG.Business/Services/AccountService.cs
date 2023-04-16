@@ -60,6 +60,7 @@ namespace RTOG.Business.Services
         {
             var account = await _dbContext.Accounts.Where(a => a.ID == accountID)
                                                    .Include(a => a.Player)
+                                                   .ThenInclude(p => p.OwnedTiles)
                                                    .Include(a => a.SelectedFaction)
                                                    .FirstOrDefaultAsync();
             if (account is null)

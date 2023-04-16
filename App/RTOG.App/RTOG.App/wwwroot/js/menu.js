@@ -32,12 +32,10 @@ var menu = new BootstrapMenu('.hasTileMenu', {
             name: 'Add new unit',
             iconClass: 'iconoir-add-circle',
             onClick: function () {
-                page.showAddUnitsModal();
                 window.activeAction = 1;
-                var tileId = window.mapObject.ReturnTileID(window.eventClicekd.offsetX, window.eventClicekd.offsetY);
+                let tileId = window.mapObject.ReturnTileID(window.eventClicekd.offsetX, window.eventClicekd.offsetY);
+                window.selectedTileID = tileId;
                 page.showAddUnitsModal(tileId);
-                //window.mapObject.AddUnit(window.eventClicekd.offsetX, window.eventClicekd.offsetY,"Soldier")
-                //windows.selectedTileID = window.mapObject.Return
             }
         },
         {
@@ -45,10 +43,9 @@ var menu = new BootstrapMenu('.hasTileMenu', {
             iconClass: 'iconoir-arrow-up-circle',
             onClick: function () {
                 window.activeAction = 2;
-                //cisto radi testiranja ovo zove trenunto
-                window.mapObject.AddUnit(window.eventClicekd.offsetX, window.eventClicekd.offsetY, "Tank");
+                let tileId = window.mapObject.ReturnTileID(window.eventClicekd.offsetX, window.eventClicekd.offsetY);
+                window.selectedTileID = tileId;
                 page.showUpgradeUnitsModal(tileId);
-                // run when the action is clicked
             }
         },
         {
@@ -56,9 +53,8 @@ var menu = new BootstrapMenu('.hasTileMenu', {
             iconClass: 'iconoir-historic-shield',
             onClick: function () {
                 window.activeAction = 3;
-                var tileId = window.mapObject.ReturnTileID(window.eventClicekd.offsetX, window.eventClicekd.offsetY);
-                console.log(tileId);
-                // run when the action is clicked
+                let tileId = window.mapObject.ReturnTileID(window.eventClicekd.offsetX, window.eventClicekd.offsetY);
+                windows.selectedTileID = tileId;
             }
         },
         {
@@ -67,8 +63,8 @@ var menu = new BootstrapMenu('.hasTileMenu', {
             onClick: function () {
                 window.activeAction = 4;
                 var tileId = window.mapObject.ReturnTileID(window.eventClicekd.offsetX, window.eventClicekd.offsetY);
-                page.showUnitsSelectModal(tileId)
-                // run when the action is clicked
+                window.selectedTileID = tileId;
+                page.showUnitsSelectModal(tileId);
             }
         },
         {

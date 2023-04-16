@@ -48,7 +48,6 @@
     })
     LobbyHubConnection.on("connectToGame", function (gameID) {
         let accountId = $('#AccountID').val()
-        //console.log("called connectToGame, connection: ", gameID):
         window.location.href = $('#GameUrl').val() + "/" + accountId + "/" + gameID
     })
 
