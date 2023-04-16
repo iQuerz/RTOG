@@ -69,10 +69,9 @@ namespace RTOG.App.Controllers
             return Ok(game);
         }
 
-        [Route("NextTurn/{gameID}")]
+        [Route("NextTurn")]
         public async Task<IActionResult> NextTurn(int gameID)
         {
-
             await _gameService.NextTurn(gameID);
 
             return Ok();
@@ -90,15 +89,6 @@ namespace RTOG.App.Controllers
 
             var game = await _gameService.Create(lobby, map);
             return Ok(game);
-        }
-
-        [HttpGet]
-        [Route("EndTurn")]
-        public async Task<IActionResult> EndTurn(int playerID)
-        {
-            //piksi: ovde treba da se zavrsi potez playera i da se jelte stavi sledeca osoba koja je na potezu
-
-            return Ok();
         }
     }
 }

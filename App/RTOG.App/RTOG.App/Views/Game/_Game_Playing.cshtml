@@ -130,9 +130,9 @@
     page.endTurn = function(){
         ajaxQuery({
             type: 'GET',
-            url: '@Url.Action("EndTurn", "Game")',
+            url: '@Url.Action("NextTurn", "Game")',
             data: {
-                playerID: @Model.MyAccount.Player.ID
+                gameID: @Model.Game.ID
             },
             success: function (response){
                 page.updateOtherGamePlayers();
