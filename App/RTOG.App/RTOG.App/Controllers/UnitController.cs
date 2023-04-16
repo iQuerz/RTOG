@@ -90,5 +90,22 @@ namespace RTOG.App.Controllers
             return Ok(unit);
         }
 
+        [HttpPatch]
+        [Route("UpgradeUnits")]
+        public async Task<IActionResult> UpgradeUnits(int upgradeID, [FromBody] List<int> unitIDs)
+        {
+            //piksi: ovde treba da se upgrade-uju svi poslati units
+
+            return Ok();
+        }
+
+        [HttpPatch]
+        [Route("MoveUnits")]
+        public async Task<IActionResult> MoveUnits(int tileID, [FromBody] List<int> unitIDs)
+        {
+            //piksi: ovde treba da se pomere svi poslati units na tile
+
+            return Ok();
+        }
     }
 }

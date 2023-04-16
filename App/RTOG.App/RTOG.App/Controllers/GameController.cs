@@ -91,5 +91,14 @@ namespace RTOG.App.Controllers
             var game = await _gameService.Create(lobby, map);
             return Ok(game);
         }
+
+        [HttpGet]
+        [Route("EndTurn")]
+        public async Task<IActionResult> EndTurn(int playerID)
+        {
+            //piksi: ovde treba da se zavrsi potez playera i da se jelte stavi sledeca osoba koja je na potezu
+
+            return Ok();
+        }
     }
 }

@@ -41,19 +41,12 @@
 </div>
 
 <div class="modal" id="unitsSelectModal">
-    @{
-        await Html.RenderPartialAsync("_UnitsSelectModal", new UnitsSelectModalModel() { Units = new() });
-    }
 </div>
 
 <div class="modal" id="upgradeUnitsModal">
-    @{
-        await Html.RenderPartialAsync("_UpgradeUnitsModal", new UpgradeUnitsModalModel() { Upgrades = new() });
-    }
 </div>
 
 <div class="modal" id="addUnitsModal">
-
 </div>
 
 <script>
@@ -87,21 +80,7 @@
         });
 
         $('#upgradeUnitsModal').on('upgradesModalClose', function(event, upgradeID) {
-            console.log("event caught", upgradeID)
-            showUnitsSelectModal();
-
-            @*ajaxQuery({
-                type: 'GET',
-                url: '@Url.Action("GetAvailableUnitsForUpgrade","Unit")',
-                data: {
-                    upgradeID: upgradeID,
-                    tileID: window.clickedTileID
-                },
-                success: function() {
-                    page.updateOtherGamePlayers();
-                }
-            });*@
-            console.log("hi")
+            showUnitsSelectModal(window.selectedTileID, upgradeID);
         });
     });
 
@@ -145,5 +124,18 @@
                 $('#unitsSelectModal').modal();
             }
         })
+    }
+
+    page.endTurn = function(){
+        ajaxQuery({
+            type: 'GET',
+            url: '@Url.Action("EndTurn", "Game")',
+            data: {
+                playerID: @Model.MyAccount.Player.ID
+            },
+            success: function (response){
+                page.updateOtherGamePlayers();
+            }
+        });
     }
 </script>
