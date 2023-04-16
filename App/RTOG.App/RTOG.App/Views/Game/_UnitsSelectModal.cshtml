@@ -6,8 +6,9 @@
     @foreach(var unit in Model.Units)
     {
         <div style="padding:2px;border:1px solid black">
-            <p>@unit.Name</p>
-            <p>(@foreach(var upgrade in unit.Upgrades)
+            <p>@unit.Type</p>
+            <p>(@if (unit.Upgrades != null)
+                foreach(var upgrade in unit.Upgrades)
                 {
                     <span>@upgrade.Name</span>
                 })</p>
@@ -31,6 +32,7 @@
         }
     }
     function confirm() {
+        window.mapObject.DrawBoard(@Model.tileID);
         $('#unitsSelectModal').trigger('modalClose', units);
     }
 </script>
