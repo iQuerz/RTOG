@@ -7,7 +7,7 @@ using RTOG.Data.Config;
 
 namespace RTOG.Data.Models
 {
-    internal class WeaponUpgrade : UnitUpgrade
+    public class WeaponUpgrade : UnitUpgrade
     {
         public WeaponUpgrade(Unit unit) : base(unit, "WeaponUpgrade")
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using RTOG.Data.Config;
 
@@ -14,6 +15,7 @@ namespace RTOG.Data.Models
         [Required]
         public string Name { get; set; }
         [Required]
+        [JsonIgnore]
         public Unit Unit { get; set; }
         [Required]
         public int Price { get; set; }

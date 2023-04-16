@@ -37,7 +37,23 @@
         }
     }
     function confirm() {
-        window.mapObject.DrawBoard(@Model.tileID);
-        $('#unitsSelectModal').trigger('modalClose', units);
+        if(@Model.upgradeID == 0)
+        {
+            window.mapObject.DrawBoard(@Model.tileID);
+            $('#unitsSelectModal').trigger('modalClose', units);
+            //add eventlisener for movmet
+        }
+        else
+        {
+        ajaxBody({
+            type: 'PATCH',
+            url: '@Url.Action("UpgradeUnits", "Unit")' + '/' + @Model.upgradeID,
+            data: units,
+            success: function(response) {
+                page.updateOtherGamePlayers();
+            }
+        })
+        }
+
     }
 </script>

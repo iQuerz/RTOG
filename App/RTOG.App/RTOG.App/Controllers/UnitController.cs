@@ -11,10 +11,12 @@ namespace RTOG.App.Controllers
     public class UnitController : Controller
     {
         private readonly IUnitService _unitService;
-
-        public UnitController(IUnitService unitService)
+        private readonly IUpgradeService _upgradeService;
+        
+        public UnitController(IUnitService unitService, IUpgradeService upgradeService)
         {
             _unitService = unitService;
+            _upgradeService = upgradeService;
         }
 
         [HttpGet]
@@ -27,7 +29,7 @@ namespace RTOG.App.Controllers
             {
                 playerID= playerID,
                 tileID = tileID,
-                Units = units//piksi: units koje player moze da napravi
+                Units = units
             };
 
             return PartialView("Views/Game/_AddUnitsModal.cshtml", model);
@@ -37,10 +39,11 @@ namespace RTOG.App.Controllers
         [Route("getUpgradeUnitsModal")]
         public async Task<IActionResult> getUpgradeUnitsModal(int tileID)
         {
-
+            var upgrades = _upgradeService.GetUpgradeOptions();
             var model = new UpgradeUnitsModalModel()
             {
-                Upgrades = new()//piksi: svi available upgrades za units na tile
+                tileID= tileID,
+                Upgrades = upgrades
             };
 
             return PartialView("Views/Game/_UpgradeUnitsModal.cshtml", model);
@@ -50,12 +53,16 @@ namespace RTOG.App.Controllers
         [Route("getUnitsSelectModal")]
         public async Task<IActionResult> getUnitsSelectModal(int tileID, int upgradeID)
         {
+
             List<Unit> units = await _unitService.GetUnits(tileID);
+            string upgradeName = _upgradeService.GetUpgradeName(upgradeID);
             if(upgradeID != 0)
             {
                 for (int i = units.Count - 1; i >= 0; i--)
                 {
-                    if (units[i].Upgrades.Any(up => up.ID == upgradeID))
+                    if (units[i].Upgrades == null)
+                        continue;
+                    if (units[i].Upgrades.Any(up => up.Name == upgradeName))
                     {
                         units.RemoveAt(i);
                     }
@@ -64,6 +71,7 @@ namespace RTOG.App.Controllers
             var model = new UnitsSelectModalModel()
             {
                 tileID= tileID,
+                upgradeID = upgradeID,
                 Units = units//piksi: svi available units za selection unutar tile.
                              //ukoliko je upgradeID != 0, svi available units za taj upgrade na tom tile 
             };
@@ -91,11 +99,12 @@ namespace RTOG.App.Controllers
         }
 
         [HttpPatch]
-        [Route("UpgradeUnits")]
+        [Route("UpgradeUnits/{upgradeID}")]
         public async Task<IActionResult> UpgradeUnits(int upgradeID, [FromBody] List<int> unitIDs)
         {
+            await _upgradeService.UpgradeUnits(upgradeID, unitIDs);
             //piksi: ovde treba da se upgrade-uju svi poslati units
-
+            Console.WriteLine("After upgrade");
             return Ok();
         }
 

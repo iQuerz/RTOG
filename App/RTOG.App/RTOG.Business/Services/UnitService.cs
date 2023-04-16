@@ -81,6 +81,7 @@ namespace RTOG.Business.Services
 
             var tile = _dbContext.Tiles.Where(t => t.ID == tileID)
                                         .Include(p => p.Units)
+                                        .ThenInclude(u => u.Upgrades)
                                         .FirstOrDefault();
 
             if (tile is null)
