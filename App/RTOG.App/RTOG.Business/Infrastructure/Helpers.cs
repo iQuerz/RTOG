@@ -29,5 +29,11 @@ namespace RTOG.Business.Infrastructure
             { "China", (name) => new ChineseFaction(name) },
             { "Russia", (name) => new RussiaFaction(name) },
         };
+        public static Dictionary<string, Func<string, object>> Units = new Dictionary<string, Func<string, object>>()
+        {
+            { "America", (name) => new AmericaFaction(name) },
+            { "China", (name) => new ChineseFaction(name) },
+            { "Russia", (name) => new RussiaFaction(name) },
+        };
     }
 }

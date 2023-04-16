@@ -15,6 +15,10 @@ namespace RTOG.Data.Models
 
         public List<Unit> Army { get; set; }
 
+        [NotMapped]
+        public Dictionary<Type, Func<string, Unit>> UnitOptions { get; set; }
+        //public List<Type> UnitOptions { get; set; }
+
         [ForeignKey("PlayerID")]
         public Player Player { get; set; }
 
@@ -23,9 +27,13 @@ namespace RTOG.Data.Models
             Name = name;
             Army = new List<Unit>();
             Player = new Player();
+            //UnitOptions= new List<Type>();
+            UnitOptions = new Dictionary<Type, Func<string, Unit>>();
         }
         public Faction() {
-        Army= new List<Unit>();
+            Army= new List<Unit>();
+            UnitOptions = new Dictionary<Type, Func<string, Unit>>();
+            //UnitOptions = new List<Type>();
         }
         public abstract Unit CreateSoldier(string name);
         public abstract Unit CreateTank(string name);

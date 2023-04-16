@@ -3,16 +3,16 @@
 
 <h2>Buy units</h2>
 <div style="width:90%;height:80%;border:1px solid black; padding:1rem;">
-    @foreach(var unit in Model.Units)
+    @foreach(var unit in Model.UnitOptions)
     {
         <div class="is-flex-row" style="padding:4px;border:1px solid black; justify-content:space-between;align-items:center;margin:2px;">
             <div>
-                @unit
+                Create @unit.Name costs : @unit.Price Gold
             </div>
             <span>
-                <span id="@(unit + "counter")">0</span>
-                <button class="padding" onclick="addUnit(@("\"" + unit +"\""))">+</button>
-                <button class="padding" onclick="remUnit(@("\"" + unit +"\""))">-</button>
+                <span class="@(unit.Type + "counter")">0</span>
+                <button class="padding" onclick="addUnit(@("\'" +Json.Serialize(unit)+"\'"))">+</button>
+                <button class="padding" onclick="remUnit(@("\'" +Json.Serialize(unit)+"\'"))">-</button>
             </span>
         </div>
     }
@@ -25,26 +25,26 @@
 <script>
     var units = [];
     function addUnit(unitID){
-        units.push(unitID);
-        updateCount(unitID);
+        units.push(JSON.parse(unitID));
+        updateCount(JSON.parse(unitID).type);
     }
     function remUnit(unitID){
-        let index = units.indexOf(unitID);
+        let unitObj = JSON.parse(unitID);
+        let index = units.findIndex(u => u.Name === unitObj.Name);
         if (index > -1)
             units.splice(index, 1);
-        updateCount(unitID);
+        updateCount(JSON.parse(unitID).type);
     }
 
     function updateCount(unitID){
         let count = 0;
         for (let i = 0; i < units.length; i++) {
-            if (units[i] === unitID) {
+            if (units[i].type === unitID) {
                 count++;
             }
         }
-
-        //$('#' + unitID + 'counter').text(count.toString());
-        $('#' + unitID + 'counter').each(function(){
+        console.log($('#' + unitID + 'counter'))
+        $('.' + unitID + 'counter').each(function(){
             $(this).text(count.toString());
         })
         

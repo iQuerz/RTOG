@@ -43,7 +43,7 @@ namespace RTOG.Business.Services
                     Faction = (Faction)Helpers.Factions[acc.SelectedFaction.Name]("Name"), //privremeno resenje dok ne izvucemo koj je faction iz lobija
                     Name = acc.Username, //redundandna infomacija ali da ne moramo da zovemo account u game vise
                     Color = acc.SelectedColor.Hex,
-                    TotalGold = 0,
+                    TotalGold = 500,
                     OwnedTiles = new List<Tile>(),
                     TurnOrder = turnOrderIncrement
                 };

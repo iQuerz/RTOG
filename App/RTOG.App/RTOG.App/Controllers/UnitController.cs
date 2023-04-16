@@ -25,8 +25,10 @@ namespace RTOG.App.Controllers
         {
 
             List<string> units = await _unitService.GetUnitsOptions(playerID);
+            List<Unit> unitOptions= await _unitService.GetUnitsOptionsV2(playerID);
             var model = new AddUnitsModalModel()
             {
+                UnitOptions = unitOptions,
                 playerID= playerID,
                 tileID = tileID,
                 Units = units
@@ -81,10 +83,11 @@ namespace RTOG.App.Controllers
 
         [HttpPost]
         [Route("Create/{playerID}/{tileID}")]
-        public async Task<IActionResult> Create(int playerID, int tileID, [FromBody] List<string> units)
+        public async Task<IActionResult> Create(int playerID, int tileID, [FromBody] List<Unit> units)
         {
 
-            var unit = await _unitService.CreateUnit(playerID, "Ivan", tileID, units);
+            //var unit = await _unitService.CreateUnit(playerID, "Ivan", tileID, units);
+            var unit = await _unitService.CreateUnitV2(playerID, "Ivan", tileID, units);
 
             return Ok(unit);
         }
@@ -109,10 +112,10 @@ namespace RTOG.App.Controllers
         }
 
         [HttpPatch]
-        [Route("MoveUnits")]
-        public async Task<IActionResult> MoveUnits(int tileID, [FromBody] List<int> unitIDs)
+        [Route("MoveUnits/{startTileID}/{endTileID}")]
+        public async Task<IActionResult> MoveUnits(int startTileID, int endTileID, [FromBody] List<int> unitIDs)
         {
-            //piksi: ovde treba da se pomere svi poslati units na tile
+            await _unitService.MoveUnits(unitIDs, startTileID, endTileID);
 
             return Ok();
         }

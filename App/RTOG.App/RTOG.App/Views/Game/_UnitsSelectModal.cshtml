@@ -40,8 +40,23 @@
         if(@Model.upgradeID == 0)
         {
             window.mapObject.DrawBoard(@Model.tileID);
-            $('#unitsSelectModal').trigger('modalClose', units);
-            //add eventlisener for movmet
+            //$('#unitsSelectModal').trigger('modalClose', units);
+            var canvas = document.querySelector(".hasTileMenu")
+            if (!canvas)
+                return 0;
+            canvas.addEventListener("contextmenu", event => {
+                event.preventDefault(); 
+                console.log("contextmenu pop")
+                let endTileID = window.mapObject.ReturnTileID(event.offsetX, event.offsetY);
+                ajaxBody({
+                type: 'PATCH',
+                url: '@Url.Action("MoveUnits", "Unit")' + '/' + @Model.tileID + "/" + endTileID,
+                data: units,
+                success: function (response) {
+                    page.updateOtherGamePlayers();
+            }
+        })
+            });
         }
         else
         {
@@ -54,6 +69,5 @@
             }
         })
         }
-
     }
 </script>

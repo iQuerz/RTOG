@@ -8,9 +8,23 @@ namespace RTOG.Data.Models
 {
     public class ChineseFaction : Faction
     {
-        public ChineseFaction(string name) : base(name) { }
+        public ChineseFaction(string name) : base(name) 
+        {
+            UnitOptions = new Dictionary<Type, Func<string, Unit>>
+            {
+                { typeof(ChineseSoldier), name => CreateSoldier(name) },
+                { typeof(ChineseTank), name => CreateTank(name) }
+            };
+        }
 
-        public ChineseFaction() { }
+        public ChineseFaction() 
+        {
+            UnitOptions = new Dictionary<Type, Func<string, Unit>>
+            {
+                { typeof(ChineseSoldier), name => CreateSoldier(name) },
+                { typeof(ChineseTank), name => CreateTank(name) }
+            };
+        }
 
         public override Unit CreateSoldier(string name)
         {
