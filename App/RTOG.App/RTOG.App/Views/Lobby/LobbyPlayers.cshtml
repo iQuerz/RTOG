@@ -31,7 +31,14 @@
                 <select onchange="OnFactionSelect(event)">
                     @foreach (var faction in Model.FactionChoices)
                     {
-                        <option value="@faction.ID.ToString()">@faction.Name</option>
+                        @if (Model.MyAccount.SelectedFaction.Equals(faction))
+                        {
+                            <option value="@faction.ID.ToString()" selected>@faction.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@faction.ID.ToString()">@faction.Name</option>
+                        }
                     }
                 </select>
             </div>
@@ -128,10 +135,7 @@
             type: 'PATCH',
             url: $('#UpdatePlayerFactionUrl').val() + "/" + accountId + "/" + selectedFaction,
             success: function (response) {
-                $("#colorTable tr td").each(function () {
-                    $(this)[0].classList.remove("selected-color");
-                });
-                //update lobby with new selected color
+                updateOtherLobbyPlayers();
             },
             error: function (response) {
                 //nikola

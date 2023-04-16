@@ -58,7 +58,10 @@ namespace RTOG.Business.Services
 
         public async Task<Account> Get(int accountID)
         {
-            var account = await _dbContext.Accounts.Where(a => a.ID == accountID).Include(a => a.Player).FirstOrDefaultAsync();
+            var account = await _dbContext.Accounts.Where(a => a.ID == accountID)
+                                                   .Include(a => a.Player)
+                                                   .Include(a => a.SelectedFaction)
+                                                   .FirstOrDefaultAsync();
             if (account is null)
                 throw new Exception("Account not found");//todo:bljak static string
             return account;
@@ -88,7 +91,6 @@ namespace RTOG.Business.Services
         }
         public async Task<Account> UpdateFaction(int accountID, FactionChoice choice)
         {
-
             var account = await Get(accountID);
             account.SelectedFaction = choice;
             await _dbContext.SaveChangesAsync();
