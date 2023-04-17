@@ -72,9 +72,9 @@ namespace RTOG.App.Controllers
         [Route("NextTurn")]
         public async Task<IActionResult> NextTurn(int gameID)
         {
-            await _gameService.NextTurn(gameID);
+            var isGameOver = await _gameService.NextTurn(gameID);
 
-            return Ok();
+            return Ok(isGameOver);
         }
 
         [HttpPost]

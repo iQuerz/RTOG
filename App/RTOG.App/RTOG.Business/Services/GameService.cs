@@ -107,20 +107,32 @@ namespace RTOG.Business.Services
 
             return game;
         }
-        public async Task<OngoingGame> NextTurn(int gameID)
+        public async Task<bool> NextTurn(int gameID)
         {
+            bool isGameOver = false;
             var game = _dbContext.Games.Where(g => g.ID == gameID)
                                         .Include(g => g.Players)   
                                         .ThenInclude(p => p.Faction)
                                         .ThenInclude(f => f.Army)
                                         .Include(g => g.Map)
                                         .ThenInclude(m => m.AllTiles)
+                                        .ThenInclude(t => t.Owner)
                                         .FirstOrDefault();
 
             if (game is null)
                 throw new Exception("Game not found.");
             game.TurnCounter++;
             //dodajemo resurse playeru na potezu
+            var owners = game.Map.AllTiles.Select(t => t.Owner)
+                                          .Where(o => o != null)
+                                          .Distinct();
+
+            if (owners.Count() == 1)
+            {
+                Console.WriteLine("game OVER");
+                isGameOver = true;
+            }
+
             var player = game.Players.Where(p => (game.TurnCounter % game.Map.PlayerCount == p.TurnOrder)).FirstOrDefault();
             if (player != null)
             {
@@ -136,7 +148,7 @@ namespace RTOG.Business.Services
 
             await _dbContext.SaveChangesAsync();
 
-            return game;
+            return isGameOver;
         }
     }
 }

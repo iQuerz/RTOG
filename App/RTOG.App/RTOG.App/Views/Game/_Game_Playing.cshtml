@@ -22,6 +22,7 @@
         <p>Tiles: @Model.MyAccount.Player.OwnedTiles.Count (@Model.Game.Map.getTilePercentageString(Model.MyAccount.Player.OwnedTiles.Count))</p>
         <p>Current Turn: @Model.Game.TurnCounter</p>
 
+
         <button class="padding" onclick="page.endTurn()">End Turn</button>
     </div>
 
@@ -136,6 +137,10 @@
                 gameID: @Model.Game.ID
             },
             success: function (response){
+                console.log(response)
+                if(response)
+                    console.log("Game over")//nikola ovde popovati end screen za sve
+                var wineris = @Model.MyAccount.Player;
                 page.updateOtherGamePlayers();
             }
         });
