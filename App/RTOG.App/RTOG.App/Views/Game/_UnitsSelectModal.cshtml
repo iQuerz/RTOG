@@ -46,16 +46,23 @@
                 return 0;
             canvas.addEventListener("contextmenu", event => {
                 event.preventDefault(); 
-                console.log("contextmenu pop")
-                let endTileID = window.mapObject.ReturnTileID(event.offsetX, event.offsetY);
-                ajaxBody({
-                type: 'PATCH',
-                url: '@Url.Action("MoveUnits", "Unit")' + '/' + @Model.tileID + "/" + endTileID,
-                data: units,
-                success: function (response) {
-                    page.updateOtherGamePlayers();
-            }
-        })
+                let endTileID = window.mapObject.ReturnTileIDMovment(event.offsetX, event.offsetY, @Model.tileID);
+                console.log(endTileID);
+                if (endTileID == -1)
+                {
+                    alert("you can't move there donkey")
+                }
+                else
+                {
+                    ajaxBody({
+                        type: 'PATCH',
+                        url: '@Url.Action("MoveUnits", "Unit")' + '/' + @Model.tileID + "/" + endTileID,
+                        data: units,
+                        success: function (response) {
+                            page.updateOtherGamePlayers();
+                        }
+                    })
+                }
             });
         }
         else

@@ -166,6 +166,27 @@ class Map {
         const cell = delaunay.find(x, y);
         return Game.map.allTiles[cell].owner
     }
+    //proverava da li je novi tile u blizini starog 
+    ReturnTileIDMovment(x, y, tileID) {
+        const cell = delaunay.find(x, y);
+        var targetTileID = Game.map.allTiles[cell].id
+        var validMove = false;
+        if (tileID != -1) {
+            const selectedTileIndex = Game.map.allTiles.findIndex(tile => tile.id === selectedTileID);
+            const neighborsIndices = delaunay.neighbors(selectedTileIndex)
+            const neighbors = Array.from(neighborsIndices);
+            neighbors.forEach((id) => {
+                if (Game.map.allTiles[id].id == targetTileID)
+                    validMove = true;
+            })
+            if (validMove) {
+                return targetTileID;
+            }
+            else {
+                return -1;
+            }
+        }
+    }
     //HighlightMovmentOptions(tileID)
     //{
     //    const neighborsIndices = delaunay.neighbors(tileID)
