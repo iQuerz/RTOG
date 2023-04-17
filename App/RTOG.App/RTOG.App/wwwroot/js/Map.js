@@ -162,6 +162,10 @@ class Map {
         const cell = delaunay.find(x, y);
         return Game.map.allTiles[cell].id
     }
+    ReturnTileOwner(x, y) {
+        const cell = delaunay.find(x, y);
+        return Game.map.allTiles[cell].owner
+    }
     //HighlightMovmentOptions(tileID)
     //{
     //    const neighborsIndices = delaunay.neighbors(tileID)

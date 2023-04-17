@@ -6,7 +6,7 @@
     @foreach(var upgrade in Model.Upgrades)
     {
         <div style="padding:2px;border:1px solid black">
-            <p>@upgrade.Name</p>
+            <p>@upgrade.Name Price : @upgrade.Price</p>
             <input type="radio" onchange="selectUnit(event, @upgrade.ID)">
         </div>
     }

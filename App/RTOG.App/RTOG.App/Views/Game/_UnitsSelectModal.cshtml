@@ -7,7 +7,7 @@
     {
         <div class="is-flex-row" style="padding:4px;border:1px solid black; justify-content:space-between;align-items:center;margin:2px;">
             <div>
-                <p>@unit.Type</p>
+                <p>@unit.Type (@unit.MovementLeft/@unit.Movement)</p>
                 <p>(@if (unit.Upgrades != null)
                     foreach(var upgrade in unit.Upgrades)
                     {

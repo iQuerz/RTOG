@@ -70,6 +70,16 @@ namespace RTOG.App.Controllers
                     }
                 }
             }
+            else
+            {
+                for (int i = units.Count - 1; i >= 0; i--)
+                {
+                    if (units[i].MovementLeft <= 0)
+                    {
+                        units.RemoveAt(i);
+                    }
+                }
+            }
             var model = new UnitsSelectModalModel()
             {
                 tileID= tileID,

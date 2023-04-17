@@ -21,6 +21,7 @@ namespace RTOG.Business.Services
 
         public async Task<OngoingGame> Create(Lobby lobby, Map map)
         {
+            Random random = new Random();
 
             var game = new OngoingGame()
             {
@@ -49,6 +50,18 @@ namespace RTOG.Business.Services
                 };
                 turnOrderIncrement++;
                 game.Players.Add(player);
+                bool found = false;
+                //za sada je random kasnije ce napravimo system da su udaljeni jedan od drugog
+                while (!found)
+                {
+                    int randomIndex = random.Next(game.Map.AllTiles.Count);
+                    if (map.AllTiles[randomIndex].Owner == null)
+                    {
+                        map.AllTiles[randomIndex].Owner = player;
+                        found = true;
+                    }
+                }
+
                 _dbContext.Players.Add(player);
             }
             //game.Players.Insert(0, lobby.Host.Player); //todo:mozda random redosled igraca idk
@@ -96,12 +109,30 @@ namespace RTOG.Business.Services
         }
         public async Task<OngoingGame> NextTurn(int gameID)
         {
-            var game = _dbContext.Games.Where(g => g.ID == gameID).FirstOrDefault();
+            var game = _dbContext.Games.Where(g => g.ID == gameID)
+                                        .Include(g => g.Players)   
+                                        .ThenInclude(p => p.Faction)
+                                        .ThenInclude(f => f.Army)
+                                        .Include(g => g.Map)
+                                        .ThenInclude(m => m.AllTiles)
+                                        .FirstOrDefault();
 
             if (game is null)
                 throw new Exception("Game not found.");
-
             game.TurnCounter++;
+            //dodajemo resurse playeru na potezu
+            var player = game.Players.Where(p => (game.TurnCounter % game.Map.PlayerCount == p.TurnOrder)).FirstOrDefault();
+            if (player != null)
+            {
+                var tiles = game.Map.AllTiles.Where(t => t.Owner == player);
+                    foreach(var tile in tiles)
+                    {
+                        player.TotalGold += tile.Gold;
+                    }
+                player.Faction.Army.ForEach(u => u.MovementLeft = u.Movement);
+            }
+
+            
 
             await _dbContext.SaveChangesAsync();
 

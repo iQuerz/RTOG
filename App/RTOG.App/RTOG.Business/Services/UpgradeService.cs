@@ -11,6 +11,7 @@ using System.Xml.Linq;
 
 namespace RTOG.Business.Services
 {
+    //treba se popravi ceo ovaj file ako imamo vremena sve je hardoced NE VALJA NISTA OVDE NE GLEDAJ(apsolutno nista)
     internal class UpgradeService : IUpgradeService
     {
         private readonly AppDbContext _dbContext;
@@ -32,6 +33,7 @@ namespace RTOG.Business.Services
         }
         public string GetUpgradeName(int upgradeID)
         {
+            //bljak hardcode
             switch (upgradeID)
             {
                 case 1:
@@ -44,31 +46,44 @@ namespace RTOG.Business.Services
         }
         public async Task UpgradeUnits(int UpgradeID, List<int> unitIDs)
         {
+
             List<Unit> units = _dbContext.Units
                                     .Include(u => u.Upgrades)
                                     .Where(u => unitIDs.Contains(u.ID))
                                     .ToList();
 
-            //privremeno resenje nece biti hardoced kasnije
-            switch (UpgradeID)
-            {
-                case 1:
-                        foreach (var unit in units)
-                        {
-                            new WeaponUpgrade(unit);
-                        }
-                    break;
-                case 2:
-                        foreach (var unit in units)
-                        {
-                            new ArmorUpgrade(unit);
-                        }
-                    break;
+            var faction = _dbContext.Factions.Include(f => f.Player)
+                                            .FirstOrDefault(f => f.Army.Any(u => unitIDs.Contains(u.ID)));
 
-                default:
-                    Console.Write("not a valid upgrade");
-                    break;
-            }
+
+
+            //privremeno resenje nece biti hardoced kasnije
+            if(faction != null) 
+                switch (UpgradeID)
+                {
+                    case 1:
+                            foreach (var unit in units)
+                            {
+                                if (faction.Player.TotalGold < 20)//boli me ali mora(hardcoded price)
+                                    break;
+                                faction.Player.TotalGold -= 20;
+                                new WeaponUpgrade(unit);
+                            }
+                        break;
+                    case 2:
+                            foreach (var unit in units)
+                            {
+                                if (faction.Player.TotalGold < 20)//boli me ali mora(hardcoded price)
+                                    break;
+                                faction.Player.TotalGold -= 20;
+                                new ArmorUpgrade(unit);
+                            }
+                        break;
+
+                    default:
+                        Console.Write("not a valid upgrade");
+                        break;
+                }
 
             await _dbContext.SaveChangesAsync();
         }

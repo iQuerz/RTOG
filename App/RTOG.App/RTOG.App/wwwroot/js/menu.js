@@ -27,6 +27,17 @@
 window.activeAction = 0;
 var menu = new BootstrapMenu('.hasTileMenu', {
     menuEvent: 'click',
+    fetchElementData: function () {
+        //ako ne kliknes na tvoji tile ne da ti meni trenutno throwuje error ali nisam nasao nikakav bolji nacin quick fix resenje
+        let tileOwner = window.mapObject.ReturnTileOwner(window.eventClicekd.offsetX, window.eventClicekd.offsetY);
+        if (tileOwner == null) {
+            //ako pokusam warning ili alert ili return i dalje se renderuje pop up menu
+            throw new Error("Not your tile");
+        }
+        else if (tileOwner.id != MyAccount.player.id) {
+            throw new Error("Not your tile");
+        }
+    },
     actions: [
         {
             name: 'Add new unit',

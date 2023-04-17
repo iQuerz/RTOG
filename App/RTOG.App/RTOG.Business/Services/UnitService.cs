@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RTOG.Business.Infrastructure;
+using RTOG.Business.Infrastructure.Helper;
 using RTOG.Business.Interfaces;
 using RTOG.Data.Models;
 using RTOG.Data.Persistence;
@@ -103,11 +104,16 @@ namespace RTOG.Business.Services
             MethodInfo[] methods = factionType.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
             foreach (Unit unitToCreate in unitsToCreate)
             {
+                if (player.TotalGold < unitToCreate.Price)
+                    continue;
                 foreach (MethodInfo method in methods)
                 {
+
                     if (method.Name.Contains(unitToCreate.Type.Split('-')[1]))
                     {
                         var unit = (Unit)method.Invoke(player.Faction, new object[] { name });
+
+                        player.TotalGold -= unit.Price;
 
                         _dbContext.Units.Add(unit);
 
@@ -178,7 +184,6 @@ namespace RTOG.Business.Services
             }
             return unitOptions;
         }
-
         public async Task<List<Unit>> GetUnitsOptionsV2(int playerID)
         {
             var player = _dbContext.Players.Where(p => p.ID == playerID)
@@ -220,25 +225,56 @@ namespace RTOG.Business.Services
             if (tileStart.Units is null)
                 throw new Exception("There are no units on this tile.");
 
+            var unitsToMove = tileStart.Units.Where(u => unitIDs.Contains(u.ID)).ToList();
+            unitsToMove.ForEach(u => u.MovementLeft--);
+            tileStart.Units.RemoveAll(u => unitsToMove.Contains(u));
+
             if (tileStart.Owner != tileEnd.Owner && tileEnd.Owner != null)
             {
-                // fight 
+                //fight 
+                BattleResult result = Helpers.DetermineOutcome(unitsToMove, tileEnd.Units);
+                if (result.Status == 0)
+                {
+                    //it's a draw
+                }
+                else
+                {
+                    //_dbContext.Units.RemoveRange(unitsToMove);
+                    //attacker wins
+                    if (result.RemainingUnitsDeffender.Count == 0)
+                    {
+                        //exeprimental
+                        //_dbContext.Units.RemoveRange(tileEnd.Units);
+                        tileEnd.Units.Clear();
+                        tileEnd.Owner = tileStart.Owner;
+                        tileEnd.Units.AddRange(result.RemainingUnitsAttacker);
+
+                    }
+                    else //deffender wins
+                    {
+                        //exeprimental
+                        var unitsToRemove = tileEnd.Units.Where(u => !result.RemainingUnitsDeffender.Contains(u)).ToList();
+                        tileEnd.Units.RemoveAll(u => unitsToRemove.Contains(u));
+                        //_dbContext.Units.RemoveRange(unitsToRemove);
+
+                    }
+                }
             }
             else
             {
-                var unitsToMove = tileStart.Units.Where(u => unitIDs.Contains(u.ID)).ToList();
+                //move
 
                 if (unitsToMove.Count == 0)
                     throw new Exception("The units are not on this tile.");
 
-                tileStart.Units.RemoveAll(u => unitsToMove.Contains(u));
+                
 
                 tileEnd.Units.AddRange(unitsToMove);
 
                 tileEnd.Owner = tileStart.Owner;
-
-                await _dbContext.SaveChangesAsync();
             }
+
+            await _dbContext.SaveChangesAsync();
         }
     }
 

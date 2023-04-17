@@ -37,8 +37,8 @@ namespace RTOG.Data.Persistence
                 new PlayerColor
                 {
                     ID = 1,
-                    Hex = "#000",
-                    Name = "Black"
+                    Hex = "#fff",
+                    Name = "White"
                 },
                 new PlayerColor
                 {

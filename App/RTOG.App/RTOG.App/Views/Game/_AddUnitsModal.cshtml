@@ -16,6 +16,9 @@
             </span>
         </div>
     }
+    <div class="is-flex-row" style="padding:4px;border:1px solid black; justify-content:space-between;align-items:center;margin:2px;">
+        <span class="totalCost">Total cost: 0</span>
+        </div>
 </div>
 <div class="is-flex-row" style="justify-content:space-around; align-items:center; margin-top:18px">
     <a href="#" rel="modal:close" onclick="confirm()">Confirm</a>
@@ -24,11 +27,16 @@
 
 <script>
     var units = [];
+    var totalCost = 0;
     function addUnit(unitID){
         units.push(JSON.parse(unitID));
+        totalCost += JSON.parse(unitID).price;
         updateCount(JSON.parse(unitID).type);
     }
     function remUnit(unitID){
+        totalCost -= JSON.parse(unitID).price;
+        if(totalCost < 0)
+            totalCost = 0;
         let unitObj = JSON.parse(unitID);
         let index = units.findIndex(u => u.Name === unitObj.Name);
         if (index > -1)
@@ -43,9 +51,12 @@
                 count++;
             }
         }
-        console.log($('#' + unitID + 'counter'))
         $('.' + unitID + 'counter').each(function(){
             $(this).text(count.toString());
+        })
+        //trenunto proveravamo na backend da li imas dovoljno pare mozes da das vise units da se naprave ali nece se uradi ako nemas pare
+        $('.totalCost').each(function () {
+            $(this).text("Total cost: " + totalCost);
         })
         
     }

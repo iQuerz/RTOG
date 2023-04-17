@@ -24,6 +24,8 @@ namespace RTOG.Data.Models
         [Required]
         public int Movement { get; set; }
         [Required]
+        public int MovementLeft { get; set; }
+        [Required]
         public string Type { get; set; }
         //[Required]
         //[JsonIgnore]
@@ -40,6 +42,7 @@ namespace RTOG.Data.Models
             Health = UnitStats.Units[type].Health;
             Price = UnitStats.Units[type].Price;
             Movement = UnitStats.Units[type].Movement;
+            MovementLeft = Movement;    
             Type = UnitStats.Units[type].Type;
             Upgrades = new List<UnitUpgrade>();
 
