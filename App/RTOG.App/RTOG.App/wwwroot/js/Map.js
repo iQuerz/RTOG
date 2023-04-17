@@ -108,9 +108,23 @@ class Map {
         }
         context.strokeStyle = "#000"
         //crtamo highlighovana polja kasnije
+        var DrawStrokeLaterIndxEnemy =[]
         if (DrawStrokeLaterIndx != undefined) {
             context.strokeStyle = "#0f0"
             DrawStrokeLaterIndx.forEach((idx) => {
+                //crveno za enemy polje sve ostalo zeleno
+                if (Game.map.allTiles[idx].owner != null && Game.map.allTiles[idx].owner.id != MyAccount.player.id)
+                    DrawStrokeLaterIndxEnemy.push(idx);
+                context.beginPath();
+                voronoi.renderCell(idx, context);
+                context.stroke();
+            })
+            context.strokeStyle = "#000"
+        }
+        if (DrawStrokeLaterIndxEnemy != undefined) {
+            context.strokeStyle = "#f00"
+            DrawStrokeLaterIndxEnemy.forEach((idx) => {
+                //crveno za enemy polje sve ostalo zeleno
                 context.beginPath();
                 voronoi.renderCell(idx, context);
                 context.stroke();
