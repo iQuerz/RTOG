@@ -42,7 +42,7 @@ namespace RTOG.Data.Models
             Health = UnitStats.Units[type].Health;
             Price = UnitStats.Units[type].Price;
             Movement = UnitStats.Units[type].Movement;
-            MovementLeft = Movement;    
+            MovementLeft = 0;    
             Type = UnitStats.Units[type].Type;
             Upgrades = new List<UnitUpgrade>();
 

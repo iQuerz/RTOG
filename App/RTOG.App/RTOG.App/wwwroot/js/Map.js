@@ -38,7 +38,7 @@ class Map {
         });
         var context = canvas.getContext("2d");
         context.clearRect(0, 0, width, height);
-        context.lineWidth = 1.5;
+        context.lineWidth = 2.0;
         context.font = "18px sans-serif";
         context.textAlign = "center";
         context.textBaseline = "middle";
@@ -69,7 +69,7 @@ class Map {
         context.globalAlpha = 0.5;
         voronoi.renderCell(i, context);
         if (Game.map.allTiles[i].owner == null) {
-            context.fillStyle = "#000000";
+            context.fillStyle = "#000";
         }
         else if (Game.map.allTiles[i].owner != null) {
             context.fillStyle = Game.map.allTiles[i].owner.color;
@@ -166,7 +166,8 @@ class Map {
         if (Game.map.allTiles[i].units)
             context.drawImage(gold, centroid[0], centroid[1], 20, 20);
         //FFD700
-        context.fillStyle = '#000000';
+        //gold boja
+        context.fillStyle = '#FFD700';
         context.fillText("  +" + Game.map.allTiles[i].gold, centroid[0] + 35, centroid[1] + 5);
         }
         context.fillStyle = '#000000';

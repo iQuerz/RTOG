@@ -69,7 +69,7 @@ namespace RTOG.Data.Config
                 Attack = 15,
                 Defense = 10,
                 Health = 110,
-                Price = 185,
+                Price = 170,
                 Movement = 2,
                 Type = "R-Tank"
             };
