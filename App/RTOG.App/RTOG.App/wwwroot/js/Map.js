@@ -80,22 +80,33 @@ class Map {
     }
     context.globalAlpha = 1;
     //dodaje stroke teritorijama mora da bude posle teritorije
-    var DrawStrokeLaterIndx = [];
-    for (let i = 0; i < particles.length; i++) {
-        context.beginPath();
-        if (selectedTileID != -1) {
-            const selectedTileIndex = Game.map.allTiles.findIndex(tile => tile.id === selectedTileID);
-            const neighborsIndices = delaunay.neighbors(selectedTileIndex)
-            const neighbors = Array.from(neighborsIndices);
-            if (neighbors.includes(i))
+        var DrawStrokeLaterIndx = [];
+        //dodaje stroke na sve cells
+        for (let i = 0; i < particles.length; i++) {
+            context.beginPath();
+            if (selectedTileID != -1) {
+                const selectedTileIndex = Game.map.allTiles.findIndex(tile => tile.id === selectedTileID);
+                const neighborsIndices = delaunay.neighbors(selectedTileIndex)
+                const neighbors = Array.from(neighborsIndices);
+                if (neighbors.includes(i))
+                {
+                    DrawStrokeLaterIndx.push(i);
+                }
+            }
+            voronoi.renderCell(i, context);
+            context.stroke();
+        }
+        //dodajemo stroke na sve cells sa units koje mogu da se pomeraju
+        for (let i = 0; i < particles.length; i++) {
+            context.beginPath();
+            if (Game.map.allTiles[i].units.some(u => u.movementLeft > 0) && Game.map.allTiles[i].owner.id == MyAccount.player.id)
             {
-                DrawStrokeLaterIndx.push(i);
+                context.strokeStyle = "#fff"
+                voronoi.renderCell(i, context);
+                context.stroke();
             }
         }
-
-        voronoi.renderCell(i, context);
-        context.stroke();
-        }
+        context.strokeStyle = "#000"
         //crtamo highlighovana polja kasnije
         if (DrawStrokeLaterIndx != undefined) {
             context.strokeStyle = "#0f0"
@@ -106,7 +117,6 @@ class Map {
             })
             context.strokeStyle = "#000"
         }
-
     //renderuje resurse i units
     for (let i = 0; i < particles.length; i++) {
         context.fillStyle = "#000";

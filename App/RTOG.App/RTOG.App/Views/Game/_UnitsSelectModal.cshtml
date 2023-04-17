@@ -47,7 +47,6 @@
             canvas.addEventListener("contextmenu", event => {
                 event.preventDefault(); 
                 let endTileID = window.mapObject.ReturnTileIDMovment(event.offsetX, event.offsetY, @Model.tileID);
-                console.log(endTileID);
                 if (endTileID == -1)
                 {
                     alert("you can't move there donkey")
