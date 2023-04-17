@@ -2,6 +2,13 @@ using RTOG.App.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var env = builder.Environment;
+
+builder.Configuration.SetBasePath(env.ContentRootPath)
+                     .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                     .AddEnvironmentVariables()
+                     .Build();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -10,7 +17,7 @@ builder.Services.AddSignalR();
 //builder.Services.AddSingleton<HubData>();
 
 //Business Layer
-RTOG.Business.Extensions.StartupExtensions.ConfigureServices(builder.Services);
+RTOG.Business.Extensions.StartupExtensions.ConfigureServices(builder.Services, builder.Configuration);
 
 var app = builder.Build();
 

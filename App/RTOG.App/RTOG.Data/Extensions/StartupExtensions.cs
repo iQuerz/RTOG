@@ -7,11 +7,8 @@ namespace RTOG.Data.Extensions
 {
     public class StartupExtensions
     {
-        public static void ConfigureServices(IServiceCollection services)
+        public static void ConfigureServices(IServiceCollection services, ConfigurationManager configuration)
         {
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile(path: "appsettings.json")
-                .Build();
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlite(
                     configuration.GetConnectionString("DBConnection")));

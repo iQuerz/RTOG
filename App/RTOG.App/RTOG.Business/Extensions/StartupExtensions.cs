@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using RTOG.Business.Interfaces;
 using RTOG.Business.Services;
 
@@ -6,9 +7,9 @@ namespace RTOG.Business.Extensions
 {
     public class StartupExtensions
     {
-        public static void ConfigureServices(IServiceCollection services)
+        public static void ConfigureServices(IServiceCollection services, ConfigurationManager configuration)
         {
-            Data.Extensions.StartupExtensions.ConfigureServices(services);
+            Data.Extensions.StartupExtensions.ConfigureServices(services, configuration);
 
             //business services
             services.AddScoped<IAccountService, AccountService>();
