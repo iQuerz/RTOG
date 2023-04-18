@@ -54,6 +54,7 @@
 
 <script>
     $(document).ready(function () {
+        $.notify("Your turn!", { position: 'top center' })
 
         $('#unitsSelectModal').on('modalClose', function(event, units) {
             if (window.activeAction == 2) {
@@ -139,7 +140,7 @@
             success: function (response){
                 console.log(response)
                 if(response){
-                    page.finishOtherPlayersGames();//nikola ovde popovati end screen za sve
+                    page.finishOtherPlayersGames(); //nikola ovde popovati end screen za sve
                 }
                 else{
                     page.updateOtherGamePlayers();
@@ -153,7 +154,6 @@
 {
     <script>
         let myTurn = localStorage.getItem("myTurn");
-        console.log("myTurn:", myTurn);
         if (myTurn == null || myTurn == 'true') {
             $('#yourTurnModal').modal();
             localStorage.setItem("myTurn", false);
