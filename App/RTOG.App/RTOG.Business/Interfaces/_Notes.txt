@@ -1,0 +1,1 @@
+﻿ovde definisemo interfejse servisa podataka

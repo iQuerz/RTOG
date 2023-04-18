@@ -1,0 +1,84 @@
+﻿@using RTOG.App.Models.Modals;
+@model UnitsSelectModalModel
+
+<h2>Select units</h2>
+<div style="width:90%;height:80%;border:1px solid black; padding:1rem;">
+    @foreach(var unit in Model.Units)
+    {
+        <label class="is-flex-row modalLabel">
+            @unit.Type (@unit.MovementLeft moves left)<br>
+            (
+            @if (unit.Upgrades != null)
+            {
+                foreach(var upgrade in unit.Upgrades)
+                {
+                    @(upgrade.Name + " ")
+                }
+            }
+            else
+            {
+                @("no upgrades yet")
+            }
+            )
+            <input type="checkbox" onchange="selectUnit(event, @unit.ID)" style="margin-right:4px;">
+        </label>
+    }
+</div>
+<div class="is-flex-row" style="justify-content:space-around; align-items:center; margin-top:18px">
+    <a class="modalButton" href="#" rel="modal:close" onclick="confirm()">Confirm</a>
+    <a class="modalButton" href="#" rel="modal:close" style="background-color:var(--red);">Cancel</a>
+</div>
+
+<script>
+    var units = [];
+    function selectUnit(event, unitID){ //does both select and deselect
+        if(event.target.checked){
+            units.push(unitID);
+        }
+        else {
+            let index = units.indexOf(unitID);
+            if (index > -1)
+                units.splice(index, 1);
+        }
+    }
+    function confirm() {
+        if(@Model.upgradeID == 0)
+        {
+            window.mapObject.DrawBoard(@Model.tileID);
+            //$('#unitsSelectModal').trigger('modalClose', units);
+            var canvas = document.querySelector(".hasTileMenu")
+            if (!canvas)
+                return 0;
+            canvas.addEventListener("contextmenu", event => {
+                event.preventDefault(); 
+                let endTileID = window.mapObject.ReturnTileIDMovment(event.offsetX, event.offsetY, @Model.tileID);
+                if (endTileID == -1)
+                {
+                    alert("you can't move there donkey")
+                }
+                else
+                {
+                    ajaxBody({
+                        type: 'PATCH',
+                        url: '@Url.Action("MoveUnits", "Unit")' + '/' + @Model.tileID + "/" + endTileID,
+                        data: units,
+                        success: function (response) {
+                            page.updateOtherGamePlayers();
+                        }
+                    })
+                }
+            });
+        }
+        else
+        {
+        ajaxBody({
+            type: 'PATCH',
+            url: '@Url.Action("UpgradeUnits", "Unit")' + '/' + @Model.upgradeID,
+            data: units,
+            success: function(response) {
+                page.updateOtherGamePlayers();
+            }
+        })
+        }
+    }
+</script>

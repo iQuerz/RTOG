@@ -1,0 +1,90 @@
+﻿@using RTOG.Data.Models;
+@model GameViewModel
+@{
+    ViewData["title"] = "Ongoing game";
+}
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="~/lib/signalR/signalr.js"></script>
+<script>
+    var Game = @Json.Serialize(Model.Game);
+    var MyAccount = @Json.Serialize(Model.MyAccount);
+
+    function Page(){
+        this.gameId = '@Model.Game.ID';
+        this.accountId = @Model.MyAccount.ID;
+        this.LobbyHubConnection = null;
+
+        this.updateOtherGamePlayers = function() {
+            page.LobbyHubConnection.send("updateGamePlayers", page.gameId);
+        }
+        this.finishOtherPlayersGames = function() {
+            page.LobbyHubConnection.send("finishGame", page.gameId)
+        }
+        this.hubConnectionSuccess = function() {
+            page.LobbyHubConnection.send("registerConnection", page.gameId);
+            page.updateOtherGamePlayers();
+        }
+        this.hubConnectionFailure = function() {
+            alert("not connected to signalR hub.");
+        }
+
+        this.updateGamePage = function() {
+            $.ajax({
+                type: 'GET',
+                url: "@(Url.Action("GamePlayers", "Game"))",
+                data: {
+                    accountID: page.accountId,
+                    gameID: page.gameId
+                },
+                success: function (response) {
+                    $("#gamePlayers").html(response);
+                }
+            });
+
+        }
+
+        this.init = function() {
+            page.LobbyHubConnection = new signalR.HubConnectionBuilder().withUrl("/Hubs/Game").build();
+            page.LobbyHubConnection.start().then(page.hubConnectionSuccess, page.hubConnectionFailure);
+            
+            page.LobbyHubConnection.on("updateGame", function () {
+                page.updateGamePage();
+            })
+            page.LobbyHubConnection.on("finishGame", function () {
+                $('#endGameModal').modal();
+            })
+        }
+    }
+
+    //const
+    const page = new Page();
+    $(document).ready(function(){
+        page.init();
+    });
+</script>
+@*<script type="module" src="~/js/Map.js" defer></script>*@
+
+
+
+<div id="gamePlayers">
+    @*kada budem imao logiku za proveravanje da li je MyAccount na potezu:*@
+    @if(Model.Game.TurnCounter % Model.Game.Map.PlayerCount == Model.MyAccount.Player.TurnOrder){
+        <partial name="./_Game_Playing.cshtml"/>
+    }
+    else
+    {
+        <partial name="./_Game_Watching.cshtml"/>
+    }
+    <button onclick="DrawBoard()">Click me</button>
+</div>
+
+@{
+    //var winner = Model.Game.getWinner();
+}
+<div class="modal" id="endGameModal">
+    <div class="is-flex-down" style="align-items:center">
+        <h1>Game ended! Well played.</h1>
+        <a class="modalButton" style="margin-top:10px" href="@(Url.Action("Home", "Home") + "/" + Model.MyAccount.ID)">Back to home</a>
+    </div>
+</div>

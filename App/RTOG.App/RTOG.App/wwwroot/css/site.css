@@ -1,0 +1,209 @@
+:root {
+    --white: #F8F8F8;
+    --trans-white: #F8F8F8D8;
+    --gray: #CAC2B9;
+    --green: #A2D8C0;
+    --dark-green: #18453b;
+    --black: #222;
+
+    --dark-red: #b40e2a;
+    --red: #c51f3b;
+}
+*{
+    font-family: Tahoma;
+    color: var(--black);
+    margin: 0;
+    padding: 0;
+}
+a{
+    text-decoration: none;
+}
+.container {
+    height: 100vh;
+    width: 100vw;
+    background-clip: content-box;
+}
+.background {
+    width: 100%;
+    height: 100%;
+    background: url('../res/background/SiteBackground.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+/*#region Loading*/
+.loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right:0;
+    bottom: 0;
+    background-color: #0008;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    height: 0;
+    width: 0;
+    overflow: hidden;
+}
+.loading.active {
+    height:unset;
+    width:unset;
+}
+.spinner {
+    width: 8rem;
+    height: 8rem;
+    border: 1rem solid var(--white);
+    border-bottom: 1rem solid var(--green);
+    border-radius: 50%;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+/*#endregion*/
+
+/*#region Cards*/
+.card{
+    align-content:center;
+    border-radius:1em;
+    padding: 2em;
+    box-shadow: #0005 2px 2px;
+}
+    .card > *{
+        margin-top: 0.1em;
+        margin-bottom: 0.1em;
+    }
+
+.lobby-card {
+    border-radius:1em;
+    padding: 2em;
+    box-shadow: #0005 2px 2px;
+    margin-bottom: 0.5em;
+    max-width: 50em;
+}
+/*#endregion*/
+
+.white-bg{
+    background-color: var(--white);
+}
+.trans-white-bg{
+    background-color: var(--trans-white);
+}
+
+.is-flex-down{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.is-flex-row{
+    display: flex;
+    flex-direction: row;
+    justify-content:center;
+    align-content: center;
+}
+
+/*#region Buttons*/
+.btn-green {
+    text-align: center;
+    cursor:pointer;
+    border-radius: 0.4em;
+    border: var(--dark-green) solid 1px;
+    background: var(--green);
+    color: white;
+    box-shadow: 1px 2px 2px #0005;
+}
+    .btn-green:active {
+        transform: translateY(1px);
+    }
+
+.btn-red {
+    text-align: center;
+    cursor: pointer;
+    border-radius: 0.4em;
+    border: var(--dark-red) solid 1px;
+    background: var(--red);
+    color: white;
+    box-shadow: 2px 2px 2px #0005;
+}
+    .btn-red:active {
+        transform: translateY(1px);
+    }
+
+.btn{
+    cursor:pointer;
+}
+    .btn:active{
+        transform: translateY(1px);
+    }
+/*#endregion*/
+
+/*#region Fonts*/
+.big-font{
+    font-size: 1.2em;
+}
+.bigger-font{
+    font-size: 1.5em;
+}
+.biggest-font{
+    font-size: 1.8em;
+}
+/*#endregion*/
+
+.padding{
+    padding: 0.5em;
+}
+
+.hoverBackground:hover{
+    background-color:#0001;
+}
+
+.selected-color {
+    /*height: 1.2em !important;
+    width: 1.2em !important;*/
+    position: relative;
+    bottom: 10px;
+    transform: scale(1.2, 1.2);
+    border-radius: 2px;
+}
+.disabled-color {
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+canvas{
+    cursor: pointer;
+}
+
+.modalButton {
+    padding:1em;
+    background-color: var(--green);
+    font-weight: bold;
+}
+    .modalButton:hover {
+        transform: scale(1.05);
+    }
+    .modalButton:active {
+        transform: scale(1.05) translateY(2px);
+    }
+
+.modalLabel {
+    height: 2.5rem;
+    padding: 4px;
+    border: 1px solid black;
+    justify-content: space-between;
+    align-items: center;
+    margin: 3px;
+    cursor: pointer;
+}
+    .modalLabel:active {
+        transform: translateY(1px);
+    }

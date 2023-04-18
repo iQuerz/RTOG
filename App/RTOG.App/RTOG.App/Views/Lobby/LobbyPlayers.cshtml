@@ -1,0 +1,154 @@
+﻿@model LobbyViewModel
+@{
+    Layout = null;
+}
+<div style="display:flex;flex-direction:column;align-items:center;">
+    <div class="lobby-card white-bg" style="width:40em;display:flex;align-items:center;gap:0.3em">
+        <i class="iconoir-antenna-signal-tag" style="font-size:1.6em" title="Host"></i>
+        @if (Model.Lobby.Host.ID == Model.MyAccount.ID)
+        {
+            <strong style="color:var(--red)">@Model.Lobby.Host.Username (Me)</strong>
+
+            <table id="colorTable" style="background-color:transparent;margin-left:auto;">
+                <tr>
+                    @foreach (var color in Model.PlayerColors)
+                    {
+                        <td class="btn @(Model.MyAccount.SelectedColor.Equals(color) ? "selected-color" : "")" onclick="OnColorClick(event, @color.ID)" style="background-color:@color.Hex;height:1em;width:1em;border:1px solid var(--black);"></td>
+                    }
+                </tr>
+            </table>
+            <div style="margin-left:auto">
+                Map:
+                <select onchange="OnMapSelect(event)">
+                    @foreach(var map in Model.MapPresets)
+                    {
+                        <option value="@map.ID.ToString()">@map.Name</option>
+                    }
+                </select>
+            </div>
+            <div style="margin-left:auto">
+                Faction:
+                <select onchange="OnFactionSelect(event)">
+                    @foreach (var faction in Model.FactionChoices)
+                    {
+                        @if (Model.MyAccount.SelectedFaction.Equals(faction))
+                        {
+                            <option value="@faction.ID.ToString()" selected>@faction.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@faction.ID.ToString()">@faction.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+        }
+        else
+        {
+            <strong>@Model.Lobby.Host.Username</strong>
+
+            <table style="background-color:transparent;margin-left:auto;">
+                <tr>
+                    @foreach (var color in Model.PlayerColors)
+                    {
+                        <td class="btn @(Model.Lobby.Host.SelectedColor.Equals(color) ? "selected-color" : "")" style="background-color:@color.Hex;height:1em;width:1em;border:1px solid var(--black);"></td>
+                    }
+                </tr>
+            </table>
+        }
+
+    </div>
+
+    @foreach (var player in Model.Lobby.Players)
+    {
+        <div class="lobby-card trans-white-bg" style="margin-left:2em; width:38em; display:flex;align-items:center;gap:0.3em">
+            @if (player.ID == Model.MyAccount.ID)
+            {
+                <b style="color:var(--red)">@player.Username (Me)</b>
+
+
+                <table id="colorTable" style="background-color:transparent;margin-left:auto;">
+                    <tr>
+                        @foreach (var color in Model.PlayerColors)
+                        {
+                            <td class="btn @(Model.MyAccount.SelectedColor.Equals(color) ? "selected-color" : "")" onclick="OnColorClick(event, @color.ID)" style="background-color:@color.Hex;height:1em;width:1em;border:1px solid var(--black);"></td>
+                        }
+                    </tr>
+                </table>
+
+                <div style="margin-left:auto">
+                    Faction:
+                    <select onchange="OnFactionSelect(event)">
+                        @foreach(var faction in Model.FactionChoices)
+                        {
+                            @if (player.SelectedFaction.Equals(faction))
+                            {
+                                <option value="@faction.ID.ToString()" selected>@faction.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@faction.ID.ToString()">@faction.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+            }
+            else
+            {
+                <b>@player.Username</b>
+                <table style="background-color:transparent;margin-left:auto;">
+                    <tr>
+                        @foreach (var color in Model.PlayerColors)
+                        {
+                            <td class="@(player.SelectedColor.Equals(color) ? "selected-color" : "")" style="background-color:@color.Hex;height:1em;width:1em;border:1px solid var(--black);"></td>
+                        }
+                    </tr>
+                </table>
+            }
+
+        </div>
+    }
+</div>
+
+<script>
+    var selectedColor = null;
+    function OnColorClick(event, colorId) {
+        let accountId = @(Model.MyAccount.ID);
+        let lobbyId = @(Model.Lobby.ID);
+        $.ajax({
+            type: 'PATCH',
+            url: $('#UpdatePlayerColorUrl').val() + "/" + accountId + "/" + lobbyId + "/" + colorId,
+            success: function (response) {
+                $("#colorTable tr td").each(function () {
+                    $(this)[0].classList.remove("selected-color");
+                });
+                selectedColor = event.target;
+                selectedColor.classList.add("selected-color");
+                //update lobby with new selected color
+                updateOtherLobbyPlayers();
+            },
+            error: function (response){
+                //nikola
+            }
+        });
+    }
+
+    var selectedFaction = null;
+    function OnFactionSelect(event) {
+        let accountId = @(Model.MyAccount.ID);
+        selectedFaction = event.target.value;
+        $.ajax({
+            type: 'PATCH',
+            url: $('#UpdatePlayerFactionUrl').val() + "/" + accountId + "/" + selectedFaction,
+            success: function (response) {
+                updateOtherLobbyPlayers();
+            },
+            error: function (response) {
+                //nikola
+            }
+        });
+    }
+    function OnMapSelect(event) {
+        $("#SelectedMapID").val(event.target.value)
+    }
+</script>

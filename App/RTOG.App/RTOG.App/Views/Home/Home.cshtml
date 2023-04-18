@@ -1,0 +1,47 @@
+﻿@model HomeViewModel
+@{
+    ViewData["title"] = "Home";
+}
+
+<div style="display:flex;flex-direction:column;height:inherit;
+            justify-content:center;align-items:center">
+    <div class="card trans-white-bg is-flex-down">
+        <input id="codeInput" type="text" placeholder="Lobby Code" class="big-font" />
+        <button class="btn-green big-font" onclick="joinLobby()">JOIN</button>
+        <p style="opacity:0.5; text-align:center; margin:0.1em;">--OR--</p>
+        <button class="btn-green big-font" onclick="createLobby()">CREATE NEW LOBBY</button>
+    </div>
+</div>
+
+<input id="AccountID" hidden value="@Model.MyAccount.ID" />
+<input id="LobbyUrl" hidden value="@Url.Action("Lobby","Lobby", null, Context.Request.Scheme)" />
+<input id="JoinLobbyUrl" hidden value="@Url.Action("JoinLobby","Lobby", null, Context.Request.Scheme)" />
+<input id="CreateLobbyUrl" hidden value="@Url.Action("CreateLobby","Lobby", null, Context.Request.Scheme)" />
+
+<script>
+    function joinLobby() {
+        startLoading();
+        let code = $('#codeInput').val()
+        let accountId = $('#AccountID').val()
+        $.ajax({
+            type: 'PUT',
+            url: $('#JoinLobbyUrl').val() + "/" + accountId + "/" + code,
+            success: function(response){
+                stopLoading();
+                window.location.href = $('#LobbyUrl').val() + "/" + accountId + "/" + response.id
+            }
+        });
+    }
+    function createLobby(){
+        startLoading();
+        let accountId = $('#AccountID').val()
+        $.ajax({
+            type: 'POST',
+            url: $('#CreateLobbyUrl').val() + "/" + accountId,
+            success: function(response){
+                stopLoading();
+                window.location.href = $('#LobbyUrl').val() + "/" + accountId + "/" + response.id
+            }
+        });
+    }
+</script>

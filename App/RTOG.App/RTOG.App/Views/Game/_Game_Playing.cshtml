@@ -1,0 +1,168 @@
+﻿@using RTOG.App.Models.Modals;
+@model GameViewModel
+
+<script src="~/js/MapInit.js"></script>
+<input id="CreateUnitURL" hidden value="@Url.Action("Create", "Unit")" />
+    <script type="module">
+        Game = @Json.Serialize(Model.Game);
+        import { mapObject } from "/js/Map.js";
+        mapObject.DrawBoard();
+    </script>
+<script src="/lib/bootstrap-menu/BootstrapMenu.min.js"></script>
+<script type="module" src="~/js/menu.js" defer></script>
+
+<!-- Link BootstrapMenu CSS stylesheet -->
+<link rel="stylesheet" href="/css/dropdown.css">
+
+<div class="is-flex-row">
+
+    <div class="is-flex-down" style="flex-shrink:0; justify-content: flex-start; align-items:flex-start; width:120px; gap:8px">
+        <h2>@Model.MyAccount.Username</h2>
+        <div style="height:2rem;width:95%;border:1px solid black;background-color:@Model.MyAccount.Player.Color"></div>
+        <p>Gold: @Model.MyAccount.Player.TotalGold</p>
+        <p>Tiles: @Model.MyAccount.Player.OwnedTiles.Count (@Model.Game.Map.getTilePercentageString(Model.MyAccount.Player.OwnedTiles.Count))</p>
+        <p>Game Turn: @Model.Game.TurnCounter</p>
+
+        <button class="padding btn-green" style="margin-top:2rem;width:90%;" onclick="page.endTurn()">End Turn</button>
+    </div>
+
+    <div id="Map">
+    </div>
+
+    <div class="is-flex-down" style="flex-shrink:0; justify-content: flex-start; align-items:flex-end; width:120px;">
+        @foreach (var player in Model.Game.Players)
+        {
+            if (player.Name == Model.MyAccount.Username) continue;
+            <div class="padding" style="@(Model.Game.IsPlaying(player) ? "":"opacity:0.5;")border:1px solid black; flex-shrink:0; width: 80%; margin-bottom:1rem;">
+                <h2>@player.Name</h2>
+                <div style="height:2rem;width:95%;border:1px solid black;background-color:@player.Color"></div>
+                <p>Tiles: @player.OwnedTiles.Count (@(player.OwnedTiles.Count / Model.Game.Map.AllTiles.Count * 100)%)</p>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="modal" id="unitsSelectModal"></div>
+
+<div class="modal" id="upgradeUnitsModal"></div>
+
+<div class="modal" id="addUnitsModal"></div>
+
+<div class="modal" id="yourTurnModal">
+    <h1 style="width:100%;text-align:center;">Your turn!</h1>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $.notify("Your turn!", { position: 'top center' })
+
+        $('#unitsSelectModal').on('modalClose', function(event, units) {
+            if (window.activeAction == 2) {
+                // upgrade selected units
+                let upgradeID = window.selectedUpgradeID;
+                ajaxBody({
+                    type: 'POST',
+                    url: '@Url.Action("UpgradeUnits", "Unit")' + '/' + upgradeID,
+                    data: units,
+                    success: function(response) {
+                        page.updateOtherGamePlayers();
+                    }
+                })
+            }
+            else {
+                //kod ako je selected units za move
+                let tileID = window.selectedTileID;
+                ajaxBody({
+                    type: 'POST',
+                    url: '@Url.Action("MoveUnits", "Unit")' + '/' + tileID,
+                    data: units,
+                    success: function(){
+                        page.updateOtherGamePlayers();
+                    }
+                })
+            }
+        });
+
+        $('#upgradeUnitsModal').on('upgradesModalClose', function(event, upgradeID) {
+            page.showUnitsSelectModal(window.selectedTileID, upgradeID);
+        });
+    });
+
+    page.showAddUnitsModal = function(tileID){
+        ajaxQuery({
+            type: 'GET',
+            url: '@Url.Action("getAddUnitsModal", "Unit")',
+            data:{
+                playerID: @Model.MyAccount.Player.ID,
+                tileID: tileID
+            },
+            success: function(response) {
+                $('#addUnitsModal').html(response);
+                $('#addUnitsModal').modal();
+            }
+        })
+    }
+    page.showUpgradeUnitsModal = function(tileID){
+        ajaxQuery({
+            type: 'GET',
+            url: '@Url.Action("getUpgradeUnitsModal", "Unit")',
+            data: {
+                tileID: tileID
+            },
+            success: function(response) {
+                $('#upgradeUnitsModal').html(response);
+                $('#upgradeUnitsModal').modal();
+            }
+        })
+    }
+    page.showUnitsSelectModal = function(tileID, upgradeID = 0) {
+        ajaxQuery({
+            type: 'GET',
+            url: '@Url.Action("getUnitsSelectModal", "Unit")',
+            data: {
+                tileID: tileID,
+                upgradeID: upgradeID
+            },
+            success: function (response) {
+                $('#unitsSelectModal').html(response);
+                $('#unitsSelectModal').modal();
+            }
+        })
+    }
+
+    page.endTurn = function(){
+        ajaxQuery({
+            type: 'GET',
+            url: '@Url.Action("NextTurn", "Game")',
+            data: {
+                gameID: @Model.Game.ID
+            },
+            success: function (response){
+                console.log(response)
+                if(response){
+                    page.finishOtherPlayersGames(); //nikola ovde popovati end screen za sve
+                }
+                else{
+                    page.updateOtherGamePlayers();
+                }
+            }
+        });
+    }
+</script>
+
+@if (Model.Game.IsPlaying(Model.MyAccount.Player))
+{
+    <script>
+        let myTurn = localStorage.getItem("myTurn");
+        if (myTurn == null || myTurn == 'true') {
+            $('#yourTurnModal').modal();
+            localStorage.setItem("myTurn", false);
+        }
+    </script>
+}
+else
+{
+    <script>
+        localStorage.setItem('myTurn', true);
+    </script>
+}

@@ -1,0 +1,1 @@
+﻿ovde implementiramo prilaz sloju od strane sloja "iznad". ovo je najnizi sloj u nasoj aplikaciji posle baze podataka

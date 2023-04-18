@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RTOG - @ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/RTOG.App.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/jquery-ui/jquery-ui.min.css" />
+    <link rel="stylesheet" href="~/lib/iconoir/iconoir.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/lib/notify/notify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <script>
+        $.notify.addStyle('default', {
+            html: "<div><span data-notify-text/></div>",
+            classes: {
+                base: {
+                    "white-space": "nowrap",
+                    "background-color": "var(--white)",
+                    "color": "var(--black)",
+                    "border-radius": "0.1em",
+                    "font-size": "0.6em",
+                    "padding": "5px"
+                }
+            }
+        });
+        $.notify.defaults({
+            style: 'default',
+            autoHideDelay: 1000,
+            arrowShow: false,
+            showAnimation: 'fadeIn',
+            showDuration: 200,
+            hideAnimation: 'fadeOut',
+            hideDuration: 200
+        });
+    </script>
+</head>
+<body>
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div class="container">
+        <div class="background">
+            <main role="main" style="padding:2em;box-sizing:border-box;height:100%;width:100%;">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

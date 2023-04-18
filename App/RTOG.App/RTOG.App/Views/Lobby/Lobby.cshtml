@@ -1,0 +1,112 @@
+﻿ @model LobbyViewModel
+@{
+    ViewData["Title"] = Model.Lobby.Host.Username + "'s Lobby";
+}
+
+
+<div style="display:flex; align-items:center; justify-content:space-between;
+            align-self:start;margin-bottom:1em;">
+    <h2>
+        Lobby code:
+        <a id="lobbyCode" class="btn hoverBackground" style="border:1px solid var(--black);border-radius:0.2em;padding:0.2em" onclick="CopyLobbyCode()">
+            @Model.Lobby.Code
+        </a>
+    </h2>
+
+    @if(Model.Lobby.Host.ID == Model.MyAccount.ID)
+    {
+        <button style="width:5em" class="btn-green biggest-font padding" onclick="StartGame()">START</button>
+    }
+    else
+    {
+        <button style="width:5em;opacity:0.5;" class="btn-green biggest-font padding" disabled>START</button>
+    }
+</div>
+
+<input id="AccountID" hidden value="@Model.MyAccount.ID" />
+<input id="LobbyID" hidden value="@Model.Lobby.ID" />
+<input id="SelectedMapID" hidden value="1" />
+<input id="LobbyPlayersUrl" hidden value="@Url.Action("LobbyPlayers", "Lobby")" />
+<input id="DisbandLobbyUrl" hidden value="@Url.Action("DisbandLobby","Lobby", null, Context.Request.Scheme)" />
+<input id="UpdatePlayerColorUrl" hidden value="@Url.Action("UpdatePlayerColor", "Lobby")" />
+<input id="UpdatePlayerFactionUrl" hidden value="@Url.Action("UpdatePlayerFaction", "Lobby")" />
+<input id="CreateGameUrl" hidden value="@Url.Action("CreateGame","Game", null, Context.Request.Scheme)" />
+<input id="GameUrl" hidden value="@Url.Action("Game", "Game", null, Context.Request.Scheme)" />
+
+<script src="~/lib/signalR/signalr.js"></script>
+<script>
+    $(document).ready(function () {
+        
+    });
+
+    //#region SignalR
+    var LobbyHubConnection = new signalR.HubConnectionBuilder().withUrl("/Hubs/Lobby").build();
+    LobbyHubConnection.start().then(hubConnectionSuccess, hubConnectionFailure);
+
+    LobbyHubConnection.on("updateLobby", function () {
+        UpdateLobbyPlayers();
+    })
+    LobbyHubConnection.on("connectToGame", function (gameID) {
+        let accountId = $('#AccountID').val()
+        window.location.href = $('#GameUrl').val() + "/" + accountId + "/" + gameID
+    })
+
+    function updateOtherLobbyPlayers() {
+        let lobbyId = $('#LobbyID').val()
+        LobbyHubConnection.send("updateLobbyPlayers", lobbyId);
+    }
+    function startOtherPlayersGames(gameID){
+        LobbyHubConnection.send("startGame", gameID.toString())
+    }
+
+    function hubConnectionSuccess() {
+        let lobbyId = $('#LobbyID').val();
+        LobbyHubConnection.send("registerConnection", lobbyId);
+        updateOtherLobbyPlayers();
+    }
+    function hubConnectionFailure() {
+        alert("not connected to signalR hub.");
+    }
+
+    //#endregion
+
+    function StartGame(){
+        startLoading();
+        let accountId = $('#AccountID').val()
+        let lobbyId = $('#LobbyID').val()
+        let selectedMapID = $("#SelectedMapID").val()
+        $.ajax({
+            type: 'POST',
+            url: $('#CreateGameUrl').val() + "/" + accountId + "/" + lobbyId + "/" + selectedMapID,
+            success: function (response) {
+                startOtherPlayersGames(response.id);
+            }
+        });
+    }
+    function CopyLobbyCode(){
+        navigator.clipboard.writeText("@Model.Lobby.Code");
+        $('#lobbyCode').notify(
+            "Copied to clipboard!",
+            {
+                position: 'right',
+            }
+        );
+    }
+    function UpdateLobbyPlayers(){
+        let accountId = $('#AccountID').val()
+        let lobbyId = $('#LobbyID').val()
+        let playersView = $('#playersView')
+        $.ajax({
+            type: 'GET',
+            url: $('#LobbyPlayersUrl').val() + "/" + accountId + "/" + lobbyId,
+            success: function (response) {
+                playersView.html(response);
+            }
+        });
+    }
+</script>
+
+
+<div id="playersView">
+    <partial name="./LobbyPlayers.cshtml"></partial>
+</div>
