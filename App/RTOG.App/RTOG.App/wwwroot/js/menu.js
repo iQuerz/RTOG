@@ -59,15 +59,15 @@ var menu = new BootstrapMenu('.hasTileMenu', {
                 page.showUpgradeUnitsModal(tileId);
             }
         },
-        {
-            name: 'Fortify tile',
-            iconClass: 'iconoir-historic-shield',
-            onClick: function () {
-                window.activeAction = 3;
-                let tileId = window.mapObject.ReturnTileID(window.eventClicekd.offsetX, window.eventClicekd.offsetY);
-                windows.selectedTileID = tileId;
-            }
-        },
+        //{
+        //    name: 'Fortify tile',
+        //    iconClass: 'iconoir-historic-shield',
+        //    onClick: function () {
+        //        window.activeAction = 3;
+        //        let tileId = window.mapObject.ReturnTileID(window.eventClicekd.offsetX, window.eventClicekd.offsetY);
+        //        windows.selectedTileID = tileId;
+        //    }
+        //},
         {
             name: 'Attack/Move',
             iconClass: 'iconoir-move-up',

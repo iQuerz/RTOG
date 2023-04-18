@@ -18,7 +18,6 @@ namespace RTOG.Data.Models
         [Required]
         public int TurnCounter { get; set; }
 
-
         public bool IsPlaying(Player player) => TurnCounter % Map.PlayerCount == player.TurnOrder;
     }
 }

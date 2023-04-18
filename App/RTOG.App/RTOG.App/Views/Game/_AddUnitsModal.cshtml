@@ -7,12 +7,12 @@
     {
         <div class="is-flex-row" style="padding:4px;border:1px solid black; justify-content:space-between;align-items:center;margin:2px;">
             <div>
-                Create @unit.Name costs : @unit.Price Gold
+                Create @unit.Name (@unit.Price Gold)
             </div>
             <span>
                 <span class="@(unit.Type + "counter")">0</span>
-                <button class="padding" onclick="addUnit(@("\'" +Json.Serialize(unit)+"\'"))">+</button>
-                <button class="padding" onclick="remUnit(@("\'" +Json.Serialize(unit)+"\'"))">-</button>
+                <button class="padding btn-green" style="width:2rem; cursor:pointer" onclick="addUnit(@("\'" +Json.Serialize(unit)+"\'"))">+</button>
+                <button class="padding btn-green" style="width:2rem;cursor:pointer" onclick="remUnit(@("\'" +Json.Serialize(unit)+"\'"))">-</button>
             </span>
         </div>
     }
@@ -21,8 +21,8 @@
         </div>
 </div>
 <div class="is-flex-row" style="justify-content:space-around; align-items:center; margin-top:18px">
-    <a href="#" rel="modal:close" onclick="confirm()">Confirm</a>
-    <a href="#" rel="modal:close">Cancel</a>
+    <a class="modalButton" href="#" rel="modal:close" onclick="confirm()">Confirm</a>
+    <a class="modalButton" href="#" rel="modal:close" style="background-color:var(--red);">Cancel</a>
 </div>
 
 <script>

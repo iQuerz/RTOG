@@ -5,6 +5,8 @@
     --green: #A2D8C0;
     --dark-green: #18453b;
     --black: #222;
+
+    --dark-red: #b40e2a;
     --red: #c51f3b;
 }
 *{
@@ -117,9 +119,22 @@ a{
     border: var(--dark-green) solid 1px;
     background: var(--green);
     color: white;
-    box-shadow: 2px 2px 2px #0005;
+    box-shadow: 1px 2px 2px #0005;
 }
     .btn-green:active {
+        transform: translateY(1px);
+    }
+
+.btn-red {
+    text-align: center;
+    cursor: pointer;
+    border-radius: 0.4em;
+    border: var(--dark-red) solid 1px;
+    background: var(--red);
+    color: white;
+    box-shadow: 2px 2px 2px #0005;
+}
+    .btn-red:active {
         transform: translateY(1px);
     }
 
@@ -167,3 +182,28 @@ a{
 canvas{
     cursor: pointer;
 }
+
+.modalButton {
+    padding:1em;
+    background-color: var(--green);
+    font-weight: bold;
+}
+    .modalButton:hover {
+        transform: scale(1.05);
+    }
+    .modalButton:active {
+        transform: scale(1.05) translateY(2px);
+    }
+
+.modalLabel {
+    height: 2.5rem;
+    padding: 4px;
+    border: 1px solid black;
+    justify-content: space-between;
+    align-items: center;
+    margin: 3px;
+    cursor: pointer;
+}
+    .modalLabel:active {
+        transform: translateY(1px);
+    }

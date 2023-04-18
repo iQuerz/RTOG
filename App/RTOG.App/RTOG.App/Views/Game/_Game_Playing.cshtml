@@ -16,14 +16,14 @@
 
 <div class="is-flex-row">
 
-    <div class="is-flex-down" style="flex-shrink:0; justify-content: flex-start; align-items:flex-start; width:120px;">
-        <h1>@Model.MyAccount.Username</h1>
+    <div class="is-flex-down" style="flex-shrink:0; justify-content: flex-start; align-items:flex-start; width:120px; gap:8px">
+        <h2>@Model.MyAccount.Username</h2>
+        <div style="height:2rem;width:95%;border:1px solid black;background-color:@Model.MyAccount.Player.Color"></div>
         <p>Gold: @Model.MyAccount.Player.TotalGold</p>
         <p>Tiles: @Model.MyAccount.Player.OwnedTiles.Count (@Model.Game.Map.getTilePercentageString(Model.MyAccount.Player.OwnedTiles.Count))</p>
-        <p>Current Turn: @Model.Game.TurnCounter</p>
+        <p>Game Turn: @Model.Game.TurnCounter</p>
 
-
-        <button class="padding" onclick="page.endTurn()">End Turn</button>
+        <button class="padding btn-green" style="margin-top:2rem;width:90%;" onclick="page.endTurn()">End Turn</button>
     </div>
 
     <div id="Map">
@@ -35,29 +35,29 @@
             if (player.Name == Model.MyAccount.Username) continue;
             <div class="padding" style="@(Model.Game.IsPlaying(player) ? "":"opacity:0.5;")border:1px solid black; flex-shrink:0; width: 80%; margin-bottom:1rem;">
                 <h2>@player.Name</h2>
-                <p>money:</p>
-                <p>stats</p>
+                <div style="height:2rem;width:95%;border:1px solid black;background-color:@player.Color"></div>
+                <p>Tiles: @player.OwnedTiles.Count (@(player.OwnedTiles.Count / Model.Game.Map.AllTiles.Count * 100)%)</p>
             </div>
         }
     </div>
 </div>
 
-<div class="modal" id="unitsSelectModal">
-</div>
+<div class="modal" id="unitsSelectModal"></div>
 
-<div class="modal" id="upgradeUnitsModal">
-</div>
+<div class="modal" id="upgradeUnitsModal"></div>
 
-<div class="modal" id="addUnitsModal">
+<div class="modal" id="addUnitsModal"></div>
+
+<div class="modal" id="yourTurnModal">
+    <h1 style="width:100%;text-align:center;">Your turn!</h1>
 </div>
 
 <script>
     $(document).ready(function () {
-        $.notify("Your turn!", { position: 'top center' })
+
         $('#unitsSelectModal').on('modalClose', function(event, units) {
             if (window.activeAction == 2) {
                 // upgrade selected units
-                console.log("units selected for upgrade:", units);
                 let upgradeID = window.selectedUpgradeID;
                 ajaxBody({
                     type: 'POST',
@@ -138,11 +138,31 @@
             },
             success: function (response){
                 console.log(response)
-                if(response)
-                    console.log("Game over")//nikola ovde popovati end screen za sve
-                //var wineris = @Model.MyAccount.Player; // ili tako nesto
-                page.updateOtherGamePlayers();
+                if(response){
+                    page.finishOtherPlayersGames();//nikola ovde popovati end screen za sve
+                }
+                else{
+                    page.updateOtherGamePlayers();
+                }
             }
         });
     }
 </script>
+
+@if (Model.Game.IsPlaying(Model.MyAccount.Player))
+{
+    <script>
+        let myTurn = localStorage.getItem("myTurn");
+        console.log("myTurn:", myTurn);
+        if (myTurn == null || myTurn == 'true') {
+            $('#yourTurnModal').modal();
+            localStorage.setItem("myTurn", false);
+        }
+    </script>
+}
+else
+{
+    <script>
+        localStorage.setItem('myTurn', true);
+    </script>
+}

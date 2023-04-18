@@ -5,23 +5,28 @@
 <div style="width:90%;height:80%;border:1px solid black; padding:1rem;">
     @foreach(var unit in Model.Units)
     {
-        <div class="is-flex-row" style="padding:4px;border:1px solid black; justify-content:space-between;align-items:center;margin:2px;">
-            <div>
-                <p>@unit.Type (@unit.MovementLeft/@unit.Movement)</p>
-                <p>(@if (unit.Upgrades != null)
-                    foreach(var upgrade in unit.Upgrades)
-                    {
-                        <span>@upgrade.Name</span>
-                    })
-                </p>
-            </div>
-            <input type="checkbox" onchange="selectUnit(event, @unit.ID)">
-        </div>
+        <label class="is-flex-row modalLabel">
+            @unit.Type (@unit.MovementLeft moves left)<br>
+            (
+            @if (unit.Upgrades != null)
+            {
+                foreach(var upgrade in unit.Upgrades)
+                {
+                    @(upgrade.Name + " ")
+                }
+            }
+            else
+            {
+                @("no upgrades yet")
+            }
+            )
+            <input type="checkbox" onchange="selectUnit(event, @unit.ID)" style="margin-right:4px;">
+        </label>
     }
 </div>
 <div class="is-flex-row" style="justify-content:space-around; align-items:center; margin-top:18px">
-    <a href="#" rel="modal:close" onclick="confirm()">Confirm</a>
-    <a href="#" rel="modal:close">Cancel</a>
+    <a class="modalButton" href="#" rel="modal:close" onclick="confirm()">Confirm</a>
+    <a class="modalButton" href="#" rel="modal:close" style="background-color:var(--red);">Cancel</a>
 </div>
 
 <script>

@@ -1,4 +1,5 @@
-﻿@model GameViewModel
+﻿@using RTOG.Data.Models;
+@model GameViewModel
 @{
     ViewData["title"] = "Ongoing game";
 }
@@ -51,7 +52,7 @@
                 page.updateGamePage();
             })
             page.LobbyHubConnection.on("finishGame", function () {
-                //kraj gejma, ucitaj kraj
+                $('#endGameModal').modal();
             })
         }
     }
@@ -77,4 +78,13 @@
         <partial name="./_Game_Watching.cshtml"/>
     }
     <button onclick="DrawBoard()">Click me</button>
+</div>
+
+@{
+    //var winner = Model.Game.getWinner();
+}
+<div class="modal" id="endGameModal">
+    <h1>Game ended! Well played.</h1>
+    @*<h1>@winner.Name won! Well played.</h1>*@
+    <a href="@(Url.Action("Home", "Home") + "/" + Model.MyAccount.ID)">Back to home</a>
 </div>

@@ -72,6 +72,7 @@ namespace RTOG.Business.Services
             return game;
         }
 
+
         public async Task<OngoingGame> Get(int gameID)
         {
             var game = _dbContext.Games.Where(g => g.ID == gameID)
@@ -107,6 +108,8 @@ namespace RTOG.Business.Services
 
             return game;
         }
+
+
         public async Task<bool> NextTurn(int gameID)
         {
             bool isGameOver = false;

@@ -36,45 +36,39 @@ namespace RTOG.Data.Persistence
             modelBuilder.Entity<PlayerColor>().HasData(
                 new PlayerColor
                 {
-                    ID = 1,
-                    Hex = "#fff",
-                    Name = "White"
-                },
-                new PlayerColor
-                {
                     ID = 2,
-                    Hex = "#f33",
-                    Name = "Red"
+                    Hex = "#650101",
+                    Name = "Dark Red"
                 },
                 new PlayerColor
                 {
                     ID = 3,
-                    Hex = "#3f3",
-                    Name = "Green"
+                    Hex = "#006E33",
+                    Name = "Forest Green"
                 },
                 new PlayerColor
                 {
                     ID = 4,
-                    Hex = "#33f",
-                    Name = "Blue"
+                    Hex = "#ADD8E6",
+                    Name = "Light Blue"
                 },
                 new PlayerColor
                 {
                     ID = 5,
-                    Hex = "#ff3",
-                    Name = "Yellow"
+                    Hex = "#000080",
+                    Name = "Navy Blue"
                 },
                 new PlayerColor
                 {
                     ID = 6,
-                    Hex = "#f3f",
-                    Name = "Magenta"
+                    Hex = "#7851a9",
+                    Name = "Royal Purple"
                 },
                 new PlayerColor
                 {
                     ID = 7,
-                    Hex = "#3ff",
-                    Name = "Cyan"
+                    Hex = "#68331C",
+                    Name = "Royal Brown"
                 }
             );
             modelBuilder.Entity<FactionChoice>().HasData(

@@ -5,14 +5,17 @@
 <div style="width:90%;height:80%;border:1px solid black; padding:1rem;">
     @foreach(var upgrade in Model.Upgrades)
     {
-        <div style="padding:2px;border:1px solid black">
-            <p>@upgrade.Name Price : @upgrade.Price</p>
-            <input type="radio" onchange="selectUnit(event, @upgrade.ID)">
-        </div>
+        <label class="is-flex-row modalLabel">
+            @upgrade.Name (@upgrade.Price Gold)
+            
+            <input @(Model.Upgrades.IndexOf(upgrade) == 0 ? "checked" : "") type="radio" name="upgradeSelect" onchange="selectUnit(event, @upgrade.ID)" style="margin-right:4px">
+        </label>
     }
 </div>
-<a href="#" rel="modal:close" onclick="confirm()">Confirm</a>
-<a href="#" rel="modal:close">Cancel</a>
+<div class="is-flex-row" style="justify-content:space-around; align-items:center; margin-top:18px">
+    <a class="modalButton" href="#" rel="modal:close" onclick="confirm()">Confirm</a>
+    <a class="modalButton" href="#" rel="modal:close" style="background-color:var(--red);">Cancel</a>
+</div>
 
 <script>
     var selectedUpgradeID = 0;

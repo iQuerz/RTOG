@@ -78,10 +78,17 @@
 
                 <div style="margin-left:auto">
                     Faction:
-                    <select>
+                    <select onchange="OnFactionSelect(event)">
                         @foreach(var faction in Model.FactionChoices)
                         {
-                            <option value="@faction.ID.ToString()">@faction.Name</option>
+                            @if (player.SelectedFaction.Equals(faction))
+                            {
+                                <option value="@faction.ID.ToString()" selected>@faction.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@faction.ID.ToString()">@faction.Name</option>
+                            }
                         }
                     </select>
                 </div>

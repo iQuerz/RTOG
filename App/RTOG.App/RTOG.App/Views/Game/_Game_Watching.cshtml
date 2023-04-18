@@ -7,12 +7,13 @@
     mapObject.DrawBoard();
 </script>
 <div class="is-flex-row">
-    <div class="is-flex-down" style="opacity:0.5; flex-shrink:0; justify-content: flex-start; align-items:flex-start; width:120px;">
-        <h1>@Model.MyAccount.Username</h1>
-        <p>gold: @Model.MyAccount.Player.TotalGold</p>
-        <p>tiles: @Model.MyAccount.Player.OwnedTiles.Count (@Model.Game.Map.getTilePercentageString(Model.MyAccount.Player.OwnedTiles.Count))</p>
-        <p>Current Turn: @Model.Game.TurnCounter</p>
-    </div> 
+   <div class="is-flex-down" style="opacity:0.5; flex-shrink:0; justify-content: flex-start; align-items:flex-start; width:120px; gap:8px">
+        <h2>@Model.MyAccount.Username</h2>
+        <div style="height:2rem;width:95%;border:1px solid black;background-color:@Model.MyAccount.Player.Color"></div>
+        <p>Gold: @Model.MyAccount.Player.TotalGold</p>
+        <p>Tiles: @Model.MyAccount.Player.OwnedTiles.Count (@Model.Game.Map.getTilePercentageString(Model.MyAccount.Player.OwnedTiles.Count))</p>
+        <p>Game Turn: @Model.Game.TurnCounter</p>
+    </div>
 
     <div id="Map" style="cursor:default!important">
     </div>
@@ -23,8 +24,27 @@
             if (player.Name == Model.MyAccount.Username) continue;
             <div class="padding" style="@(Model.Game.IsPlaying(player) ? "":"opacity:0.5;")border:1px solid black; flex-shrink:0; width: 80%; margin-bottom:1rem;">
                 <h2>@player.Name</h2>
-                <p>tiles: @player.OwnedTiles.Count (@(player.OwnedTiles.Count/Model.Game.Map.AllTiles.Count * 100)%)</p>
+                <div style="height:2rem;width:95%;border:1px solid black;background-color:@player.Color"></div>
+                <p>Tiles: @player.OwnedTiles.Count (@(player.OwnedTiles.Count/Model.Game.Map.AllTiles.Count * 100)%)</p>
             </div>
         }
     </div>
 </div>
+
+@if(Model.Game.IsPlaying(Model.MyAccount.Player))
+{
+    <script>
+        let myTurn = localStorage.getItem("myTurn");
+        console.log("myTurn:", myTurn);
+        if(myTurn == null || myTurn == 'true'){
+            $('#yourTurnModal').modal();
+            localStorage.setItem("myTurn", false);
+        }
+    </script>
+}
+else
+{
+    <script>
+        localStorage.setItem('myTurn', true);
+    </script>
+}
